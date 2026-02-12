@@ -2200,3 +2200,44 @@ Classic Tic Tac Toe game added as the ninth game in the Games dropdown. Player (
 - Flappy Bird appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 19: Simon Says Game — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+- Classic Simon Says memory pattern game with 4 colored buttons in a 2x2 grid
+- Buttons use green palette shades: #00ff41 (bright green), #009926 (mid green), #006619 (dark green), #33ff66 (light green)
+- Each button plays a distinct tone via Web Audio API oscillator (E4 329.63Hz, C4 261.63Hz, A3 220Hz, G4 392Hz)
+- Game shows a sequence by lighting up buttons one at a time with glow animation and playing the associated tone
+- Player repeats the sequence by clicking/tapping buttons in correct order
+- Each round adds one more random step to the sequence and replays the full pattern
+- Wrong button press triggers game over — shows round reached, best score, and play again button
+- Low buzz tone (110Hz) on incorrect press for audio feedback
+- Buttons have 3 visual states: inactive (dimmed), active/lit (bright with multi-layered glow shadow and scale-up), pressed (scale-down feedback)
+- Input disabled during sequence playback, enabled during player's turn
+- Stats bar displays: current Round, Best score, and Status (Ready/Watch.../Your turn/Game Over)
+- Status text is color-coded: gray for idle, yellow pulsing for watching, green for player turn, red for game over
+- 4 difficulty levels with same button styling as all other games:
+  - Easy: 800ms flash duration, 300ms pause between flashes
+  - Medium: 600ms flash duration, 250ms pause
+  - Hard: 400ms flash duration, 200ms pause
+  - Expert: 300ms flash duration, 150ms pause, 5th button (A4 440Hz, #66ff8c) added after round 10
+- Expert mode 5th button changes grid to 3-column layout with the extra button centered in the bottom row
+- Start Game button on idle screen, Play Again button on game over overlay
+- Desktop: click buttons. Mobile: tap buttons. Both fully supported
+- Responsive sizing: button grid uses min(85vw, 320px) width
+- Best score persists during session per difficulty, resets on difficulty change
+
+**Files created:**
+- `src/components/games/simonsays/SimonSays.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for SimonSays, added to GAME_COMPONENTS and GAME_NAMES
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "simonsays", name: "Simon Says" }` to GAMES array
+- `README.md` — Added Simon Says to Features list
+- `docs/SCOPE.md` — Updated Games section with Simon Says description, updated file structure tree
+- `docs/TODO.md` — Added Phase 19 with all items checked off
+- `docs/PROGRESS.md` — This entry

@@ -129,6 +129,7 @@ Games tab in navbar is a dropdown menu listing available games. Clicking a game 
 - **2048** — Classic 2048 puzzle game. Four difficulties (Easy/Medium/Hard/Expert). Slide tiles with arrow keys/WASD on desktop, swipe gestures on mobile. Tiles merge when matching numbers collide — reach 2048 to win. Green-themed tile colors as gradient from dark (#1a2e1a for 2) to bright (#00ff41 for 2048). Current score and best score tracking. Undo button (1 move back). Easy: 4x4 grid, 90% twos. Medium: 4x4, 80% twos. Hard: 4x4, 60% twos, occasional 8 spawns. Expert: 5x5 grid, 50/50 twos and fours, 4096 target.
 - **Tic Tac Toe** — Classic Tic Tac Toe vs AI. Four difficulties (Beginner/Advanced/Expert/Master). Player (WOJAK, #00ff41 green X) vs AI (PEPE, #ff4444 red O) on a 3x3 grid. Click/tap a cell to place mark. Beginner: AI picks randomly. Advanced: AI blocks wins, takes wins, prefers center and corners. Expert: minimax with 15% random chance. Master: full minimax, unbeatable. SVG X and O marks with glow effects, winning line animation, series score tracking (persists across rounds until difficulty change or modal close), responsive design.
 - **Flappy Bird** — Canvas-based Flappy Bird clone. Four difficulties (Easy/Medium/Hard/Expert). WOJAK avatar (/images/favicon.jpg) is the bird sprite, rendered as circular with green border, tilts based on velocity. Click/tap canvas or press spacebar to flap. Green pipes (#00ff41) with caps and highlights scroll from right to left with random gap positions. Score +1 per pipe passed. Game over on collision with pipes, floor, or ceiling. Ground strip at bottom with scrolling pattern. Easy: large gap (180px), slow speed, light gravity. Medium: standard gap (150px), medium speed, normal gravity. Hard: smaller gap (125px), fast speed, heavier gravity. Expert: very small gap (115px), fast speed, heavy gravity, pipes oscillate vertically.
+- **Simon Says** — Classic Simon Says memory pattern game. Four difficulties (Easy/Medium/Hard/Expert). 4 colored buttons in a 2x2 grid using green palette shades (#00ff41, #009926, #006619, #33ff66). Each button plays a distinct tone via Web Audio API oscillator. Game shows a sequence by lighting up buttons with glow animation and playing tones. Player repeats the sequence by clicking/tapping buttons. Each round adds one more step. Wrong button = game over with round reached and best score. Easy: 800ms flash, slow pace. Medium: 600ms flash. Hard: 400ms flash. Expert: 300ms flash, 5th button added after round 10.
 
 **Future Games (dropdown is ready):**
 - Find the Pair (memory match with crypto meme faces)
@@ -236,8 +237,10 @@ wojak-finance/
 │   │   │   │   └── TwentyFortyEight.tsx
 │   │   │   ├── tictactoe/
 │   │   │   │   └── TicTacToe.tsx
-│   │   │   └── flappybird/
-│   │   │       └── FlappyBird.tsx
+│   │   │   ├── flappybird/
+│   │   │   │   └── FlappyBird.tsx
+│   │   │   └── simonsays/
+│   │   │       └── SimonSays.tsx
 │   │   └── ui/
 │   │       ├── CopyButton.tsx
 │   │       ├── Badge.tsx

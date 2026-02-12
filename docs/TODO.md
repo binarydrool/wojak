@@ -291,6 +291,27 @@
 
 ---
 
+## Phase 19: Simon Says Game
+- [x] Create `src/components/games/simonsays/SimonSays.tsx` — classic Simon Says memory pattern game
+- [x] Implement 4 colored buttons in 2x2 grid using green palette (#00ff41, #009926, #006619, #33ff66)
+- [x] Implement Web Audio API oscillator tones — each button plays a distinct pitch (E4, C4, A3, G4)
+- [x] Implement sequence playback with glow/pulse animations and sound
+- [x] Implement player input phase — click/tap buttons to repeat the sequence
+- [x] Implement round progression — each correct sequence adds one more step
+- [x] Implement game over on wrong button — show round reached, best score, play again
+- [x] Implement 4 difficulty levels (Easy/Medium/Hard/Expert) with same button style as other games
+- [x] Easy: 800ms flash duration, 300ms pause between flashes
+- [x] Medium: 600ms flash duration, 250ms pause
+- [x] Hard: 400ms flash duration, 200ms pause
+- [x] Expert: 300ms flash duration, 150ms pause, 5th button added after round 10
+- [x] Display round number, best score, and status (Ready/Watch/Your turn/Game Over) in stats bar
+- [x] Responsive design with mobile tap support
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

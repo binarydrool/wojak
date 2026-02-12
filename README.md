@@ -23,6 +23,7 @@ wojak.io serves the holders of the original WOJAK token (`0x5026F006B85729a8b145
 - **2048** — Classic 2048 puzzle game, four difficulty levels (Easy/Medium/Hard/Expert), slide tiles with arrow keys/WASD or swipe gestures, merge matching numbers to reach 2048, green-themed tile gradient, score tracking with best score, undo support, Expert mode features 5x5 grid and 4096 target
 - **Tic Tac Toe** — Classic Tic Tac Toe vs AI opponent (WOJAK vs PEPE), four difficulty levels (Beginner/Advanced/Expert/Master), 3x3 grid with SVG X and O marks, minimax AI (unbeatable on Master), winning line glow animation, series score tracking, click/tap controls, responsive design
 - **Flappy Bird** — Canvas-based Flappy Bird clone with WOJAK avatar as the bird, four difficulty levels (Easy/Medium/Hard/Expert), click/tap/spacebar to flap, green pipes with random gap positions, score and best score tracking, Expert mode features pipes that oscillate vertically
+- **Simon Says** — Classic Simon Says memory pattern game, four difficulty levels (Easy/Medium/Hard/Expert), 4 colored buttons using green palette with distinct tones via Web Audio API, watch the sequence then repeat it, each round adds one more step, glow/pulse animations on active buttons, round and best score tracking, Expert mode adds a 5th button after round 10
 
 ## Tech Stack
 
