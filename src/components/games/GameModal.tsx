@@ -15,6 +15,7 @@ const TwentyFortyEight = lazy(() => import("./twentyfortyeight/TwentyFortyEight"
 const TicTacToe = lazy(() => import("./tictactoe/TicTacToe"));
 const FlappyBird = lazy(() => import("./flappybird/FlappyBird"));
 const SimonSays = lazy(() => import("./simonsays/SimonSays"));
+const WhackAMole = lazy(() => import("./whackamole/WhackAMole"));
 
 const GAME_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentType>> = {
   minesweeper: Minesweeper,
@@ -28,6 +29,7 @@ const GAME_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentT
   tictactoe: TicTacToe,
   flappybird: FlappyBird,
   simonsays: SimonSays,
+  whackamole: WhackAMole,
 };
 
 const GAME_NAMES: Record<string, string> = {
@@ -42,6 +44,7 @@ const GAME_NAMES: Record<string, string> = {
   tictactoe: "Tic Tac Toe",
   flappybird: "Flappy Bird",
   simonsays: "Simon Says",
+  whackamole: "Whack-a-PEPE",
 };
 
 export default function GameModal() {

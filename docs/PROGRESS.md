@@ -2241,3 +2241,51 @@ Classic Tic Tac Toe game added as the ninth game in the Games dropdown. Player (
 - `docs/SCOPE.md` — Updated Games section with Simon Says description, updated file structure tree
 - `docs/TODO.md` — Added Phase 19 with all items checked off
 - `docs/PROGRESS.md` — This entry
+
+---
+
+## Phase 20: Whack-a-PEPE Game — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+- Whack-a-Mole game themed as "Whack-a-PEPE" with a 3x3 grid of holes
+- Holes are dark ovals with radial gradient and inset shadow for depth effect
+- PEPE avatar (/images/pepe1.jpg) pops up from random holes with smooth slide-up CSS animation
+- Player clicks/taps PEPE to whack it — triggers bonk animation (squish scale + slide down) then disappears
+- Missing PEPE (not clicking in time): PEPE naturally slides back down, no points
+- 30-second timed rounds with visible countdown timer in stats bar
+- Timer turns red and pulses when 5 seconds or less remain
+- Score +1 for each PEPE successfully whacked
+- Per-difficulty best score tracking (persists during session, resets on difficulty change)
+- Game over screen shows "Time's Up!", final score, "New best!" indicator, and Play Again button
+- Start Game button on idle screen overlaid on the grid
+- 4 difficulty levels with same button styling as all other games:
+  - Easy: 1500ms pop-up duration, 1200ms spawn interval, 1 PEPE at a time, no decoys
+  - Medium: 1000ms pop-up, 900ms spawn interval, up to 2 PEPEs at once, no decoys
+  - Hard: 700ms pop-up, 700ms spawn interval, up to 3 PEPEs, 20% chance WOJAK decoy (-1 point)
+  - Expert: 500ms pop-up, 500ms spawn interval, up to 4 PEPEs, 35% chance WOJAK decoy (-2 points)
+- WOJAK decoys use /images/favicon.jpg with red border/glow to distinguish from PEPE (green border/glow)
+- Warning banner shown on Hard/Expert explaining WOJAK penalty
+- Mole container uses overflow hidden to create the "popping out of hole" visual effect
+- Desktop: click to whack. Mobile: tap to whack. Both fully supported
+- Responsive sizing: grid uses min(85vw, 340px) width, mole images use clamp(48px, 15vw, 72px)
+- CSS animations defined with styled-jsx: molePop (slide up with overshoot) and moleBonk (squish + slide down)
+- Instructions text differs for desktop (full) vs mobile (abbreviated)
+
+**Files created:**
+- `src/components/games/whackamole/WhackAMole.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for WhackAMole, added to GAME_COMPONENTS and GAME_NAMES (as "Whack-a-PEPE")
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "whackamole", name: "Whack-a-PEPE" }` to GAMES array
+- `README.md` — Added Whack-a-PEPE to Features list
+- `docs/SCOPE.md` — Updated Games section with Whack-a-PEPE description
+- `docs/TODO.md` — Added Phase 20 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- Whack-a-PEPE appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay with "Whack-a-PEPE" title, closes with X/Escape/backdrop click
+- No existing game code or components were modified

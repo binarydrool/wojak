@@ -312,6 +312,27 @@
 
 ---
 
+## Phase 20: Whack-a-PEPE Game
+- [x] Create `src/components/games/whackamole/WhackAMole.tsx` — Whack-a-Mole themed as "Whack-a-PEPE"
+- [x] Implement 3x3 grid of holes with dark oval styling and depth shadows
+- [x] Implement PEPE avatar popping up from random holes with smooth slide-up animation
+- [x] Implement click/tap to whack PEPE — bonk squish animation on hit, slide back down on miss
+- [x] Implement 30-second timed rounds with visible countdown timer
+- [x] Implement score tracking (+1 per PEPE whacked) and per-difficulty best score
+- [x] Implement 4 difficulty levels (Easy/Medium/Hard/Expert) with same button style as other games
+- [x] Easy: 1500ms pop-up duration, 1 PEPE at a time, 1200ms spawn interval
+- [x] Medium: 1000ms pop-up, up to 2 PEPEs at once, 900ms spawn interval
+- [x] Hard: 700ms pop-up, up to 3 PEPEs, 700ms spawn interval, occasional WOJAK decoy (-1 point)
+- [x] Expert: 500ms pop-up, up to 4 PEPEs, 500ms spawn interval, frequent WOJAK decoys (-2 points)
+- [x] Display score, timer, and best score in stats bar using green accent (#00ff41)
+- [x] Game over screen with final score, best score indicator, and Play Again button
+- [x] Desktop click and mobile tap both fully supported
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)
