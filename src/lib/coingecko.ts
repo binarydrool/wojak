@@ -71,6 +71,21 @@ function formatCurrency(value: number): string {
 export { formatCurrency };
 
 /**
+ * Fetch dynamic holder count from our /api/holders scraper route.
+ * Falls back to null if the API is unavailable.
+ */
+export async function fetchHolderCount(): Promise<number | null> {
+  try {
+    const res = await fetch("/api/holders");
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.holders ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Fetch WOJAK token data from CoinGecko free API.
  * Endpoint: /coins/ethereum/contract/{address}
  * Returns: price, market_cap, total_volume, image
@@ -110,9 +125,10 @@ async function fetchGeckoTerminalTVL(): Promise<number> {
  * Returns formatted stats ready for display.
  */
 export async function fetchWojakMarketData(): Promise<WojakMarketData> {
-  const [cgData, tvl] = await Promise.all([
+  const [cgData, tvl, holders] = await Promise.all([
     fetchCoinGeckoData(),
     fetchGeckoTerminalTVL(),
+    fetchHolderCount(),
   ]);
 
   const price = cgData?.market_data?.current_price?.usd ?? 0;
@@ -125,7 +141,7 @@ export async function fetchWojakMarketData(): Promise<WojakMarketData> {
     marketCap,
     volume24h,
     tvl,
-    holders: 19630,
+    holders: holders ?? 0,
     imageUrl,
   };
 }

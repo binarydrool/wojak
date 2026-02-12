@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "WOJAK",
   description:
-    "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,630+ OG holders.",
+    "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,000+ OG holders.",
   icons: {
     icon: "/images/favicon.jpg",
     apple: "/images/favicon.jpg",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "WOJAK — The OG Since April 2023",
     description:
-      "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,630+ OG holders.",
+      "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,000+ OG holders.",
     type: "website",
     url: "https://wojak.io",
     siteName: "wojak.io",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "WOJAK — The OG Since April 2023",
     description:
-      "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,630+ OG holders.",
+      "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,000+ OG holders.",
   },
 };
 

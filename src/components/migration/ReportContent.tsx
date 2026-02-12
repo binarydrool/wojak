@@ -283,8 +283,8 @@ export default function ReportContent() {
         <ul className="space-y-3">
           {[
             <>
-              <span className="text-wojak-green font-semibold">14,000+ holders</span> have NOT migrated (19,630 OG vs
-              5,580 new).
+              <span className="text-wojak-green font-semibold">14,000+ holders</span> have NOT migrated (19,000+ OG vs
+              ~5,580 new).
             </>,
             <>
               OG has <span className="text-wojak-green font-semibold">$932K liquidity</span> vs new&apos;s $513K —
@@ -324,7 +324,7 @@ export default function ReportContent() {
             { label: "Clean from Day One", icon: "shield" },
             { label: "LP locked until 2100", icon: "lock" },
             { label: "Zero taxes", icon: "zap" },
-            { label: "19,630+ holders", icon: "users" },
+            { label: "19,000+ holders", icon: "users" },
             { label: "~$1M liquidity", icon: "dollar" },
             { label: "Clean ERC-20 code", icon: "code" },
             { label: "100K+ transactions", icon: "activity" },

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchFormattedStats } from "@/lib/coingecko";
+import { useEffect, useState, useCallback } from "react";
+import { fetchFormattedStats, fetchHolderCount } from "@/lib/coingecko";
 
 interface StatsData {
   marketCap: string;
@@ -34,6 +34,15 @@ export default function HeroStats() {
   const [stats, setStats] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const refreshHolderCount = useCallback(async () => {
+    const count = await fetchHolderCount();
+    if (count !== null && count > 0) {
+      setStats((prev) =>
+        prev ? { ...prev, holders: count.toLocaleString() } : prev
+      );
+    }
+  }, []);
+
   useEffect(() => {
     fetchFormattedStats()
       .then((data) => {
@@ -49,11 +58,17 @@ export default function HeroStats() {
           marketCap: "—",
           tvl: "—",
           volume24h: "—",
-          holders: "19,630",
+          holders: "...",
         });
       })
       .finally(() => setLoading(false));
   }, []);
+
+  // Refresh holder count every 30 minutes
+  useEffect(() => {
+    const interval = setInterval(refreshHolderCount, 30 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, [refreshHolderCount]);
 
   return (
     <section className="w-full max-w-5xl mx-auto px-4 py-6">

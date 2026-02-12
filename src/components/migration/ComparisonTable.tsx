@@ -28,7 +28,7 @@ const rows: RowData[] = [
   },
   {
     metric: "Holders",
-    og: "~19,630",
+    og: "~19,000+",
     ogAdvantage: true,
     newToken: "~5,580",
     newDanger: true,

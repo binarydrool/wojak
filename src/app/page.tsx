@@ -23,7 +23,7 @@ export default function Home() {
           </div>
 
           {/* Right: Swap Card + Price Stats */}
-          <div className="flex flex-col gap-3 lg:gap-2 lg:justify-between">
+          <div className="flex flex-col gap-3 lg:gap-2 lg:self-start">
             <SwapCard />
             <PriceStatsCard />
           </div>

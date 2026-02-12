@@ -1,13 +1,35 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { UNISWAP_POOL_URL } from "@/lib/constants";
+import { formatCurrency } from "@/lib/coingecko";
 
 interface LPGuideModalProps {
   onClose: () => void;
 }
 
 export default function LPGuideModal({ onClose }: LPGuideModalProps) {
+  const [tvl, setTvl] = useState<string>("—");
+  const [apr, setApr] = useState<string>("—");
+
+  // Fetch live pool stats
+  useEffect(() => {
+    fetch("/api/pool")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.tvlUsd && data.tvlUsd > 0) {
+          setTvl(formatCurrency(data.tvlUsd));
+          // Estimate APR from 24h fees annualized: (fees24h * 365) / tvl * 100
+          if (data.fees24h && data.fees24h > 0) {
+            const annualFees = data.fees24h * 365;
+            const aprValue = (annualFees / data.tvlUsd) * 100;
+            setApr(`${aprValue.toFixed(2)}%`);
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Escape key closes modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -108,11 +130,11 @@ export default function LPGuideModal({ onClose }: LPGuideModalProps) {
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-black/20 border border-wojak-border rounded-lg p-3 text-center">
                 <p className="text-xs text-gray-500">TVL</p>
-                <p className="text-lg font-bold text-white">$951K</p>
+                <p className="text-lg font-bold text-white">{tvl}</p>
               </div>
               <div className="bg-black/20 border border-wojak-border rounded-lg p-3 text-center">
-                <p className="text-xs text-gray-500">APR</p>
-                <p className="text-lg font-bold text-wojak-green">18.81%</p>
+                <p className="text-xs text-gray-500">APR (est.)</p>
+                <p className="text-lg font-bold text-wojak-green">{apr}</p>
               </div>
             </div>
             <p className="text-xs text-gray-500 mt-2">

@@ -156,7 +156,7 @@ export default function RecentTrades({ embedded = false }: { embedded?: boolean 
   );
 
   if (embedded) {
-    return <div className="max-h-[500px] overflow-y-auto">{table}</div>;
+    return <div className="h-full overflow-y-auto">{table}</div>;
   }
 
   return (

@@ -1,12 +1,3 @@
-// Token stats displayed on the dashboard
-export interface TokenStats {
-  price: string;
-  marketCap: string;
-  tvl: string;
-  volume24h: string;
-  holders: number;
-}
-
 // Recent trade from GeckoTerminal API
 export interface Trade {
   hash: string;
@@ -57,9 +48,22 @@ export interface AccordionItem {
   content: React.ReactNode;
 }
 
-// Etherscan API response wrapper
-export interface EtherscanResponse<T> {
-  status: string;
-  message: string;
-  result: T;
+// Pool data from /api/pool (GeckoTerminal)
+export interface PoolData {
+  tvlUsd: number | null;
+  wojakReserve: number | null;
+  ethReserve: number | null;
+  wojakPrice: number | null;
+  ethPrice: number | null;
+  volume24h: number | null;
+  volume6h: number | null;
+  volume1h: number | null;
+  fees24h: number | null;
+  buys24h: number | null;
+  sells24h: number | null;
+  buyers24h: number | null;
+  sellers24h: number | null;
+  source: string;
+  lastUpdated: string | null;
 }
+
