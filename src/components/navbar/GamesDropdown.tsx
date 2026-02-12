@@ -6,6 +6,7 @@ import { useGameModal } from "@/components/games/GameContext";
 const GAMES = [
   { id: "minesweeper", name: "Minesweeper" },
   { id: "chess", name: "Chess" },
+  { id: "breakout", name: "Breakout" },
 ];
 
 interface GamesDropdownProps {

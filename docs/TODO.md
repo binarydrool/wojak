@@ -146,6 +146,20 @@
 
 ---
 
+## Phase 11: Breakout Game
+- [x] Create `src/components/games/breakout/Breakout.tsx` — canvas-based brick breaker game
+- [x] Implement 4 difficulty levels (Easy/Medium/Hard/Expert) with same button style as Chess
+- [x] Implement paddle control via mouse movement and touch drag (mobile support)
+- [x] Implement ball physics, wall bounces, paddle angle deflection, brick collisions
+- [x] Implement multi-hit bricks (2-hit on Hard, 2-hit and 3-hit on Expert)
+- [x] Implement 3 lives system, score tracking, win/loss conditions
+- [x] Use green theme brick colors (#00ff41, #00cc33, #009926, #006619) with dark background
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Wojak Tetris (themed pieces)

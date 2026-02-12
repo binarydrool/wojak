@@ -118,10 +118,12 @@ Games tab in navbar is a dropdown menu listing available games. Clicking a game 
 - Games are lazy-loaded React components
 - Easy to add new games: create component, add to dropdown list
 
-**v1 Game:**
+**Games:**
 - **Wojak Minesweeper** — Classic minesweeper. Wojak face is the bomb/mine. Grid sizes: Easy (9x9, 10 mines), Medium (16x16, 40 mines), Hard (30x16, 99 mines). Timer and mine counter. Wojak expressions change based on game state (happy, nervous, dead).
+- **Chess** — Full chess game vs AI opponent. Four difficulties (Beginner/Advanced/Expert/Master). Drag-and-drop and click-to-move. Dark/light board themes. WOJAK vs PEPE theming.
+- **Breakout** — Canvas-based brick breaker. Four difficulties (Easy/Medium/Hard/Expert). Mouse and touch controls. Multi-hit bricks with green-themed colors (#00ff41, #00cc33, #009926, #006619). 3 lives, score tracking.
 
-**Future Games (not in v1, but dropdown is ready):**
+**Future Games (dropdown is ready):**
 - Find the Pair (memory match with crypto meme faces)
 - Wojak Tetris (themed pieces)
 - More as community suggests
@@ -206,11 +208,18 @@ wojak-finance/
 │   │   │   └── ComparisonTable.tsx
 │   │   ├── games/
 │   │   │   ├── GameModal.tsx
-│   │   │   └── minesweeper/
-│   │   │       ├── Minesweeper.tsx
-│   │   │       ├── Board.tsx
-│   │   │       ├── Cell.tsx
-│   │   │       └── types.ts
+│   │   │   ├── minesweeper/
+│   │   │   │   ├── Minesweeper.tsx
+│   │   │   │   ├── Board.tsx
+│   │   │   │   ├── Cell.tsx
+│   │   │   │   └── types.ts
+│   │   │   ├── chess/
+│   │   │   │   ├── ChessGame.tsx
+│   │   │   │   ├── chessLogic.ts
+│   │   │   │   ├── chessAI.ts
+│   │   │   │   └── chessTypes.ts
+│   │   │   └── breakout/
+│   │   │       └── Breakout.tsx
 │   │   └── ui/
 │   │       ├── CopyButton.tsx
 │   │       ├── Badge.tsx

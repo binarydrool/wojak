@@ -1790,3 +1790,53 @@ Debug logging confirmed that Pattern 1 (`/tokenHolders[^>]*>[\s\S]*?([\d,]+)\s*(
 - `curl http://localhost:3000/api/holders` returns `{"holders":19504,"lastUpdated":"2026-02-12T04:12:01.862Z"}`
 - Server logs confirm Pattern "Holders heading" correctly matched "19,504" from meta tag
 - Server logs confirm Pattern "tokenHolders attr" matched "3" but was rejected by threshold check
+
+---
+
+## Phase 11: Breakout (Brick Breaker) Game — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+Canvas-based Breakout (brick breaker) game following the exact same patterns as Chess and Minesweeper — same modal system, difficulty button styles, dark theme, component structure.
+
+**Game features:**
+- Canvas-based rendering with requestAnimationFrame game loop
+- Paddle controlled by mouse movement (desktop) and touch drag (mobile) with touchstart/touchmove/touchend events
+- Ball bounces off paddle (angle varies by hit position), walls, and bricks
+- Bricks break on contact; ball bounces back
+- 3 lives system — ball falling below paddle costs a life, 0 lives = game over
+- Win condition: all bricks destroyed
+- Score tracking: 10 points per brick health × max health on destroy, 5 points per hit on multi-hit bricks
+- Click/tap to launch ball from idle state
+- Click to restart after win/loss
+
+**Four difficulty levels (same button style as Chess):**
+- Easy: 3 rows of bricks, ball speed 3
+- Medium: 4 rows, ball speed 4
+- Hard: 5 rows, ball speed 5, top 2 rows take 2 hits
+- Expert: 6 rows, ball speed 5.5, top 2 rows take 3 hits, rows 3-4 take 2 hits
+
+**Brick colors (green theme):**
+- 1-hit bricks: #00ff41 (brightest green)
+- 2-hit bricks: #009926 → #00cc33 as damaged
+- 3-hit bricks: #006619 → #009926 → #00cc33 as damaged
+- Multi-hit bricks display health number
+- Dark background (#0a0a0a) matches site theme
+
+**Files created:**
+- `src/components/games/breakout/Breakout.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for Breakout, added to GAME_COMPONENTS and GAME_NAMES
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "breakout", name: "Breakout" }` to GAMES array
+- `README.md` — Added Breakout and Chess to Features list
+- `docs/SCOPE.md` — Updated Games section with all 3 games, updated file structure tree
+- `docs/TODO.md` — Added Phase 11 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- Breakout appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay, closes with X/Escape/backdrop click
+- No existing game code or components were modified

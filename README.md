@@ -14,6 +14,8 @@ wojak.io serves the holders of the original WOJAK token (`0x5026F006B85729a8b145
 - **Crypto 101** — Plain-language education hub with 8 collapsible sections covering wallets, private keys, buying ETH, swapping tokens, reading Etherscan, liquidity, token safety, and revoking approvals
 - **Migration Report** — Full analysis of the hostile CTO migration attempt with side-by-side contract comparison, red flags, and action items for the community
 - **Minesweeper** — Classic minesweeper game with Wojak-themed expressions, three difficulty levels (Easy/Medium/Hard), timer, and mobile touch support. Launches from the navbar Games dropdown in a full-screen modal
+- **Chess** — Full chess game with AI opponent, four difficulty levels (Beginner/Advanced/Expert/Master), drag-and-drop and click-to-move, dark/light board themes
+- **Breakout** — Canvas-based brick breaker game with four difficulty levels (Easy/Medium/Hard/Expert), mouse and touch controls, multi-hit bricks with green-themed colors, 3 lives system
 
 ## Tech Stack
 
