@@ -536,6 +536,41 @@
 
 ---
 
+## Phase 28 — SkiFree Game ✓
+- [x] Create `src/components/games/skifree/SkiFree.tsx` — canvas-based endless downhill skiing/snowboarding game
+- [x] Implement WOJAK avatar as player character (circular, green border) with equipment visual (skis or snowboard)
+- [x] Implement equipment toggle: Skis (faster top speed, tighter turning, narrower hitbox, two trail lines) vs Snowboard (wider turning, forgiving hitbox, one wide trail)
+- [x] Equipment toggle uses same button style as difficulty buttons, disabled during gameplay
+- [x] Implement 4 difficulty levels (Easy/Medium/Hard/Expert) with same button style as other games
+- [x] Easy: slow base speed (2.5), sparse obstacles, wide gaps, PEPE at 3000m, slow chase
+- [x] Medium: medium speed (3.5), moderate obstacles, PEPE at 2000m, medium chase speed
+- [x] Hard: fast speed (4.5), dense obstacles, narrow gaps, PEPE at 1500m, fast chase, ice patches that cause sliding
+- [x] Expert: very fast speed (5.5), very dense obstacles, PEPE at 1000m, aggressive chase, ice patches, wind gusts pushing player sideways, obstacles shift slightly
+- [x] Implement desktop controls: Arrow left/right or A/D to steer, Arrow down/S to speed boost, Arrow up/W to brake
+- [x] Implement mobile controls: Touch drag horizontally to steer, tap left side to slow down, tap right side to speed boost
+- [x] Implement continuous downhill scrolling with obstacles moving upward
+- [x] Implement 5 obstacle types: trees (dark green silhouettes with green snow tips), rocks (dark grey with green tint), moguls (rounded bumps), snow drifts (subtle mounds), ice patches (sliding effect)
+- [x] Implement crash animation on obstacle collision: player blinks, green/white particle burst, brief freeze, speed penalty recovery
+- [x] Implement 3 bonus item types: speed boosts (green glow circle), jump ramps (green angled shape, launches player over obstacles), coins (gold with $ symbol, +200 score)
+- [x] Implement THE ABOMINABLE PEPE chase: PEPE avatar scaled up large (70px) with red/orange danger glow appears after set distance per difficulty
+- [x] PEPE gradually gains on player, tracks player horizontally, if caught = game over with "PEPE CAUGHT YOU!" screen
+- [x] PEPE gives up after chase duration if player survives, disappears until next trigger
+- [x] Implement parallax snow particles (60 particles) falling for atmosphere
+- [x] Implement ski/snowboard trails behind player (two thin green lines for skis, one wider green line for snowboard)
+- [x] Implement jump mechanic via ramps: player launches upward briefly, shadow on ground, invulnerable while airborne
+- [x] Night ski slope theme: dark gradient background (#0d0d0d to #0a0a0a), subtle slope texture lines
+- [x] Green (#00ff41) accent throughout: HUD text, tree snow tips, trails, speed boost pickups, ramps
+- [x] HUD on canvas: distance (meters), speed (km/h), score (top right), PEPE warning, wind indicator, boost indicator
+- [x] Per-difficulty best distance tracking with display in stats bar
+- [x] Score based on distance traveled plus bonus coin pickups
+- [x] Display distance, speed, score, and best distance in stats bar above canvas
+- [x] Canvas 480x700, responsive with width: min(85vw, 480px)
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md (game count to 20, added SkiFree to features), SCOPE.md (added SkiFree description), TODO.md (this phase), PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

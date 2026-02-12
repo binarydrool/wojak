@@ -2593,3 +2593,87 @@ Classic War card game. WOJAK (player) vs PEPE (AI opponent).
 - War appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay with "War" title, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 28: SkiFree Game — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+- `src/components/games/skifree/SkiFree.tsx` — Canvas-based endless downhill skiing/snowboarding game (single file, self-contained)
+
+**Game Specs:**
+- WOJAK avatar as player character: circular with green border, rendered at fixed Y position near top of canvas
+- Equipment toggle: Skis vs Snowboard with gameplay differences
+  - Skis: faster move speed (4.5), tighter turning, narrower hitbox (50%), two thin parallel green trail lines
+  - Snowboard: slower move speed (3.5), wider turning radius, forgiving hitbox (70%), one wider green trail line
+  - Toggle uses same button style as difficulty buttons, disabled during active gameplay
+- 4 difficulty levels (Easy/Medium/Hard/Expert) with standard button styling
+  - Easy: base speed 2.5, max speed 5, sparse obstacles (rate 55), wide gaps (90px), PEPE at 3000m, slow chase (0.6x)
+  - Medium: base speed 3.5, max speed 6.5, moderate obstacles (rate 40), gaps 70px, PEPE at 2000m, medium chase (0.75x)
+  - Hard: base speed 4.5, max speed 8, dense obstacles (rate 28), narrow gaps (55px), PEPE at 1500m, fast chase (0.88x), ice patches
+  - Expert: base speed 5.5, max speed 9.5, very dense obstacles (rate 20), gaps 45px, PEPE at 1000m, aggressive chase (1.0x), ice patches, wind gusts, moving obstacles
+- Desktop controls: Arrow left/right or A/D to steer, Arrow down/S to speed boost, Arrow up/W to brake
+- Mobile controls: Touch drag horizontally to steer, tap left side (<30% canvas) to slow down, tap right side (>70% canvas) to speed boost
+- Canvas: 480x700 with responsive sizing (width: min(85vw, 480px), aspect ratio maintained)
+- Continuous downhill scrolling: obstacles spawn at bottom and move upward at current speed
+- 5 obstacle types:
+  - Trees: dark green (#005c1a) triangle body with trunk, #00ff41 snow-tipped highlights at top
+  - Rocks: dark grey (#2a2a2a) irregular polygon with subtle green tint overlay
+  - Moguls: dark (#1a1a1a) ellipses with subtle white highlight arc
+  - Snow drifts: dark (#1e1e1e) ellipses with white shimmer
+  - Ice patches: semi-transparent blue (rgba(100,180,255,0.25)) rounded rectangles — cause sliding effect instead of crash
+- Crash mechanics: obstacle collision triggers crash state (60 frames), player blinks, 12 green/white particles burst outward, speed drops to 30%, then recovers at 70% base speed
+- 3 bonus item types:
+  - Speed boost: bright green (#00ff41) glow circle with down-arrow icon, grants 90 frames of boosted speed
+  - Jump ramp: green (#00cc33) angled triangle shape, launches player upward for 40 frames (invulnerable while airborne), shadow on ground during jump
+  - Coin: gold (#ffd700) circle with $ symbol, +200 score
+- THE ABOMINABLE PEPE chase system:
+  - PEPE appears from bottom after distance threshold (varies by difficulty)
+  - Uses PEPE avatar (/images/pepe1.jpg) scaled to 70px with red/orange pulsing danger glow (shadowColor #ff4400, shadowBlur 30)
+  - Red (#ff4444) border ring, 3px width
+  - PEPE gradually gains on player (moves at scroll speed + chase speed multiplier)
+  - Gains faster when player is going slow (below base speed)
+  - Tracks player horizontally with smooth following (3% lerp per frame)
+  - Catch detection: distance < player radius + 35px = game over with "PEPE CAUGHT YOU!" screen
+  - Chase duration varies by difficulty (Easy 1500m, Medium 1200m, Hard 1000m, Expert 800m)
+  - After duration, PEPE retreats off screen, won't reappear until half-duration distance passes
+  - "PEPE IS CHASING YOU!" warning text flashes on canvas during active chase (orange, pulsing alpha)
+- Expert-only features:
+  - Wind gusts: random horizontal force applied every 300 frames, gradually decays, visual "<<< WIND" or "WIND >>>" indicator
+  - Moving obstacles: obstacles wobble horizontally using sine wave
+- 60 parallax snow particles: varying sizes (1-3px), speeds (0.5-2), opacities (0.1-0.4), and horizontal drift, wrap around screen edges
+- Ski/snowboard trails: TrailPoint array tracking recent player positions, fading over 30 frames
+- Night ski slope visual theme:
+  - Background: linear gradient #0d0d0d to #0a0a0a
+  - Subtle slope texture: horizontal lines at rgba(255,255,255,0.015), offset scrolling with speed
+  - All accent elements use green (#00ff41) matching site theme
+- HUD on canvas:
+  - Top-left: distance in meters (bold 16px green monospace), speed in km/h below (12px, yellow during boost)
+  - Top-right: score (bold 14px green)
+  - Center: "PEPE IS CHASING YOU!" warning (flashing orange), "BOOST!" text (green), wind direction indicator
+- Idle overlay: dark 50% overlay with "SKI FREE" title, click/space instruction, control hints, "Dodge obstacles, outrun PEPE!" tagline
+- Game over overlay: dark 70% overlay, red "PEPE CAUGHT YOU!" or "GAME OVER", distance and score display, best distance in green, "Click to play again"
+- Stats bar above canvas: distance, speed, score, and best distance with per-difficulty tracking
+- Per-difficulty best distance tracking (in-session, stored in ref)
+- Score: distance-based + coin bonuses
+- Game state managed via refs (stateRef) for performance, display state via React state (updated every 3 frames)
+- Image loading: WOJAK and PEPE images loaded once on mount with onload callbacks and fallback rendering
+
+**Files created:**
+- `src/components/games/skifree/SkiFree.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for SkiFree, added to GAME_COMPONENTS and GAME_NAMES (as "SkiFree")
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "skifree", name: "SkiFree" }` to GAMES array
+- `README.md` — Updated game count to 20, added SkiFree to Features list
+- `docs/SCOPE.md` — Added SkiFree description to Games section
+- `docs/TODO.md` — Added Phase 28 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- SkiFree appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay with "SkiFree" title, closes with X/Escape/backdrop click
+- No existing game code or components were modified

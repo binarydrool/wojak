@@ -23,6 +23,7 @@ const Spades = lazy(() => import("./spades/Spades"));
 const GinRummy = lazy(() => import("./ginrummy/GinRummy"));
 const Blackjack = lazy(() => import("./blackjack/Blackjack"));
 const War = lazy(() => import("./war/War"));
+const SkiFree = lazy(() => import("./skifree/SkiFree"));
 
 const GAME_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentType>> = {
   minesweeper: Minesweeper,
@@ -44,6 +45,7 @@ const GAME_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentT
   ginrummy: GinRummy,
   blackjack: Blackjack,
   war: War,
+  skifree: SkiFree,
 };
 
 const GAME_NAMES: Record<string, string> = {
@@ -66,6 +68,7 @@ const GAME_NAMES: Record<string, string> = {
   ginrummy: "Gin Rummy",
   blackjack: "Blackjack",
   war: "War",
+  skifree: "SkiFree",
 };
 
 export default function GameModal() {
