@@ -2,32 +2,103 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(74, 222, 128, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(74, 222, 128, 0.03) 0%, transparent 50%),
+    #0a0a0a;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for tab groups and horizontal scroll areas */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Prevent text selection on game board for better touch UX */
+.select-none {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Prevent long-press context menu on mobile for game cells */
+.touch-none-context {
+  -webkit-touch-callout: none;
+}
+
+/* Continuous scrolling reel animation — seamless infinite loop */
+@keyframes scroll-reel {
+  0% {
+    transform: translateX(-50%);
   }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-scroll-reel {
+  animation: scroll-reel 30s linear infinite;
+  animation-timing-function: linear;
+}
+
+/* "The OG WOJAK" title animation — green glare sweep only, no scale */
+@keyframes title-shine {
+  0% {
+    background-position: -200% center;
+  }
+  25% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Green notification pulse dot */
+@keyframes notification-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.6;
+  }
+}
+
+.animate-notification-pulse {
+  animation: notification-pulse 2s ease-in-out infinite;
+}
+
+.animate-title-shine {
+  background-image: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(74, 222, 128, 0.3) 45%,
+    rgba(74, 222, 128, 0.5) 50%,
+    rgba(74, 222, 128, 0.3) 55%,
+    transparent 80%
+  );
+  background-size: 200% 100%;
+  background-position: -200% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  animation: title-shine 9s ease-in-out 0s infinite;
 }
