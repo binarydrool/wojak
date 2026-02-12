@@ -192,9 +192,27 @@
 
 ---
 
+## Phase 14: Tetris Game
+- [x] Create `src/components/games/tetris/Tetris.tsx` — canvas-based classic Tetris game
+- [x] Implement 4 difficulty levels (Easy/Medium/Hard/Expert) with same button style as other games
+- [x] Implement 10x20 grid with 7 standard tetromino pieces (I, O, T, S, Z, J, L)
+- [x] Implement piece rotation with wall kick system
+- [x] Implement ghost piece (drop preview) with translucent rendering
+- [x] Implement next piece preview in canvas sidebar
+- [x] Implement desktop controls: Arrow left/right to move, up/W to rotate, down to soft drop, space to hard drop
+- [x] Implement mobile controls: Tap left/right side to move, swipe up to rotate, swipe down to soft drop, tap center to hard drop
+- [x] Implement line clear scoring with combo bonuses (single 100, double 300, triple 500, tetris 800) multiplied by level
+- [x] Implement level progression (level up every 10 lines, increasing drop speed)
+- [x] Implement lock delay system (configurable per difficulty)
+- [x] Use 7 distinct green shades for pieces (#00ff41, #00cc33, #009926, #006619, #33ff66, #00e639, #4dff7a)
+- [x] Display score, lines cleared, and current level in stats bar and canvas sidebar
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
-- [ ] Wojak Tetris (themed pieces)
 - [ ] Holder count historical chart (requires tracking over time)
 - [ ] Community Telegram widget or feed
 - [ ] Governance / community voting section

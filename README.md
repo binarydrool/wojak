@@ -18,6 +18,7 @@ wojak.io serves the holders of the original WOJAK token (`0x5026F006B85729a8b145
 - **Breakout** — Canvas-based brick breaker game with four difficulty levels (Easy/Medium/Hard/Expert), mouse and touch controls, multi-hit bricks with green-themed colors, 3 lives system
 - **Pong** — Canvas-based Pong game vs AI opponent (WOJAK vs PEPE), four difficulty levels (Beginner/Advanced/Expert/Master), mouse and touch controls, first to 5 wins
 - **Snake** — Canvas-based classic Snake game, four difficulty levels (Easy/Medium/Hard/Expert), arrow keys/WASD and swipe controls, score and high score tracking, random wall obstacles on Hard/Expert, disappearing food on Expert
+- **Tetris** — Canvas-based classic Tetris game, four difficulty levels (Easy/Medium/Hard/Expert), 7 standard tetrominoes with green-themed colors, ghost piece preview, next piece display, arrow keys and touch controls, line clear scoring with combo bonuses, level progression
 
 ## Tech Stack
 

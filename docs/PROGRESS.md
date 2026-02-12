@@ -1894,3 +1894,67 @@ Canvas-based classic Snake game following the exact same patterns as Breakout an
 - Snake appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 14: Tetris Game (2026-02-12)
+
+Canvas-based classic Tetris game added as the sixth game in the Games dropdown.
+
+**Game mechanics:**
+- Standard 10-wide by 20-tall grid
+- 7 standard tetromino pieces (I, O, T, S, Z, J, L)
+- Pieces fall from the top, player positions them before they land
+- Completed rows clear and score points
+- Multiple row clears at once score bonus points (single 100, double 300, triple 500, tetris 800) multiplied by current level
+- Level increases every 10 lines cleared, increasing drop speed
+- Next piece preview displayed in canvas sidebar
+- Ghost piece (translucent drop preview) shows where piece will land
+- Score, lines cleared, and level displayed in stats bar and canvas sidebar
+- Game over when a new piece cannot be placed at the top
+
+**Desktop controls:**
+- Arrow left/right: Move piece
+- Arrow up / W: Rotate clockwise
+- Arrow down: Soft drop (+1 point per cell)
+- Space: Hard drop (+2 points per cell)
+
+**Mobile controls:**
+- Tap left third of grid: Move left
+- Tap right third of grid: Move right
+- Tap center third: Hard drop
+- Swipe up: Rotate
+- Swipe down: Soft drop (5 rows)
+
+**Four difficulty levels (same button style as other games):**
+- Easy: 1000ms initial drop, -50ms per level, min 200ms, 500ms lock delay
+- Medium: 600ms initial drop, -50ms per level, min 150ms, 500ms lock delay
+- Hard: 400ms initial drop, -40ms per level, min 100ms, 400ms lock delay
+- Expert: 250ms initial drop, -30ms per level, min 60ms, 200ms lock delay
+
+**Piece colors (7 distinct green shades):**
+- I: #00ff41, O: #00cc33, T: #009926, S: #33ff66, Z: #006619, J: #00e639, L: #4dff7a
+- Ghost piece: same color at 0.2 opacity
+- Grid lines: rgba(255,255,255,0.05), Background: #0a0a0a / #0d0d0d
+
+**Rotation system:**
+- Clockwise rotation via matrix transpose + row reverse
+- Wall kick system: tries offsets [0, -1, +1, -2, +2] on X axis and [0, -1] on Y axis
+- O piece does not rotate
+- I piece uses 4x4 bounding box, other pieces use 3x3
+
+**Canvas layout:**
+- Total: 450x600 (GRID_W 300 + SIDEBAR_W 150)
+- Grid: 10 cols x 20 rows, 30px per cell
+- Sidebar: Next piece preview, score/lines/level stats, controls legend
+
+**Files created:**
+- `src/components/games/tetris/Tetris.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for Tetris, added to GAME_COMPONENTS and GAME_NAMES
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "tetris", name: "Tetris" }` to GAMES array
+- `README.md` — Added Tetris to Features list
+- `docs/SCOPE.md` — Updated Games section with Tetris description, moved Tetris from Future Games to active games list
+- `docs/TODO.md` — Added Phase 14 with all items checked off
+- `docs/PROGRESS.md` — This entry

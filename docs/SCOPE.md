@@ -124,10 +124,10 @@ Games tab in navbar is a dropdown menu listing available games. Clicking a game 
 - **Breakout** — Canvas-based brick breaker. Four difficulties (Easy/Medium/Hard/Expert). Mouse and touch controls. Multi-hit bricks with green-themed colors (#00ff41, #00cc33, #009926, #006619). 3 lives, score tracking.
 - **Pong** — Canvas-based Pong vs AI. Four difficulties (Beginner/Advanced/Expert/Master). Player (WOJAK, left paddle) vs AI (PEPE, right paddle). Mouse and touch controls. Ball and paddles use #00ff41 green. First to 5 points wins.
 - **Snake** — Canvas-based classic Snake. Four difficulties (Easy/Medium/Hard/Expert). Arrow keys/WASD on desktop, swipe gestures on mobile. Snake body uses #00ff41 green with gradient, food uses #ff4444 red. Score and high score tracking. Hard mode spawns random wall obstacles every 5 food eaten. Expert mode has smaller grid (15x15), faster speed, more obstacles, and food disappears after 7 seconds if not eaten.
+- **Tetris** — Canvas-based classic Tetris. Four difficulties (Easy/Medium/Hard/Expert). 10x20 grid with 7 standard tetrominoes, each in a distinct green shade (#00ff41, #00cc33, #009926, #006619, #33ff66, #00e639, #4dff7a). Ghost piece drop preview, next piece sidebar display. Arrow keys on desktop (left/right move, up/W rotate, down soft drop, space hard drop), tap/swipe on mobile. Line clear scoring with combo bonuses (single/double/triple/tetris), level progression every 10 lines. Lock delay system, wall kick rotation.
 
 **Future Games (dropdown is ready):**
 - Find the Pair (memory match with crypto meme faces)
-- Wojak Tetris (themed pieces)
 - More as community suggests
 
 ---
