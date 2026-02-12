@@ -391,6 +391,32 @@
 
 ---
 
+## Phase 23: Texas Hold'em Game
+- [x] Create `src/components/games/texasholdem/pokerLogic.ts` — poker hand evaluation, AI decision engine, game helpers
+- [x] Create `src/components/games/texasholdem/TexasHoldem.tsx` — Texas Hold'em Poker (WOJAK vs 3 PEPE AI opponents)
+- [x] Implement standard 52-card deck with Texas Hold'em dealing (2 hole cards per player, 5 community cards)
+- [x] Implement 4 difficulty levels (Beginner/Advanced/Expert/Master) with same button style as other games
+- [x] Beginner: AI plays predictably, rarely bluffs, folds weak hands, calls too often with mediocre hands
+- [x] Advanced: AI has basic hand strength awareness, occasional bluffs, better fold discipline
+- [x] Expert: AI evaluates pot odds, position-aware, bluffs strategically, varies play style
+- [x] Master: AI plays near-optimally, reads betting patterns, aggressive with strong hands, well-timed bluffs
+- [x] Implement AI personalities: tight, loose/aggressive, and balanced across 3 PEPE opponents
+- [x] Implement full betting rounds: Pre-flop, Flop, Turn, River with proper blind rotation
+- [x] Implement player actions: Fold, Check, Call, Raise, All-In with raise slider and quick presets (Min/2x/3x/Pot)
+- [x] Implement hand evaluation: high card through royal flush with proper kicker comparison
+- [x] Implement showdown with winning hand name display and winning card highlighting
+- [x] Implement pot distribution with animation, side pot calculation
+- [x] Implement game over (player loses all chips) and win screen (all PEPEs eliminated)
+- [x] Card styling matching Solitaire: dark background, green for spades/clubs, white for hearts/diamonds, green borders
+- [x] Dark table felt with green border/glow, green chip display
+- [x] Display WOJAK and PEPE avatars with chip counts, dealer button rotation
+- [x] Responsive design with mobile tap support
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

@@ -18,6 +18,7 @@ const SimonSays = lazy(() => import("./simonsays/SimonSays"));
 const WhackAMole = lazy(() => import("./whackamole/WhackAMole"));
 const SpaceInvaders = lazy(() => import("./spaceinvaders/SpaceInvaders"));
 const Solitaire = lazy(() => import("./solitaire/Solitaire"));
+const TexasHoldem = lazy(() => import("./texasholdem/TexasHoldem"));
 
 const GAME_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentType>> = {
   minesweeper: Minesweeper,
@@ -34,6 +35,7 @@ const GAME_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentT
   whackamole: WhackAMole,
   spaceinvaders: SpaceInvaders,
   solitaire: Solitaire,
+  texasholdem: TexasHoldem,
 };
 
 const GAME_NAMES: Record<string, string> = {
@@ -51,6 +53,7 @@ const GAME_NAMES: Record<string, string> = {
   whackamole: "Whack-a-PEPE",
   spaceinvaders: "Space Invaders",
   solitaire: "Solitaire",
+  texasholdem: "Texas Hold'em",
 };
 
 export default function GameModal() {

@@ -2,7 +2,7 @@
 
 **The OG WOJAK — Since April 2023**
 
-Official community website for the original WOJAK token on Ethereum. Dashboard, education hub, migration analysis, and games for 14,000+ OG WOJAK holders.
+Official community website for the original WOJAK token on Ethereum. Dashboard, education hub, migration analysis, and 15 games for 14,000+ OG WOJAK holders.
 
 ## About
 
@@ -27,6 +27,7 @@ wojak.io serves the holders of the original WOJAK token (`0x5026F006B85729a8b145
 - **Whack-a-PEPE** — Whack-a-Mole game themed as "Whack-a-PEPE", four difficulty levels (Easy/Medium/Hard/Expert), 3x3 grid of holes where PEPE pops up to be whacked, 30-second timed rounds, click/tap to whack with bonk animation, score tracking with per-difficulty best scores, Hard/Expert modes add WOJAK decoys that cost points if whacked, multiple simultaneous PEPEs at higher difficulties
 - **Space Invaders** — Canvas-based classic Space Invaders with WOJAK ship and PEPE invaders, four difficulty levels (Easy/Medium/Hard/Expert), arrow keys/A,D to move and spacebar to shoot on desktop, touch drag and fire button on mobile, rows of PEPE invaders move side-to-side and drop down, invaders shoot back, 3 lives, wave progression, score tracking with per-difficulty best score, Expert mode adds a boss PEPE that takes multiple hits
 - **Solitaire** — Classic Klondike Solitaire with two draw modes (Draw 1/Draw 3), 7 tableau columns, 4 foundation piles built by suit from Ace to King, click-to-select and click-destination to move, double-click to auto-send to foundation, undo support, move counter and timer, dark-themed cards with green suit symbols, mobile tap-tap interface, win animation with play again option
+- **Texas Hold'em** — Texas Hold'em Poker with WOJAK (player) vs 3 PEPE AI opponents, four difficulty levels (Beginner/Advanced/Expert/Master), standard 52-card deck with full Texas Hold'em rules (pre-flop, flop, turn, river, showdown), player actions (Fold/Check/Call/Raise/All-In) with raise slider and quick presets, 1000 starting chips per player, rotating blinds, AI opponents with distinct personalities (tight/loose/balanced), community card flip animations, hand evaluation with winning hand display, pot distribution, game over and win screens, fully responsive with touch support
 
 ## Tech Stack
 
