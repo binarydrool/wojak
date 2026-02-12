@@ -272,6 +272,25 @@
 
 ---
 
+## Phase 18: Flappy Bird Game
+- [x] Create `src/components/games/flappybird/FlappyBird.tsx` — canvas-based Flappy Bird clone with WOJAK avatar as bird
+- [x] Implement 4 difficulty levels (Easy/Medium/Hard/Expert) with same button style as other games
+- [x] Implement bird gravity and flap physics (click, tap, or spacebar to flap)
+- [x] Implement green pipes (#00ff41) scrolling right-to-left with random gap positions and pipe caps
+- [x] Implement collision detection for pipes, floor, and ceiling
+- [x] Implement score tracking (+1 per pipe passed) and per-difficulty best score
+- [x] Implement WOJAK avatar as circular bird sprite with green border and velocity-based tilt rotation
+- [x] Implement ground strip at bottom with scrolling pattern and green top line
+- [x] Easy: large gap (180px), slow speed (2px/frame), light gravity (0.35)
+- [x] Medium: standard gap (150px), medium speed (2.8px/frame), normal gravity (0.45)
+- [x] Hard: smaller gap (125px), fast speed (3.5px/frame), heavier gravity (0.55)
+- [x] Expert: very small gap (115px), fast speed (4px/frame), heavy gravity (0.6), pipes oscillate vertically
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

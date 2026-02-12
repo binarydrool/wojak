@@ -2152,3 +2152,51 @@ Classic Tic Tac Toe game added as the ninth game in the Games dropdown. Player (
 - Tic Tac Toe appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 18: Flappy Bird Game — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+- Canvas-based Flappy Bird clone with WOJAK avatar as the bird
+- Bird is rendered as a circular WOJAK avatar (/images/favicon.jpg) with green (#00ff41) border ring
+- Bird tilts based on velocity (nose up when flapping, nose down when falling) using rotation
+- Gravity constantly pulls bird down, click/tap/spacebar to flap upward
+- Green pipes (#00ff41) scroll from right to left with random gap positions
+- Pipes have caps with slight overhang, inner highlight shine, and darker green border (#00cc33)
+- Score increases by 1 for each pipe pair successfully passed
+- Game over on collision with pipes, floor, or ceiling — shows final score and best score
+- Ground strip at bottom with green top line and scrolling diagonal pattern
+- Subtle background dots for visual depth
+- 4 difficulty levels with same button styling as all other games:
+  - Easy: Large gap (180px), slow scroll speed (2px/frame), light gravity (0.35)
+  - Medium: Standard gap (150px), medium scroll speed (2.8px/frame), normal gravity (0.45)
+  - Hard: Smaller gap (125px), fast scroll speed (3.5px/frame), heavier gravity (0.55)
+  - Expert: Very small gap (115px), fast scroll speed (4px/frame), heavy gravity (0.6), pipes oscillate vertically
+- Per-difficulty best score tracking (persists during session)
+- Stats bar showing current score and best score
+- Desktop controls: Click canvas or press spacebar/arrow up to flap
+- Mobile controls: Tap canvas to flap (touchAction: none to prevent scrolling)
+- Idle screen with "FLAPPY WOJAK" title, instructions, and WOJAK bird floating
+- Game over screen with red "GAME OVER", final score, best score, and play again prompt
+- New Game button resets to idle state
+- Responsive canvas sizing: min(85vw, 360px) width with auto height, portrait aspect ratio (400x600)
+
+**Files created:**
+- `src/components/games/flappybird/FlappyBird.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for FlappyBird, added to GAME_COMPONENTS and GAME_NAMES
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "flappybird", name: "Flappy Bird" }` to GAMES array
+- `README.md` — Added Flappy Bird to Features list
+- `docs/SCOPE.md` — Updated Games section with Flappy Bird description, updated file structure tree
+- `docs/TODO.md` — Added Phase 18 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- Flappy Bird appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay, closes with X/Escape/backdrop click
+- No existing game code or components were modified
