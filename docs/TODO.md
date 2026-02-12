@@ -467,6 +467,36 @@
 
 ---
 
+## Phase 26 — Blackjack Game ✓
+- [x] Create `src/components/games/blackjack/Blackjack.tsx` component
+- [x] Classic Blackjack (21): WOJAK (player) vs PEPE (dealer)
+- [x] Four difficulty levels (Beginner/Advanced/Expert/Master)
+- [x] Difficulty-scaled shoe: 1 deck (Beginner), 2 decks (Advanced), 4 decks (Expert), 6 decks (Master)
+- [x] Dealer stands on soft 17 (Beginner/Advanced), hits on soft 17 (Expert/Master)
+- [x] Blackjack pays 3:2 (Beginner/Advanced/Expert), 6:5 (Master)
+- [x] 1000 starting chips with chip betting UI (10, 25, 50, 100, All In, custom input)
+- [x] Deal: player 2 cards face up, dealer 1 up + 1 hole card face down
+- [x] Card values: number = face value, J/Q/K = 10, Ace = 1 or 11 auto-calculated
+- [x] Player actions: Hit, Stand, Double Down (first two cards only), Split (same rank pair)
+- [x] Split creates two separate hands each with own bet, aces split auto-stand
+- [x] Double Down doubles bet, draws one card, auto-stands
+- [x] Insurance offered when dealer shows Ace (half bet, pays 2:1 if dealer has BJ)
+- [x] Dealer reveals hole card and draws until 17+ after player stands
+- [x] Push returns bet, bust = automatic loss
+- [x] Smooth card deal animation and dealer hole card flip animation
+- [x] Live hand total badges (soft hands show both values, BJ/BUST indicators)
+- [x] Result display with per-hand outcomes and net chips won/lost
+- [x] Game over overlay when chips reach 0 with Play Again option
+- [x] Card styling matching other card games: dark bg, green spades/clubs, white hearts/diamonds
+- [x] Dark table with green felt-like border, PEPE dealer at top, WOJAK player at bottom
+- [x] Action buttons: dark bg, green border/text, green fill on hover
+- [x] WOJAK and PEPE avatars from existing project images
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

@@ -2480,3 +2480,58 @@ Classic 2-player Gin Rummy card game. WOJAK (player) vs PEPE (AI opponent).
 - `docs/SCOPE.md` — Added Gin Rummy description to Games section
 - `docs/TODO.md` — Added Phase 25 with all items checked off
 - `docs/PROGRESS.md` — This entry
+
+---
+
+## Phase 26: Blackjack Game — 2026-02-12
+
+**What was built:**
+Classic Blackjack (21) card game. WOJAK (player) vs PEPE (dealer).
+
+**Game features:**
+- Four difficulty levels (Beginner/Advanced/Expert/Master) with same button styling as other games
+- Difficulty-scaled shoe size: 1 deck (Beginner), 2 decks (Advanced), 4 decks (Expert), 6 decks (Master)
+- Dealer stands on soft 17 (Beginner/Advanced), hits on soft 17 (Expert/Master)
+- Blackjack pays 3:2 (Beginner/Advanced/Expert), 6:5 (Master) — maximum house edge on Master
+- 1000 starting chips, betting phase with circular chip buttons (10, 25, 50, 100), All In button, and custom amount input
+- Deal: player receives 2 cards face up, dealer receives 1 face up + 1 hole card face down
+- Card values: number cards = face value, J/Q/K = 10, Ace = 1 or 11 (auto-calculated to player's advantage)
+- Player actions displayed as clear clickable/tappable buttons:
+  - Hit: draw another card
+  - Stand: keep current hand
+  - Double Down: double bet, receive exactly one more card, auto-stand (only on first two cards)
+  - Split: same rank pair splits into two separate hands each with their own bet (only on first two cards, no re-splitting)
+- Splitting aces: each hand receives one card and auto-stands
+- Insurance: when dealer shows Ace, offer insurance bet (half original bet, pays 2:1 if dealer has blackjack)
+- Dealer turn: reveals hole card with flip animation, hits until 17+ (respecting soft 17 rule per difficulty)
+- Push (tie) returns bet, bust (over 21) is automatic loss
+- Smooth card deal animation (scale-in) and dealer hole card flip animation (perspective rotateY)
+- Live hand total badges next to each hand showing current value, soft hand notation (e.g., "7/17"), BJ indicator, bust indicator
+- Result summary panel showing per-hand outcomes with color coding (green for win, gray for push, red for lose)
+- Net chips won/lost displayed after each hand
+- Game over overlay when chips reach 0, with PEPE avatar and Play Again button
+- Score panel showing WOJAK avatar with chip count, PEPE dealer avatar, hand number, and BJ payout ratio
+- Card styling matching other card games: dark bg (#0d1117), green (#00ff41) for spades/clubs, white (#ffffff) for hearts/diamonds
+- Card backs with green diagonal pattern and "W" logo
+- Dark table area with green felt-like border and inner glow, matching Texas Hold'em/Gin Rummy table style
+- Action buttons: dark bg with green border/text, green fill on hover (Hit/Stand), gold accent for Double, blue accent for Split
+- Chip betting buttons styled as circular casino chips with green borders
+- WOJAK and PEPE avatars from existing project images (/images/wojak.jpg, /images/pepe1.jpg)
+- Fully responsive with mobile tap support
+
+**Files created:**
+- `src/components/games/blackjack/Blackjack.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for Blackjack, added to GAME_COMPONENTS and GAME_NAMES (as "Blackjack")
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "blackjack", name: "Blackjack" }` to GAMES array
+- `README.md` — Updated game count to 18, added Blackjack to Features list
+- `docs/SCOPE.md` — Added Blackjack description to Games section
+- `docs/TODO.md` — Added Phase 26 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- Blackjack appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay with "Blackjack" title, closes with X/Escape/backdrop click
+- No existing game code or components were modified
