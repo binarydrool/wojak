@@ -108,7 +108,7 @@ const BULLET_H = 10;
 
 // ── Images ──
 
-const WOJAK_IMG = "/images/favicon.jpg";
+const WOJAK_IMG = "/images/wojak.jpg";
 const PEPE_IMG = "/images/pepe1.jpg";
 
 // ── Colors ──
@@ -116,7 +116,7 @@ const PEPE_IMG = "/images/pepe1.jpg";
 const GREEN = "#00ff41";
 const DARK_GREEN = "#009926";
 const BG_COLOR = "#0a0a0a";
-const ENEMY_BULLET_COLOR = "#ff6b35";
+const ENEMY_BULLET_COLOR = "#ffffff";
 const EXPLOSION_COLOR = "#00ff41";
 
 // ── Types ──

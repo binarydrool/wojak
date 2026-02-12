@@ -84,7 +84,7 @@ const BIRD_X = 80;
 
 // ── Avatar ──
 
-const WOJAK_AVATAR = "/images/favicon.jpg";
+const WOJAK_AVATAR = "/images/wojak.jpg";
 
 // ── Colors ──
 

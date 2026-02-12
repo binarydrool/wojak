@@ -522,25 +522,45 @@ export default function Tetris() {
       }
     };
 
-    const handleClick = () => {
+    let holdTimer: ReturnType<typeof setTimeout> | null = null;
+    let didHardDrop = false;
+
+    const handleMouseDown = () => {
+      didHardDrop = false;
       const s = stateRef.current;
-      if (s.status === "idle") {
-        startGame();
-      } else if (s.status === "gameover") {
-        resetGame();
-      } else if (s.status === "playing") {
-        rotatePiece();
+      if (s.status === "playing") {
+        holdTimer = setTimeout(() => {
+          didHardDrop = true;
+          hardDrop();
+        }, 200);
+      }
+    };
+
+    const handleMouseUp = () => {
+      if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+      if (!didHardDrop) {
+        const s = stateRef.current;
+        if (s.status === "idle") {
+          startGame();
+        } else if (s.status === "gameover") {
+          resetGame();
+        } else if (s.status === "playing") {
+          rotatePiece();
+        }
       }
     };
 
     canvas.addEventListener("mousemove", handleMouseMove);
-    canvas.addEventListener("click", handleClick);
+    canvas.addEventListener("mousedown", handleMouseDown);
+    canvas.addEventListener("mouseup", handleMouseUp);
 
     return () => {
       canvas.removeEventListener("mousemove", handleMouseMove);
-      canvas.removeEventListener("click", handleClick);
+      canvas.removeEventListener("mousedown", handleMouseDown);
+      canvas.removeEventListener("mouseup", handleMouseUp);
+      if (holdTimer) clearTimeout(holdTimer);
     };
-  }, [startGame, resetGame, rotatePiece, movePieceToColumn]);
+  }, [startGame, resetGame, rotatePiece, movePieceToColumn, hardDrop]);
 
   // Touch controls — tap to rotate, swipe down to soft drop
   useEffect(() => {

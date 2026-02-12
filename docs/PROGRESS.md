@@ -2341,3 +2341,54 @@ Classic Tic Tac Toe game added as the ninth game in the Games dropdown. Player (
 - Space Invaders appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay with "Space Invaders" title, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 22: Solitaire Game — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+- Classic Klondike Solitaire card game, fully self-contained in a single component file
+- Standard 52-card deck with Fisher-Yates shuffle
+- 7 tableau columns dealt in standard Klondike pattern (column N has N cards, top card face-up, rest face-down)
+- Stock pile in top-left — click to draw cards to waste pile
+- Waste pile next to stock — shows drawn cards, top card is playable
+- 4 foundation piles in top-right — build up by suit from Ace to King
+- Tableau builds down in alternating colors (validated by suit color)
+- Two draw modes via difficulty-style buttons: Draw 1 (easier) and Draw 3 (classic rules, fan of 3 visible)
+- Click-to-select then click-destination card movement system
+- Double-click/double-tap to auto-send card to correct foundation
+- Full move validation — only legal moves allowed
+- Single cards and face-up stacks movable between tableau columns
+- Face-down cards auto-flip when exposed
+- Win condition: all 52 cards in 4 foundation piles, triggers celebration overlay with bounce animation and green glow
+- Undo button restores full previous game state (stock, waste, foundations, tableau)
+- New Deal button to restart with fresh shuffle
+- Move counter and timer (starts on first move, stops on win)
+- Card styling matches dark theme:
+  - Card faces: #0d1117 dark background, #00ff41 for black suits (spades/clubs), #33ff66 for red suits (hearts/diamonds)
+  - Card backs: #0a0f14 with subtle green diagonal stripe pattern and "W" logo
+  - Selected cards: yellow border with glow and slight vertical offset
+  - Empty slots: dashed #00ff41/20 borders
+- Mobile responsive: tap-to-select and tap-destination interface, responsive card sizes with sm/md breakpoints
+- Draw 3 mode shows fanned waste cards with offset positioning
+- Stock card count indicator
+- Recycle icon on empty stock (click to recycle waste back to stock)
+
+**Files created:**
+- `src/components/games/solitaire/Solitaire.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for Solitaire, added to GAME_COMPONENTS and GAME_NAMES (as "Solitaire")
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "solitaire", name: "Solitaire" }` to GAMES array
+- `README.md` — Added Solitaire to Features list
+- `docs/SCOPE.md` — Updated Games section with Solitaire description
+- `docs/TODO.md` — Added Phase 22 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- Solitaire appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay with "Solitaire" title, closes with X/Escape/backdrop click
+- No existing game code or components were modified

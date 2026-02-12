@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   description:
     "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,000+ OG holders.",
   icons: {
-    icon: "/images/favicon.jpg",
-    apple: "/images/favicon.jpg",
+    icon: "/images/favicon.png",
+    apple: "/images/favicon.png",
   },
   openGraph: {
     title: "WOJAK — The OG Since April 2023",

@@ -39,7 +39,7 @@ export const APPROVAL_CHECKER_URL = "https://etherscan.io/tokenapprovalchecker";
 
 // Site Metadata
 export const SITE_NAME = "wojak.io";
-export const SITE_TAGLINE = "The OG WOJAK — Since April 2023";
+export const SITE_TAGLINE = "The One True WOJAK — Since April 2023";
 export const SITE_DESCRIPTION =
   "Official community website for the original WOJAK token on Ethereum. Dashboard, education hub, and community rally point for OG WOJAK holders.";
 

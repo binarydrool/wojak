@@ -43,7 +43,7 @@ export default function ImageReel() {
           <polygon fill="rgba(255,255,255,0.4)" points="0.0009 212.3207 127.9609 287.9577 127.9609 154.1587" />
         </svg>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-center animate-title-shine">
-          The OG WOJAK
+          The One True WOJAK
         </h1>
         <p
           className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-200 mt-2"

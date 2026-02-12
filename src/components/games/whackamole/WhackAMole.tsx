@@ -35,7 +35,7 @@ const DIFFICULTIES: { key: Difficulty; label: string; config: DifficultyConfig }
 
 const GAME_DURATION = 30; // seconds
 const PEPE_IMG = "/images/pepe1.jpg";
-const WOJAK_IMG = "/images/favicon.jpg";
+const WOJAK_IMG = "/images/wojak.jpg";
 
 // ── Main component ──
 

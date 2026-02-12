@@ -50,7 +50,7 @@ const DIFFICULTIES: Record<Difficulty, DifficultyConfig> = {
   },
 };
 
-const WOJAK_AVATAR = "/images/favicon.jpg";
+const WOJAK_AVATAR = "/images/wojak.jpg";
 const WIN_SCORE = 5;
 
 // ── Canvas dimensions ──

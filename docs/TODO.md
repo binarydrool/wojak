@@ -361,6 +361,36 @@
 
 ---
 
+## Phase 22: Solitaire Game
+- [x] Create `src/components/games/solitaire/Solitaire.tsx` — Classic Klondike Solitaire card game
+- [x] Implement standard 52-card deck with shuffling
+- [x] Implement 7 tableau columns dealt in standard pattern (column N has N cards, top face-up, rest face-down)
+- [x] Implement stock pile — click to draw cards to waste pile
+- [x] Implement waste pile — shows drawn cards, top card is playable
+- [x] Implement 4 foundation piles — build up by suit from Ace to King
+- [x] Implement tableau building — descending rank, alternating colors
+- [x] Implement click-to-select then click-destination card movement
+- [x] Implement double-click to auto-send card to correct foundation
+- [x] Implement move validation — only allow legal moves
+- [x] Implement moving single cards and face-up stacks between tableau columns
+- [x] Implement auto-flip of exposed face-down cards
+- [x] Implement win condition — all 52 cards in foundations with celebration overlay
+- [x] Implement undo button (restores previous game state)
+- [x] Implement new deal button to restart
+- [x] Implement move counter and timer display
+- [x] Implement two draw modes using same button style as other games: Draw 1 (easier) and Draw 3 (classic)
+- [x] Draw 1: Draw one card at a time from stock to waste
+- [x] Draw 3: Draw three cards at a time, only top card playable
+- [x] Card styling: dark background (#0d1117) with green suit symbols (#00ff41 for black suits, #33ff66 for red suits)
+- [x] Card backs: dark with subtle green pattern and "W" logo
+- [x] Empty slots: dashed green border placeholders
+- [x] Mobile support: tap-to-select, tap-destination interface, double-tap auto-send
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

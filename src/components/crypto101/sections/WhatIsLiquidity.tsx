@@ -40,7 +40,7 @@ export default function WhatIsLiquidity() {
           <div className="bg-wojak-green/10 border border-wojak-green/30 rounded-xl p-4">
             <p className="text-wojak-green font-semibold mb-1"><svg className="inline w-4 h-4 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> OG WOJAK&apos;s LP is locked</p>
             <p className="text-sm">
-              The OG WOJAK liquidity pool is locked until <strong>{LP_LOCK_EXPIRY}</strong>.
+              The One True WOJAK liquidity pool is locked until <strong>{LP_LOCK_EXPIRY}</strong>.
               That means nobody — not even the original deployer — can remove the liquidity.
               The pool is there to stay. This is one of the most important safety features a token
               can have.

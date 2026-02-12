@@ -77,7 +77,7 @@ export default function SwapCard() {
             <div className="flex items-center gap-2 bg-wojak-card px-3 py-1.5 rounded-full border border-wojak-border shrink-0">
               {/* WOJAK token logo */}
               <img
-                src="/images/favicon.jpg"
+                src="/images/wojak.jpg"
                 alt="WOJAK"
                 className="w-5 h-5 rounded-full object-cover"
               />

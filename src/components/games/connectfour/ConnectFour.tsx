@@ -25,9 +25,9 @@ const DIFFICULTIES: { key: Difficulty; label: string; pepeImg: string }[] = [
   { key: "master", label: "Master", pepeImg: "/images/pepe4.jpg" },
 ];
 
-const WOJAK_AVATAR = "/images/favicon.jpg";
+const WOJAK_AVATAR = "/images/wojak.jpg";
 const PLAYER_COLOR = "#00ff41";
-const AI_COLOR = "#ff4444";
+const AI_COLOR = "#ffffff";
 
 // ── Board helpers ──
 

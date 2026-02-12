@@ -29,7 +29,7 @@ const DIFFICULTIES: { key: Difficulty; label: string; pepeImg: string }[] = [
   { key: "master", label: "Master", pepeImg: "/images/pepe4.jpg" },
 ];
 
-const WOJAK_AVATAR = "/images/favicon.jpg";
+const WOJAK_AVATAR = "/images/wojak.jpg";
 
 const PROMOTION_PIECES: PieceType[] = ["queen", "rook", "bishop", "knight"];
 

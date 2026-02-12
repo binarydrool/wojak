@@ -85,6 +85,7 @@ const CANVAS_SIZE = 600;
 
 const SNAKE_COLOR = "#00ff41";
 const FOOD_COLOR = "#ff4444";
+const FOOD_IMG_SRC = "/images/Wojak_white.png";
 const OBSTACLE_COLOR = "#555555";
 const GRID_COLOR = "rgba(255, 255, 255, 0.03)";
 
@@ -191,6 +192,14 @@ export default function Snake() {
 
   // Pointer position in canvas-pixel coordinates (mouse or touch)
   const pointerPosRef = useRef<{ x: number; y: number } | null>(null);
+
+  // Food image
+  const foodImgRef = useRef<HTMLImageElement | null>(null);
+  useEffect(() => {
+    const img = new Image();
+    img.src = FOOD_IMG_SRC;
+    foodImgRef.current = img;
+  }, []);
 
   // Reset game
   const resetGame = useCallback(
@@ -615,20 +624,27 @@ export default function Snake() {
           foodAlpha = 0.3 + 0.7 * Math.abs(Math.sin(elapsed * 4));
         }
       }
-      ctx.fillStyle = FOOD_COLOR;
       ctx.globalAlpha = foodAlpha;
-      ctx.shadowColor = FOOD_COLOR;
-      ctx.shadowBlur = 8;
-      ctx.beginPath();
-      ctx.arc(
-        s.food.x * cellSize + cellSize / 2,
-        s.food.y * cellSize + cellSize / 2,
-        cellSize / 2 - 2,
-        0,
-        Math.PI * 2
-      );
-      ctx.fill();
-      ctx.shadowBlur = 0;
+      if (foodImgRef.current && foodImgRef.current.complete && foodImgRef.current.naturalWidth > 0) {
+        const fx = s.food.x * cellSize + 1;
+        const fy = s.food.y * cellSize + 1;
+        const fs = cellSize - 2;
+        ctx.drawImage(foodImgRef.current, fx, fy, fs, fs);
+      } else {
+        ctx.fillStyle = FOOD_COLOR;
+        ctx.shadowColor = FOOD_COLOR;
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.arc(
+          s.food.x * cellSize + cellSize / 2,
+          s.food.y * cellSize + cellSize / 2,
+          cellSize / 2 - 2,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
       ctx.globalAlpha = 1;
 
       // Snake (draw tail to head so head is on top)
