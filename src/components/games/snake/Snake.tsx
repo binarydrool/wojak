@@ -85,7 +85,7 @@ const CANVAS_SIZE = 600;
 
 const SNAKE_COLOR = "#00ff41";
 const FOOD_COLOR = "#ff4444";
-const FOOD_IMG_SRC = "/images/Wojak_white.png";
+const FOOD_IMG_SRC = "/images/wojak.jpg";
 const OBSTACLE_COLOR = "#555555";
 const GRID_COLOR = "rgba(255, 255, 255, 0.03)";
 
@@ -626,10 +626,15 @@ export default function Snake() {
       }
       ctx.globalAlpha = foodAlpha;
       if (foodImgRef.current && foodImgRef.current.complete && foodImgRef.current.naturalWidth > 0) {
-        const fx = s.food.x * cellSize + 1;
-        const fy = s.food.y * cellSize + 1;
-        const fs = cellSize - 2;
-        ctx.drawImage(foodImgRef.current, fx, fy, fs, fs);
+        const cx = s.food.x * cellSize + cellSize / 2;
+        const cy = s.food.y * cellSize + cellSize / 2;
+        const r = cellSize / 2 - 2;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(foodImgRef.current, cx - r, cy - r, r * 2, r * 2);
+        ctx.restore();
       } else {
         ctx.fillStyle = FOOD_COLOR;
         ctx.shadowColor = FOOD_COLOR;

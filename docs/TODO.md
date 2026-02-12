@@ -417,6 +417,29 @@
 
 ---
 
+## Phase 24 — Spades Game ✓
+- [x] Create `src/components/games/spades/Spades.tsx` component
+- [x] Classic 4-player Spades: WOJAK (player) + ALLY (AI teammate) vs PEPE 1 + PEPE 2
+- [x] Four difficulty levels (Beginner/Advanced/Expert/Master)
+- [x] Standard 52-card deck, 13 cards dealt per player
+- [x] Bidding phase with clickable number buttons (0-13), AI bids with delay
+- [x] Trick-taking with follow-suit rules, spades as trump, spades-broken mechanic
+- [x] Valid plays highlighted, invalid cards dimmed
+- [x] Tap-to-select then tap-to-confirm card play interface
+- [x] Team scoring: 10 pts per bid trick met, 1 pt per overtrick bag, nil bids (100/-100)
+- [x] 10-bag penalty (-100 pts), first to 500 wins
+- [x] Score panel showing both teams' running scores and bags
+- [x] Round-end scorecard summary, game-end result with play again
+- [x] AI difficulty scaling: beginner plays simply, master counts cards and coordinates
+- [x] Card styling matching other card games: dark bg, green spades/clubs, white hearts/diamonds
+- [x] Player positions: bottom (WOJAK), top (ALLY), left (PEPE 1), right (PEPE 2)
+- [x] Center trick area with card play animations
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

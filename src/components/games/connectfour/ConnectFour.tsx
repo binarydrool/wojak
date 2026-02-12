@@ -533,9 +533,9 @@ export default function ConnectFour() {
         <div
           className={`flex items-center gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg transition-colors ${
             status === "lost"
-              ? "bg-red-500/10 border border-red-500/30"
+              ? "bg-white/10 border border-white/30"
               : !isPlayerTurn && !isGameOver
-              ? "bg-red-500/10 border border-red-500/30"
+              ? "bg-white/10 border border-white/30"
               : "bg-wojak-card/50"
           }`}
         >
@@ -550,7 +550,7 @@ export default function ConnectFour() {
           <div className="flex flex-col items-end">
             <span
               className={`text-sm font-bold ${
-                !isPlayerTurn && !isGameOver ? "text-red-400" : "text-gray-300"
+                !isPlayerTurn && !isGameOver ? "text-white" : "text-gray-300"
               }`}
             >
               PEPE

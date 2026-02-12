@@ -47,15 +47,15 @@ const DIFFICULTIES: Record<Difficulty, DifficultyConfig> = {
 
 // ── Piece definitions ──
 
-// 7 piece types, each mapped to a green shade
+// All pieces use the same green
 const PIECE_COLORS: Record<number, string> = {
   1: "#00ff41", // I
-  2: "#00cc33", // O
-  3: "#009926", // T
-  4: "#33ff66", // S
-  5: "#006619", // Z
-  6: "#00e639", // J
-  7: "#4dff7a", // L
+  2: "#00ff41", // O
+  3: "#00ff41", // T
+  4: "#00ff41", // S
+  5: "#00ff41", // Z
+  6: "#00ff41", // J
+  7: "#00ff41", // L
 };
 
 // Base shapes — I uses 4x4 box, O uses 2x2, rest use 3x3 for clean rotation
@@ -308,12 +308,24 @@ export default function Tetris() {
     const s = stateRef.current;
     if (!s.currentPiece || s.status !== "playing") return;
 
-    // Center the piece shape on the target column
-    const shapeWidth = s.currentPiece.shape[0].length;
-    const targetX = Math.round(targetCol - shapeWidth / 2);
+    // Find actual filled column bounds within the shape matrix
+    let minC = s.currentPiece.shape[0].length;
+    let maxC = 0;
+    for (let r = 0; r < s.currentPiece.shape.length; r++) {
+      for (let c = 0; c < s.currentPiece.shape[r].length; c++) {
+        if (s.currentPiece.shape[r][c]) {
+          if (c < minC) minC = c;
+          if (c > maxC) maxC = c;
+        }
+      }
+    }
+    const filledWidth = maxC - minC + 1;
+
+    // Center the filled portion on the target column
+    const targetX = Math.round(targetCol - minC - filledWidth / 2);
     const clampedX = Math.max(
-      0,
-      Math.min(COLS - shapeWidth, targetX)
+      -minC,
+      Math.min(COLS - maxC - 1, targetX)
     );
 
     // Move one step at a time toward target to respect collisions

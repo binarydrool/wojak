@@ -2392,3 +2392,46 @@ Classic Tic Tac Toe game added as the ninth game in the Games dropdown. Player (
 - Solitaire appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay with "Solitaire" title, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 24: Spades Game — 2026-02-12
+
+**What was built:**
+Classic 4-player Spades card game. WOJAK (player) partnered with AI teammate (ALLY) vs 2 PEPE AI opponents.
+
+**Game features:**
+- Four difficulty levels (Beginner/Advanced/Expert/Master) with same button styling as other games
+- Standard 52-card deck dealt evenly (13 cards per player), sorted by suit
+- Bidding phase: clickable number buttons (0-13) for player, AI bids with brief delay
+- Trick-taking: follow suit required, spades are trump, spades-broken mechanic
+- Valid plays highlighted with green border, invalid cards dimmed
+- Tap-to-select then tap-to-confirm card play interface
+- Team scoring: 10 pts per bid trick if met + 1 pt per overtrick (bag), -10 pts per bid trick if failed
+- Nil bid (0) = +100 if successful, -100 if failed, 10-bag penalty = -100 pts
+- Score panel showing both teams' running scores, bags, and round number
+- Round-end scorecard summary with detailed breakdown
+- Game over / win overlay at 500 points (higher score breaks tie)
+- Player positions: bottom (WOJAK), top (ALLY), left (PEPE 1), right (PEPE 2)
+- Center trick area showing played cards at player positions
+- Card styling matching other card games: dark bg (#0d1117), green (#00ff41) for spades/clubs, white for hearts/diamonds
+- Card backs with green diagonal pattern matching Solitaire/Texas Hold'em
+- AI difficulty scaling: Beginner plays highest card, Master counts cards played, coordinates with partner, covers nil bids
+- WOJAK and PEPE avatars from existing project images
+
+**Files created:**
+- `src/components/games/spades/Spades.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for Spades, added to GAME_COMPONENTS and GAME_NAMES (as "Spades")
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "spades", name: "Spades" }` to GAMES array
+- `README.md` — Updated game count to 16, added Spades to Features list
+- `docs/SCOPE.md` — Added Spades description to Games section
+- `docs/TODO.md` — Added Phase 24 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- Spades appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay with "Spades" title, closes with X/Escape/backdrop click
+- No existing game code or components were modified
