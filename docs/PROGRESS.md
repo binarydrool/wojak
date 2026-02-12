@@ -2087,3 +2087,68 @@ Classic 2048 puzzle game added as the eighth game in the Games dropdown. DOM-bas
 - 2048 appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 17: Tic Tac Toe Game — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+Classic Tic Tac Toe game added as the ninth game in the Games dropdown. Player (WOJAK) vs AI (PEPE) on a 3x3 grid, following the exact same patterns as Connect Four — same modal system, difficulty button styles, player info row, dark theme, component structure.
+
+**Game mechanics:**
+- Standard 3x3 Tic Tac Toe grid
+- Player (WOJAK) plays X, AI (PEPE) plays O
+- Player always goes first
+- Click/tap a cell to place mark
+- Win condition: 3 in a row horizontally, vertically, or diagonally
+- Winning cells highlighted with pulsing glow animation
+- Draw detection when all cells filled with no winner
+- Game result overlay with Play Again button
+
+**Player branding (matches Chess, Pong, and Connect Four):**
+- WOJAK (player): #00ff41 green X marks (SVG), avatar from /images/favicon.jpg
+- PEPE (AI): #ff4444 red O marks (SVG), avatar from /images/pepe1-4.jpg per difficulty
+- Player info row with avatars, names, turn indicators, and X/O mark previews
+- "thinking..." indicator when AI is calculating
+- Series score display (WOJAK wins - Draws - PEPE wins) persists across rounds
+- Series score resets on difficulty change (modal close also resets via component unmount)
+
+**AI difficulty levels:**
+- Beginner: Pure random from available cells
+- Advanced: Blocks player wins, takes winning moves, prefers center then corners, otherwise random
+- Expert: Minimax with alpha-beta pruning, but 15% chance of making a random move
+- Master: Full minimax with alpha-beta pruning, plays perfectly, unbeatable
+
+**AI response timing:**
+- 300-500ms random delay before each AI move to feel natural
+
+**UI features:**
+- Difficulty buttons matching exact style of all other games (bg-wojak-green when active)
+- New Game button
+- SVG X marks (two crossed lines, strokeWidth 12) with green glow
+- SVG O marks (circle, strokeWidth 12) with red glow
+- Winning marks pulse with enhanced glow (double drop-shadow filter)
+- Grid lines use subtle dark green (#1e3a1e)
+- Cells have hover highlight effect (bg-white/5) when clickable
+- Responsive board (85vw max, 320px cap)
+- Dark board background (#0d1117)
+- Instructions: desktop shows "Click a cell to place your X", mobile shows "Tap a cell"
+
+**Files created:**
+- `src/components/games/tictactoe/TicTacToe.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for TicTacToe, added to GAME_COMPONENTS and GAME_NAMES
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "tictactoe", name: "Tic Tac Toe" }` to GAMES array
+- `README.md` — Added Tic Tac Toe to Features list
+- `docs/SCOPE.md` — Updated Games section with Tic Tac Toe description, updated file structure tree
+- `docs/TODO.md` — Added Phase 17 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- Tic Tac Toe appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay, closes with X/Escape/backdrop click
+- No existing game code or components were modified

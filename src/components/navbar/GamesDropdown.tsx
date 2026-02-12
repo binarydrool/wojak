@@ -12,6 +12,7 @@ const GAMES = [
   { id: "tetris", name: "Tetris" },
   { id: "connectfour", name: "Connect Four" },
   { id: "twentyfortyeight", name: "2048" },
+  { id: "tictactoe", name: "Tic Tac Toe" },
 ];
 
 interface GamesDropdownProps {

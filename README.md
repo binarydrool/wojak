@@ -21,6 +21,7 @@ wojak.io serves the holders of the original WOJAK token (`0x5026F006B85729a8b145
 - **Tetris** — Canvas-based classic Tetris game, four difficulty levels (Easy/Medium/Hard/Expert), 7 standard tetrominoes with green-themed colors, ghost piece preview, next piece display, arrow keys and touch controls, line clear scoring with combo bonuses, level progression
 - **Connect Four** — Classic Connect Four game vs AI opponent (WOJAK vs PEPE), four difficulty levels (Beginner/Advanced/Expert/Master), 7x6 grid with piece drop animations, minimax AI with alpha-beta pruning, winning line highlighting, click/tap controls, responsive design
 - **2048** — Classic 2048 puzzle game, four difficulty levels (Easy/Medium/Hard/Expert), slide tiles with arrow keys/WASD or swipe gestures, merge matching numbers to reach 2048, green-themed tile gradient, score tracking with best score, undo support, Expert mode features 5x5 grid and 4096 target
+- **Tic Tac Toe** — Classic Tic Tac Toe vs AI opponent (WOJAK vs PEPE), four difficulty levels (Beginner/Advanced/Expert/Master), 3x3 grid with SVG X and O marks, minimax AI (unbeatable on Master), winning line glow animation, series score tracking, click/tap controls, responsive design
 
 ## Tech Stack
 

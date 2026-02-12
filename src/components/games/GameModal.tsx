@@ -12,6 +12,7 @@ const Snake = lazy(() => import("./snake/Snake"));
 const Tetris = lazy(() => import("./tetris/Tetris"));
 const ConnectFour = lazy(() => import("./connectfour/ConnectFour"));
 const TwentyFortyEight = lazy(() => import("./twentyfortyeight/TwentyFortyEight"));
+const TicTacToe = lazy(() => import("./tictactoe/TicTacToe"));
 
 const GAME_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentType>> = {
   minesweeper: Minesweeper,
@@ -22,6 +23,7 @@ const GAME_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentT
   tetris: Tetris,
   connectfour: ConnectFour,
   twentyfortyeight: TwentyFortyEight,
+  tictactoe: TicTacToe,
 };
 
 const GAME_NAMES: Record<string, string> = {
@@ -33,6 +35,7 @@ const GAME_NAMES: Record<string, string> = {
   tetris: "Tetris",
   connectfour: "Connect Four",
   twentyfortyeight: "2048",
+  tictactoe: "Tic Tac Toe",
 };
 
 export default function GameModal() {

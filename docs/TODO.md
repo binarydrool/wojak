@@ -251,6 +251,27 @@
 
 ---
 
+## Phase 17: Tic Tac Toe Game
+- [x] Create `src/components/games/tictactoe/TicTacToe.tsx` — classic Tic Tac Toe vs AI (WOJAK vs PEPE)
+- [x] Implement 3x3 grid with SVG X and O marks
+- [x] Implement 4 difficulty levels (Beginner/Advanced/Expert/Master) with same button style as other games
+- [x] Beginner: AI picks randomly from available cells
+- [x] Advanced: AI blocks player wins, takes winning moves, prefers center and corners
+- [x] Expert: AI uses minimax but 15% chance of random move
+- [x] Master: AI uses full minimax with alpha-beta pruning, unbeatable
+- [x] Display WOJAK (#00ff41 green X) and PEPE (#ff4444 red O) avatars with names matching Chess/Pong/Connect Four pattern
+- [x] Highlight winning 3 cells with glow animation when someone wins
+- [x] Display win/loss/draw result overlay with Play Again button
+- [x] Track and display series score (WOJAK wins, PEPE wins, Draws) persisting across rounds
+- [x] Series score resets on difficulty change or modal close
+- [x] AI responds after 300-500ms natural delay
+- [x] Responsive board with hover highlight, mobile tap support
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)
