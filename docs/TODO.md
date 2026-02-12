@@ -497,6 +497,45 @@
 
 ---
 
+## Phase 27 — War Game ✓
+- [x] Create `src/components/games/war/War.tsx` component
+- [x] Classic War card game: WOJAK (player) vs PEPE (AI opponent)
+- [x] Four speed modes (Casual/Normal/Fast/Blitz) with same button styling as other games
+- [x] Casual: 800ms flip animation, 1200ms pause, 1500ms war pause — dramatic pacing
+- [x] Normal: 500ms flip animation, 800ms pause, 1000ms war pause — standard pacing
+- [x] Fast: 300ms flip animation, 500ms pause, 600ms war pause — rapid play
+- [x] Blitz: 150ms flip animation, 300ms pause, 350ms war pause — instant resolution
+- [x] Standard 52-card deck, shuffled and split evenly (26 cards each)
+- [x] Each round both players flip top card simultaneously with flip animation
+- [x] Higher card wins both cards — Ace high (14), King (13) through 2 (low), suits don't matter
+- [x] War triggered on tied ranks: "WAR!" banner with dramatic pulse animation
+- [x] War resolution: 3 face-down cards + 1 face-up card each, higher face-up wins all
+- [x] Chained wars: if face-up war cards also tie, war process repeats
+- [x] Insufficient cards during war: player with fewer than 4 cards loses
+- [x] Click/tap Flip button or tap player's deck stack to play each round
+- [x] Auto Play toggle: plays rounds automatically with 1-second delay between flips
+- [x] Card counts displayed for both players (cards remaining in each deck)
+- [x] Battle log showing last 8 flip results with card values, suits, and WIN/LOSE/WAR outcome
+- [x] Win screen (WOJAK WINS!) with green glow when opponent runs out of cards
+- [x] Loss screen (PEPE WINS!) with red glow when player runs out of cards
+- [x] Total rounds played displayed on game over screen with Play Again button
+- [x] PEPE at top with avatar, name, card count badge, and face-down deck stack
+- [x] WOJAK at bottom with avatar, name, card count badge, and clickable face-down deck stack
+- [x] Center battle area with flipped cards side by side, VS divider
+- [x] Winning card gets green glow highlight after each flip
+- [x] War cards laid out visually: 3 face-down small cards + 1 face-up small card per player
+- [x] Card styling matching other card games: dark bg (#0d1117), green (#00ff41) for spades/clubs, white (#ffffff) for hearts/diamonds
+- [x] Card backs with green diagonal pattern and "W" logo
+- [x] Dark table area with green felt-like border and inner glow
+- [x] Flip button: large, centered, green background with glow when active
+- [x] WOJAK and PEPE avatars from existing project images (/images/wojak.jpg, /images/pepe1.jpg)
+- [x] Fully responsive with mobile tap support
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

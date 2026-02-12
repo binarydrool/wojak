@@ -2535,3 +2535,61 @@ Classic Blackjack (21) card game. WOJAK (player) vs PEPE (dealer).
 - Blackjack appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay with "Blackjack" title, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 27: War Game — 2026-02-12
+
+**What was built:**
+Classic War card game. WOJAK (player) vs PEPE (AI opponent).
+
+**Game features:**
+- Four speed modes (Casual/Normal/Fast/Blitz) with same button styling as other games
+- Casual: 800ms flip animation, 1200ms pause, 1500ms war pause — full visual effects and dramatic pacing
+- Normal: 500ms flip animation, 800ms pause, 1000ms war pause — standard play speed
+- Fast: 300ms flip animation, 500ms pause, 600ms war pause — rapid play
+- Blitz: 150ms flip animation, 300ms pause, 350ms war pause — near-instant resolution
+- Standard 52-card deck, shuffled and split evenly (26 cards each)
+- Each round: both players flip their top card simultaneously with CSS perspective flip animation
+- Higher card wins both cards — Ace treated as highest (value 14), King through 2 in descending order, suits don't matter for comparison
+- When both cards have the same rank, WAR is triggered:
+  - "WAR!" banner appears with scale-in and pulse animation, green glow text shadow
+  - Each player places 3 cards face down (shown as small card backs with staggered deal animation)
+  - Each player flips a 4th card face up (shown as small card face with flip animation)
+  - Higher 4th card wins all cards on the table (original flipped cards + all war cards)
+  - If the 4th cards also tie, the war process repeats (chained wars)
+  - If a player has fewer than 4 cards remaining when war is triggered, they lose immediately
+- Player controls pace: click/tap the FLIP button or tap their deck stack to play each round
+- Auto Play toggle button: when enabled, rounds play automatically with 1-second delay between flips
+- Card counts displayed for both players in score panel and on-table badges
+- Battle log showing last 8 flip results with card rank+suit symbols, color-coded WIN (green), LOSE (red), WAR (gold)
+- Win condition: opponent runs out of cards — green-bordered game over overlay with WOJAK avatar, "WOJAK WINS!", total rounds
+- Loss condition: player runs out of cards — red-bordered game over overlay with PEPE avatar, "PEPE WINS!", total rounds
+- Play Again button returns to speed selection screen
+- Layout: PEPE at top with avatar, name, card count badge, and face-down deck stack; WOJAK at bottom with avatar, name, card count badge, and clickable face-down deck stack; center battle area with flipped cards side by side and VS divider
+- Winning card gets green glow highlight (boxShadow + border) after each flip resolution
+- War cards displayed visually between the main cards: 3 face-down small cards + 1 face-up small card per player
+- Card styling matching all other card games: dark bg (#0d1117), green (#00ff41) for spades/clubs, white (#ffffff) for hearts/diamonds, green borders, card backs with green diagonal pattern and "W" logo
+- Dark table area with green felt-like border and inner glow, matching Texas Hold'em/Gin Rummy/Blackjack table style
+- Flip button: large, centered, green background (#00ff41) with glow shadow when active, disabled with reduced opacity when busy
+- Score panel with WOJAK and PEPE avatars, card counts, round number, and total cards in play
+- WOJAK and PEPE avatars from existing project images (/images/wojak.jpg, /images/pepe1.jpg)
+- CSS keyframe animations: warFlipIn (perspective rotateY), warDealIn (scale + translate), warBannerPulse (scale pulse), warBannerIn (scale entrance)
+- Fully responsive with mobile tap support, sm: breakpoints for padding and font sizes
+
+**Files created:**
+- `src/components/games/war/War.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for War, added to GAME_COMPONENTS and GAME_NAMES (as "War")
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "war", name: "War" }` to GAMES array
+- `README.md` — Updated game count to 19, added War to Features list
+- `docs/SCOPE.md` — Added War description to Games section
+- `docs/TODO.md` — Added Phase 27 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- War appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay with "War" title, closes with X/Escape/backdrop click
+- No existing game code or components were modified
