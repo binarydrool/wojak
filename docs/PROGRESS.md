@@ -2007,3 +2007,83 @@ Classic Connect Four game added as the seventh game in the Games dropdown. Playe
 - `docs/SCOPE.md` — Updated Games section with Connect Four description, updated file structure
 - `docs/TODO.md` — Added Phase 15 with all items checked off
 - `docs/PROGRESS.md` — This entry
+
+---
+
+## Phase 16: 2048 Game — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+Classic 2048 puzzle game added as the eighth game in the Games dropdown. DOM-based (not canvas) following the same component patterns as Connect Four and Minesweeper.
+
+**Game mechanics:**
+- 4x4 grid (5x5 on Expert) with sliding tile mechanics
+- Tiles slide in the chosen direction, merging when two equal tiles collide
+- After each move, a new tile (2, 4, or occasionally 8) spawns in a random empty cell
+- Win condition: create a tile matching the target value (2048 standard, 4096 Expert)
+- Win popup allows player to continue playing or start new game
+- Game over when no valid moves remain (no empty cells and no adjacent equal tiles)
+- Score increases by the value of each merged tile
+- Best score tracked across games within session
+- Undo button reverts one move (stores previous grid, tiles, and score)
+- New Game button resets the board
+
+**Controls:**
+- Desktop: Arrow keys or WASD to slide tiles in a direction
+- Mobile: Swipe gestures (up/down/left/right) via touchstart/touchend with 30px threshold
+- Brief 150ms animation lock between moves to prevent double-input
+
+**Four difficulty levels (same button style as other games):**
+- Easy: 4x4 grid, 90% chance of spawning 2, 10% chance of 4
+- Medium: 4x4 grid, 80% chance of 2, 20% chance of 4
+- Hard: 4x4 grid, 60% chance of 2, 40% chance of 4, 5% chance of 8
+- Expert: 5x5 grid, 50% chance of 2, 50% chance of 4, target 4096
+
+**Tile colors (green gradient based on value):**
+- 2: #1a2e1a (dark subtle green)
+- 4: #1e3a1e
+- 8: #224822
+- 16: #285828
+- 32: #2e6e2e
+- 64: #348834
+- 128: #3aa63a
+- 256: #44be44
+- 512: #55d455
+- 1024: #22dd44
+- 2048: #00ff41 (brightest, matching site accent)
+- 4096+: #00ff41 with enhanced glow
+- Empty cells: #1a1f2e (dark, matching board background)
+- All tile text: white, bold, with text shadow on high values
+
+**Animations:**
+- Tile pop: 200ms scale bounce on merge (1 → 1.15 → 1)
+- Tile appear: 150ms scale-in on new tile spawn (0 → 1)
+- CSS animations injected via styled-jsx (self-contained, no globals.css changes)
+
+**UI features:**
+- Difficulty buttons matching exact style of all other games
+- Undo button (disabled when no previous state or game over)
+- New Game button
+- Score and Best Score display in styled cards
+- Responsive board width: min(85vw, 340px) for 4x4, min(85vw, 380px) for 5x5
+- Win overlay: "You reached 2048!" with Keep Playing and New Game buttons
+- Game Over overlay: "Game Over!" with score and Play Again button
+- Instructions: desktop shows arrow key hint, mobile shows swipe hint
+
+**Files created:**
+- `src/components/games/twentyfortyeight/TwentyFortyEight.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for TwentyFortyEight, added to GAME_COMPONENTS and GAME_NAMES
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "twentyfortyeight", name: "2048" }` to GAMES array
+- `README.md` — Added 2048 to Features list
+- `docs/SCOPE.md` — Updated Games section with 2048 description, updated file structure tree
+- `docs/TODO.md` — Added Phase 16 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- 2048 appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay, closes with X/Escape/backdrop click
+- No existing game code or components were modified

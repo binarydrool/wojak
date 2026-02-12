@@ -229,6 +229,28 @@
 
 ---
 
+## Phase 16: 2048 Game
+- [x] Create `src/components/games/twentyfortyeight/TwentyFortyEight.tsx` — classic 2048 puzzle game
+- [x] Implement 4x4 grid with sliding and merging tile mechanics
+- [x] Implement 4 difficulty levels (Easy/Medium/Hard/Expert) with same button style as other games
+- [x] Easy: 4x4 grid, 90% chance of 2 spawn, 10% chance of 4
+- [x] Medium: 4x4 grid, 80% chance of 2, 20% chance of 4
+- [x] Hard: 4x4 grid, 60% chance of 2, 40% chance of 4, occasional 8 spawns
+- [x] Expert: 5x5 grid, 50/50 split of 2s and 4s, 4096 win target
+- [x] Implement desktop controls: Arrow keys and WASD to slide tiles
+- [x] Implement mobile controls: Swipe gestures (up/down/left/right) via touch events
+- [x] Implement tile merge animations (pop on merge, scale-in on spawn)
+- [x] Implement score tracking with current score and best score display
+- [x] Implement undo button (1 move back) and new game button
+- [x] Win condition: reach 2048 tile (4096 on Expert), show congratulations, allow continuing
+- [x] Game over detection: no valid moves remaining
+- [x] Green-themed tile colors as gradient based on value (dark #1a2e1a for 2 → bright #00ff41 for 2048)
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)
