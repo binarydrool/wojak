@@ -1840,3 +1840,57 @@ Canvas-based Breakout (brick breaker) game following the exact same patterns as 
 - Breakout appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 13: Snake Game — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+Canvas-based classic Snake game following the exact same patterns as Breakout and Pong — same modal system, difficulty button styles, stats bar, dark theme, component structure.
+
+**Game features:**
+- Canvas-based rendering with requestAnimationFrame game loop
+- Grid-based snake movement at configurable speed intervals
+- Snake starts with 3 segments moving right, grows by 1 segment per food eaten
+- Food spawns at random unoccupied grid positions (red #ff4444 circles with glow)
+- Snake body uses #00ff41 green with gradient (brighter at head, fading toward tail)
+- Snake head has glow effect and rounded corners
+- Game over on wall collision, self collision, or obstacle collision
+- Score: +10 per food eaten, displayed during gameplay and on game over
+- High score tracked per difficulty level (persists within session)
+- Click/tap to start from idle, click/tap to restart after game over
+- Subtle grid lines on dark #0a0a0a background
+
+**Controls:**
+- Desktop: Arrow keys or WASD to change direction (prevents 180-degree reversal)
+- Mobile: Swipe gestures (up/down/left/right) via touchstart/touchend with 30px threshold
+- Both: Click/tap canvas to start or restart
+
+**Four difficulty levels (same button style as other games):**
+- Easy: 150ms speed, 20x20 grid, no obstacles
+- Medium: 100ms speed, 20x20 grid, no obstacles
+- Hard: 75ms speed, 20x20 grid, random wall obstacles spawn every 5 food eaten (1 per spawn)
+- Expert: 55ms speed, 15x15 grid, obstacles spawn every 3 food eaten (2 per spawn), food disappears after 7 seconds if not eaten (pulses when <3s remaining)
+
+**Self-collision edge case handled correctly:**
+- Tail segment excluded from collision check when not eating food (tail moves away on same step)
+- Full body checked when eating food (tail doesn't move)
+
+**Files created:**
+- `src/components/games/snake/Snake.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for Snake, added to GAME_COMPONENTS and GAME_NAMES
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "snake", name: "Snake" }` to GAMES array
+- `README.md` — Added Snake to Features list
+- `docs/SCOPE.md` — Updated Games section with Snake description, updated file structure tree
+- `docs/TODO.md` — Added Phase 13 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- Snake appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay, closes with X/Escape/backdrop click
+- No existing game code or components were modified

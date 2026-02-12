@@ -175,6 +175,23 @@
 
 ---
 
+## Phase 13: Snake Game
+- [x] Create `src/components/games/snake/Snake.tsx` — canvas-based classic Snake game
+- [x] Implement 4 difficulty levels (Easy/Medium/Hard/Expert) with same button style as other games
+- [x] Implement desktop controls: Arrow keys and WASD to change direction
+- [x] Implement mobile controls: Swipe gestures (swipe up/down/left/right) via touch events
+- [x] Implement snake movement on grid, food spawning, snake growth on eating
+- [x] Implement game over on wall collision, self collision, and obstacle collision
+- [x] Implement score tracking (+10 per food) and per-difficulty high score
+- [x] Hard mode: random wall obstacles spawn every 5 food eaten
+- [x] Expert mode: smaller grid (15x15), faster speed, more obstacles (2 per 3 food), food disappears after 7 seconds
+- [x] Snake body uses #00ff41 green with gradient, food uses #ff4444 red, dark background #0a0a0a
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Wojak Tetris (themed pieces)
