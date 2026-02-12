@@ -7,17 +7,20 @@ import { useGameModal } from "./GameContext";
 const Minesweeper = lazy(() => import("./minesweeper/Minesweeper"));
 const ChessGame = lazy(() => import("./chess/ChessGame"));
 const Breakout = lazy(() => import("./breakout/Breakout"));
+const Pong = lazy(() => import("./pong/Pong"));
 
 const GAME_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentType>> = {
   minesweeper: Minesweeper,
   chess: ChessGame,
   breakout: Breakout,
+  pong: Pong,
 };
 
 const GAME_NAMES: Record<string, string> = {
   minesweeper: "Minesweeper",
   chess: "Chess",
   breakout: "Breakout",
+  pong: "Pong",
 };
 
 export default function GameModal() {

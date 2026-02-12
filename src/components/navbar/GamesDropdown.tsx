@@ -7,6 +7,7 @@ const GAMES = [
   { id: "minesweeper", name: "Minesweeper" },
   { id: "chess", name: "Chess" },
   { id: "breakout", name: "Breakout" },
+  { id: "pong", name: "Pong" },
 ];
 
 interface GamesDropdownProps {

@@ -160,6 +160,21 @@
 
 ---
 
+## Phase 12: Pong Game
+- [x] Create `src/components/games/pong/Pong.tsx` — canvas-based Pong game (WOJAK vs PEPE)
+- [x] Implement 4 difficulty levels (Beginner/Advanced/Expert/Master) with same button style as other games
+- [x] Implement player paddle control via mouse movement and touch drag (mobile support)
+- [x] Implement AI opponent with difficulty-scaled reaction speed, error margin, and tracking behavior
+- [x] Implement ball physics, wall bounces, paddle angle deflection, scoring system
+- [x] Implement first-to-5-points win condition with score display and round transitions
+- [x] Display WOJAK and PEPE avatars with names matching Chess game pattern
+- [x] Use green theme (#00ff41) for ball and paddles with dark background
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Wojak Tetris (themed pieces)

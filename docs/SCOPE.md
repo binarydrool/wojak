@@ -122,6 +122,7 @@ Games tab in navbar is a dropdown menu listing available games. Clicking a game 
 - **Wojak Minesweeper** — Classic minesweeper. Wojak face is the bomb/mine. Grid sizes: Easy (9x9, 10 mines), Medium (16x16, 40 mines), Hard (30x16, 99 mines). Timer and mine counter. Wojak expressions change based on game state (happy, nervous, dead).
 - **Chess** — Full chess game vs AI opponent. Four difficulties (Beginner/Advanced/Expert/Master). Drag-and-drop and click-to-move. Dark/light board themes. WOJAK vs PEPE theming.
 - **Breakout** — Canvas-based brick breaker. Four difficulties (Easy/Medium/Hard/Expert). Mouse and touch controls. Multi-hit bricks with green-themed colors (#00ff41, #00cc33, #009926, #006619). 3 lives, score tracking.
+- **Pong** — Canvas-based Pong vs AI. Four difficulties (Beginner/Advanced/Expert/Master). Player (WOJAK, left paddle) vs AI (PEPE, right paddle). Mouse and touch controls. Ball and paddles use #00ff41 green. First to 5 points wins.
 
 **Future Games (dropdown is ready):**
 - Find the Pair (memory match with crypto meme faces)
@@ -218,8 +219,10 @@ wojak-finance/
 │   │   │   │   ├── chessLogic.ts
 │   │   │   │   ├── chessAI.ts
 │   │   │   │   └── chessTypes.ts
-│   │   │   └── breakout/
-│   │   │       └── Breakout.tsx
+│   │   │   ├── breakout/
+│   │   │   │   └── Breakout.tsx
+│   │   │   └── pong/
+│   │   │       └── Pong.tsx
 │   │   └── ui/
 │   │       ├── CopyButton.tsx
 │   │       ├── Badge.tsx
