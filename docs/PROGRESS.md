@@ -2740,3 +2740,35 @@ Classic War card game. WOJAK (player) vs PEPE (AI opponent).
 - No game component files were modified
 - All 20 games still accessible via their same game IDs
 - Same GameContext/GameModal flow preserved
+
+---
+
+## Volume Data Consistency Fix — 2026-02-12
+
+**Status:** Complete
+
+**Problem:**
+The 24H Volume was displayed inconsistently across three locations on the dashboard:
+- **Volume tab** (ChartSection) showed ~$72.9K — accurate, sourced from GeckoTerminal direct pool data via `/api/pool`
+- **HeroStats** (header stats bar) showed ~$10.22M — inaccurate
+- **PriceStatsCard** (bottom percentage widget) showed ~$10.22M — inaccurate
+
+**Root cause:**
+HeroStats and PriceStatsCard were sourcing volume from CoinGecko's `total_volume.usd` field, which aggregates volume across ALL exchanges and pools — not just the Uniswap V2 WOJAK/WETH pool. The Volume tab correctly used GeckoTerminal's direct pool endpoint (`/api/pool`) which returns volume for the specific pool only.
+
+In `fetchPriceStats()`, there was a GeckoTerminal fallback for volume, but it only triggered when CoinGecko returned null. Since CoinGecko always returns an (inflated) value, the accurate fallback never executed.
+
+**Fix:**
+- Added `fetchPoolVolume()` helper in `lib/coingecko.ts` that fetches from `/api/pool` (the same GeckoTerminal direct pool data used by the Volume tab)
+- Modified `fetchWojakMarketData()` to use `fetchPoolVolume()` instead of CoinGecko's `total_volume.usd`
+- Modified `fetchPriceStats()` to always use `fetchPoolVolume()` for volume, keeping CoinGecko only for price change percentages
+- All three display locations now use the same accurate data source: GeckoTerminal direct pool → `/api/pool` → `volume_usd.h24`
+
+**Files changed:**
+- `src/lib/coingecko.ts` — Added `fetchPoolVolume()` helper; updated `fetchWojakMarketData()` and `fetchPriceStats()` to use pool volume instead of CoinGecko aggregated volume
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- No game code or unrelated components modified
+- All three volume displays now source from the same GeckoTerminal direct pool data

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { fetchPriceStats, formatCurrency, type PriceStats } from "@/lib/coingecko";
+import { fetchPriceStats, type PriceStats } from "@/lib/coingecko";
 
 function StatCell({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
@@ -38,7 +38,7 @@ export default function PriceStatsCard() {
     stats.change1h !== null ||
     stats.change24h !== null ||
     stats.change7d !== null ||
-    stats.volume24h !== null;
+    stats.change30d !== null;
 
   if (!hasAny) return null;
 
@@ -66,10 +66,11 @@ export default function PriceStatsCard() {
             color={stats.change7d >= 0 ? "text-wojak-green" : "text-red-400"}
           />
         )}
-        {stats.volume24h !== null && (
+        {stats.change30d !== null && (
           <StatCell
-            label="VOL"
-            value={formatCurrency(stats.volume24h)}
+            label="1M"
+            value={`${stats.change30d >= 0 ? "+" : ""}${stats.change30d.toFixed(2)}%`}
+            color={stats.change30d >= 0 ? "text-wojak-green" : "text-red-400"}
           />
         )}
       </div>
