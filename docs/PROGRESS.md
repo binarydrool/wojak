@@ -2289,3 +2289,55 @@ Classic Tic Tac Toe game added as the ninth game in the Games dropdown. Player (
 - Whack-a-PEPE appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay with "Whack-a-PEPE" title, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 21: Space Invaders Game — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+- Classic Space Invaders game with WOJAK as player ship and PEPE as invaders
+- Canvas-based (480x600), rendered with requestAnimationFrame game loop
+- WOJAK avatar (/images/favicon.jpg) rendered as circular player ship at bottom with green border
+- PEPE avatar (/images/pepe1.jpg) rendered as rectangular invaders in grid formation at top
+- Invaders move as a group side-to-side, dropping down one row when reaching wall edges
+- Speed increases as invaders are destroyed (configurable speedUpFactor per difficulty)
+- Invaders shoot orange (#ff6b35) projectiles downward at random intervals
+- Player shoots green (#00ff41) projectiles upward
+- Desktop controls: Arrow left/right or A/D to move, spacebar to shoot
+- Mobile controls: Touch drag to move ship toward finger position, dedicated FIRE button (visible on mobile only), or 2nd finger tap to shoot
+- 3 lives system with 60-frame invincibility after being hit (player blinks)
+- Game over if all lives lost or any invader reaches the player row
+- Wave progression: destroying all invaders shows "WAVE CLEARED!" overlay, click to advance to next wave with fresh invaders
+- Score tracking: +10 per invader destroyed, +5 for boss damage, +50 for boss kill
+- Per-difficulty best score tracking (persists during session)
+- Green explosion particle effects on invader destruction (expanding circle with inner white flash)
+- Subtle star field background for space atmosphere
+- Lives displayed as green dots at bottom of canvas during gameplay
+- 4 difficulty levels with same button styling as all other games:
+  - Easy: 3 rows of 6 invaders, slow movement (0.6), slow fire rate (every 120 frames), slow bullets (2.5), fast player shooting
+  - Medium: 4 rows of 8 invaders, medium movement (0.8), medium fire rate (80 frames), medium bullets (3)
+  - Hard: 5 rows of 8 invaders, fast movement (1.0), frequent fire (50 frames), fast bullets (4)
+  - Expert: 5 rows of 10 invaders, very fast movement (1.2), aggressive fire (35 frames), fast bullets (4.5), 2.5x speed-up factor as numbers thin, boss PEPE at top with HP bar (5+ HP, gains more each wave, red border)
+- Boss PEPE: larger sprite (56x56), red border, HP bar below it, takes multiple hits, worth 50 points
+- Stats bar shows Lives (red), Score (green), Wave (green), Best (yellow)
+- Responsive canvas sizing: min(85vw, 480px) width with aspect ratio preservation
+- touchAction: none on canvas to prevent scroll interference
+
+**Files created:**
+- `src/components/games/spaceinvaders/SpaceInvaders.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for SpaceInvaders, added to GAME_COMPONENTS and GAME_NAMES (as "Space Invaders")
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "spaceinvaders", name: "Space Invaders" }` to GAMES array
+- `README.md` — Added Space Invaders to Features list
+- `docs/SCOPE.md` — Updated Games section with Space Invaders description
+- `docs/TODO.md` — Added Phase 21 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- Space Invaders appears in Games dropdown in navbar (desktop and mobile)
+- Game opens in modal overlay with "Space Invaders" title, closes with X/Escape/backdrop click
+- No existing game code or components were modified

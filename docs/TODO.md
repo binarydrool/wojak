@@ -333,6 +333,34 @@
 
 ---
 
+## Phase 21: Space Invaders Game
+- [x] Create `src/components/games/spaceinvaders/SpaceInvaders.tsx` — canvas-based classic Space Invaders game
+- [x] Implement WOJAK avatar as player ship (circular, green border) at bottom of screen
+- [x] Implement PEPE avatar invaders arranged in rows at top of screen
+- [x] Implement desktop controls: Arrow left/right or A/D to move ship, spacebar to shoot
+- [x] Implement mobile controls: Touch drag to move ship, fire button or 2nd finger tap to shoot
+- [x] Implement invader group movement: side-to-side, drop down on reaching wall edge
+- [x] Implement invader random shooting with difficulty-scaled fire rate
+- [x] Implement player shooting with green (#00ff41) projectiles upward
+- [x] Implement enemy shooting with orange (#ff6b35) projectiles downward
+- [x] Implement collision detection: player bullets vs invaders, enemy bullets vs player
+- [x] Implement 3 lives system with invincibility frames after hit (player blinks)
+- [x] Implement game over if all lives lost or invaders reach player row
+- [x] Implement wave progression: all invaders destroyed = advance to next wave
+- [x] Implement score tracking (+10 per invader, +5 boss damage, +50 boss kill) and per-difficulty best score
+- [x] Implement explosion effects (green particle burst) on invader destruction
+- [x] Implement 4 difficulty levels (Easy/Medium/Hard/Expert) with same button style as other games
+- [x] Easy: 3 rows of 6 invaders, slow movement and fire rate, slow projectiles
+- [x] Medium: 4 rows of 8 invaders, medium movement and fire rate
+- [x] Hard: 5 rows of 8 invaders, fast movement, frequent invader fire, fast projectiles
+- [x] Expert: 5 rows of 10 invaders, very fast, aggressive fire, invaders speed up as numbers thin, boss PEPE with multi-hit HP bar
+- [x] Display score, lives, wave, and best score in stats bar using green accent
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)
