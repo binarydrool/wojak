@@ -1958,3 +1958,52 @@ Canvas-based classic Tetris game added as the sixth game in the Games dropdown.
 - `docs/SCOPE.md` — Updated Games section with Tetris description, moved Tetris from Future Games to active games list
 - `docs/TODO.md` — Added Phase 14 with all items checked off
 - `docs/PROGRESS.md` — This entry
+
+---
+
+## Phase 15: Connect Four Game — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+Classic Connect Four game added as the seventh game in the Games dropdown. Player (WOJAK) vs AI (PEPE) on a 7-column by 6-row grid.
+
+**Game mechanics:**
+- Standard 7x6 Connect Four grid
+- Player drops pieces by clicking/tapping a column
+- Pieces fall to the lowest available row with smooth step-by-step drop animation
+- First to connect 4 pieces horizontally, vertically, or diagonally wins
+- Winning 4 pieces highlighted with pulsing glow animation
+- Draw detection when board is full
+
+**Player branding (matches Chess and Pong):**
+- WOJAK (player): #00ff41 green pieces, avatar from /images/favicon.jpg
+- PEPE (AI): #ff4444 red pieces, avatar from /images/pepe1-4.jpg per difficulty
+- Player info row with avatars, names, turn indicators, and piece color previews
+- "thinking..." indicator when AI is calculating
+
+**AI difficulty levels:**
+- Beginner: Random moves with occasional center preference, blocks immediate wins
+- Advanced: Blocks wins, takes winning moves, uses positional board evaluation
+- Expert: Minimax with alpha-beta pruning, depth 4 lookahead
+- Master: Minimax with alpha-beta pruning, depth 6 lookahead, center column control preference
+
+**UI features:**
+- Difficulty buttons matching exact style of Chess/Pong/Breakout/Snake/Tetris
+- Hover column indicator (bouncing piece preview) on desktop
+- Game result overlay with Play Again button
+- New Game button to reset
+- Responsive board (85vw max, 420px cap)
+- Dark board background (#0d1117) with subtle cell backgrounds (#1a1f2e)
+- Circular pieces with inner shine highlight and glow shadows
+
+**Files created:**
+- `src/components/games/connectfour/ConnectFour.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for ConnectFour, added to GAME_COMPONENTS and GAME_NAMES
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "connectfour", name: "Connect Four" }` to GAMES array
+- `README.md` — Added Connect Four to Features list
+- `docs/SCOPE.md` — Updated Games section with Connect Four description, updated file structure
+- `docs/TODO.md` — Added Phase 15 with all items checked off
+- `docs/PROGRESS.md` — This entry

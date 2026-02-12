@@ -125,6 +125,7 @@ Games tab in navbar is a dropdown menu listing available games. Clicking a game 
 - **Pong** — Canvas-based Pong vs AI. Four difficulties (Beginner/Advanced/Expert/Master). Player (WOJAK, left paddle) vs AI (PEPE, right paddle). Mouse and touch controls. Ball and paddles use #00ff41 green. First to 5 points wins.
 - **Snake** — Canvas-based classic Snake. Four difficulties (Easy/Medium/Hard/Expert). Arrow keys/WASD on desktop, swipe gestures on mobile. Snake body uses #00ff41 green with gradient, food uses #ff4444 red. Score and high score tracking. Hard mode spawns random wall obstacles every 5 food eaten. Expert mode has smaller grid (15x15), faster speed, more obstacles, and food disappears after 7 seconds if not eaten.
 - **Tetris** — Canvas-based classic Tetris. Four difficulties (Easy/Medium/Hard/Expert). 10x20 grid with 7 standard tetrominoes, each in a distinct green shade (#00ff41, #00cc33, #009926, #006619, #33ff66, #00e639, #4dff7a). Ghost piece drop preview, next piece sidebar display. Arrow keys on desktop (left/right move, up/W rotate, down soft drop, space hard drop), tap/swipe on mobile. Line clear scoring with combo bonuses (single/double/triple/tetris), level progression every 10 lines. Lock delay system, wall kick rotation.
+- **Connect Four** — Classic Connect Four vs AI. Four difficulties (Beginner/Advanced/Expert/Master). Player (WOJAK, #00ff41 green) vs AI (PEPE, #ff4444 red) on a 7-column by 6-row grid. Click/tap a column to drop a piece with smooth drop animation. Minimax AI with alpha-beta pruning (depth 4 on Expert, depth 6 on Master). Winning line highlighting with glow effect. Responsive board with hover indicators.
 
 **Future Games (dropdown is ready):**
 - Find the Pair (memory match with crypto meme faces)
@@ -224,8 +225,10 @@ wojak-finance/
 │   │   │   │   └── Breakout.tsx
 │   │   │   ├── pong/
 │   │   │   │   └── Pong.tsx
-│   │   │   └── snake/
-│   │   │       └── Snake.tsx
+│   │   │   ├── snake/
+│   │   │   │   └── Snake.tsx
+│   │   │   └── connectfour/
+│   │   │       └── ConnectFour.tsx
 │   │   └── ui/
 │   │       ├── CopyButton.tsx
 │   │       ├── Badge.tsx

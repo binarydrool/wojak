@@ -211,6 +211,24 @@
 
 ---
 
+## Phase 15: Connect Four Game
+- [x] Create `src/components/games/connectfour/ConnectFour.tsx` — classic Connect Four vs AI (WOJAK vs PEPE)
+- [x] Implement 7-column by 6-row grid with piece drop animations
+- [x] Implement 4 difficulty levels (Beginner/Advanced/Expert/Master) with same button style as other games
+- [x] Beginner: AI picks randomly, occasionally blocks obvious wins
+- [x] Advanced: AI blocks player wins, takes winning moves, uses board evaluation
+- [x] Expert: AI uses minimax with alpha-beta pruning, depth 4
+- [x] Master: AI uses minimax with alpha-beta pruning, depth 6, center column preference
+- [x] Display WOJAK (#00ff41 green) and PEPE (#ff4444 red) avatars with names matching Chess/Pong pattern
+- [x] Highlight winning 4 pieces with glow animation when someone wins
+- [x] Display win/loss/draw result overlay with Play Again button
+- [x] Responsive board with hover column indicators, mobile tap support
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)
