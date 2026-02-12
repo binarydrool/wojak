@@ -85,6 +85,22 @@ html {
   animation: notification-pulse 2s ease-in-out infinite;
 }
 
+/* Games dropdown panel — fade-in + slide-down */
+@keyframes games-dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-games-dropdown-in {
+  animation: games-dropdown-in 0.15s ease-out;
+}
+
 .animate-title-shine {
   background-image: linear-gradient(
     110deg,

@@ -2677,3 +2677,66 @@ Classic War card game. WOJAK (player) vs PEPE (AI opponent).
 - SkiFree appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay with "SkiFree" title, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 29: Games Dropdown Redesign — 2026-02-12
+
+**Goal:** Replace the single-column Games dropdown with a wide categorized grid panel.
+
+**What was built:**
+
+1. **Categorized Grid Panel (Desktop)**
+   - Replaced narrow 48px-wide vertical list with a wide 620px+ 4-column grid panel
+   - Panel drops down from the Games nav item, right-aligned to prevent overflow
+   - Dark background (`bg-wojak-card` / #141414) with green border (#009926) and subtle green box-shadow
+   - Rounded corners (`rounded-xl`) matching site patterns
+   - Smooth fade-in + slide-down animation via CSS keyframes (`games-dropdown-in`, 150ms ease-out)
+   - Hover-triggered on desktop (same as before), click-triggered toggle still works
+
+2. **Four Category Columns**
+   - Column 1 — **Arcade**: Breakout, Pong, Snake, Flappy Bird, Space Invaders, SkiFree, Whack-a-PEPE (7 games)
+   - Column 2 — **Puzzle**: Minesweeper, Tetris, 2048, Simon Says (4 games)
+   - Column 3 — **Board**: Chess, Tic Tac Toe, Connect Four (3 games)
+   - Column 4 — **Card**: Solitaire, Blackjack, War, Texas Hold'em, Spades, Gin Rummy (6 games)
+   - Category headers: 11px uppercase, dim green (#00cc33 at 70% opacity), non-interactive labels
+
+3. **Category Icons (Inline SVGs, #00ff41 green, 14×14)**
+   - Arcade: gamepad icon (rectangle body, d-pad cross, two action buttons)
+   - Puzzle: puzzle piece outline (interlocking shape)
+   - Board: chess pawn silhouette (head, body, base tiers)
+   - Card: spade symbol (drop shape with stem and wings)
+   - Each game in a category shares the same icon to the left of the game name
+
+4. **Styling**
+   - Game names: `text-gray-300` default, `text-[#00ff41]` + `bg-white/5` on hover
+   - Consistent spacing: `gap-6` between columns, `space-y-0.5` between game items
+   - Each game button has `px-2 py-1.5` padding with rounded corners
+   - Panel padding: `p-5`
+
+5. **Mobile Layout**
+   - 2-column grid (`grid-cols-2`) with `gap-x-4 gap-y-4`
+   - Same categorized structure, same icons
+   - Click-triggered (no hover), rendered inline within hamburger menu
+   - Same smooth animation
+
+6. **Functionality Preserved**
+   - `handleGameClick(gameId)` → `openGame(gameId)` → GameModal — unchanged
+   - Outside click handler — unchanged
+   - Desktop hover enter/leave — unchanged
+   - Mobile `onGameOpen` callback for closing hamburger menu — unchanged
+   - Chevron rotation animation — unchanged
+
+**Files changed:**
+- `src/components/navbar/GamesDropdown.tsx` — Complete rewrite: GAMES flat array replaced with CATEGORIES array (4 categories with typed icon keys), CategoryIcon component with 4 inline SVGs, renderCategory helper, 4-column desktop grid panel, 2-column mobile grid
+- `src/app/globals.css` — Added `@keyframes games-dropdown-in` (opacity 0→1, translateY -4px→0) and `.animate-games-dropdown-in` class
+- `README.md` — Added Games Dropdown feature description
+- `docs/SCOPE.md` — Updated Navbar section and Games section with categorized dropdown details
+- `docs/TODO.md` — Added Phase 29 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile successfully
+- No game component files were modified
+- All 20 games still accessible via their same game IDs
+- Same GameContext/GameModal flow preserved

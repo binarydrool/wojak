@@ -571,6 +571,27 @@
 
 ---
 
+## Phase 29 — Games Dropdown Redesign ✓
+- [x] Replace single-column dropdown with wide categorized grid panel (4 columns)
+- [x] Column 1 — Arcade: Breakout, Pong, Snake, Flappy Bird, Space Invaders, SkiFree, Whack-a-PEPE
+- [x] Column 2 — Puzzle: Minesweeper, Tetris, 2048, Simon Says
+- [x] Column 3 — Board: Chess, Tic Tac Toe, Connect Four
+- [x] Column 4 — Card: Solitaire, Blackjack, War, Texas Hold'em, Spades, Gin Rummy
+- [x] Add category-specific inline SVG icons in #00ff41 green (gamepad, puzzle piece, chess pawn, spade)
+- [x] Dark panel background (bg-wojak-card) with green border (#009926) and green box-shadow
+- [x] Category headers: 11px uppercase, dim green (#00cc33/70), non-interactive labels
+- [x] Game hover state: text turns #00ff41 with subtle bg highlight
+- [x] Smooth fade-in + slide-down animation (games-dropdown-in CSS keyframes)
+- [x] Desktop: hover-triggered, right-aligned, 620px min-width, 4-column grid
+- [x] Mobile: click-triggered, 2-column grid within hamburger menu
+- [x] All game click handlers unchanged — same openGame(gameId) → GameModal flow
+- [x] Outside click and Escape still close dropdown
+- [x] Rounded corners (rounded-xl) matching site patterns
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

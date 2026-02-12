@@ -46,7 +46,7 @@ NEXT_PUBLIC_ETHERSCAN_API_KEY=your_key_here
 Fixed top navbar with:
 - WOJAK logo + "The OG WOJAK — Since April 2023" tagline
 - Nav links: **Dashboard** | **Crypto 101** | **Wojak TV** | **Games** (dropdown)
-- Games dropdown lists all available games. Clicking one opens a modal overlay.
+- Games dropdown opens a wide categorized grid panel with 4 columns (Arcade, Puzzle, Board, Card). Each game has a category-specific inline SVG icon in #00ff41 green. Panel has dark background, subtle green border (#009926), rounded corners, and smooth fade-in animation. Mobile layout uses a 2-column grid. Clicking a game opens a modal overlay.
 - Buy WOJAK button links to the on-page CoW Swap widget or scrolls to swap section.
 
 ---
@@ -111,12 +111,13 @@ Curated YouTube content from Wojak-related channels.
 ---
 
 ### 4. Games (Modal Overlay System)
-Games tab in navbar is a dropdown menu listing available games. Clicking a game opens a full-screen modal overlay with an X button to close. Play until done, close, back to site.
+Games tab in navbar opens a wide categorized grid panel with 4 columns: **Arcade** (Breakout, Pong, Snake, Flappy Bird, Space Invaders, SkiFree, Whack-a-PEPE), **Puzzle** (Minesweeper, Tetris, 2048, Simon Says), **Board** (Chess, Tic Tac Toe, Connect Four), **Card** (Solitaire, Blackjack, War, Texas Hold'em, Spades, Gin Rummy). Each game has a category-specific inline SVG icon (gamepad for Arcade, puzzle piece for Puzzle, chess pawn for Board, spade for Card) in #00ff41 green. Clicking a game opens a full-screen modal overlay with an X button to close. Play until done, close, back to site. Desktop panel uses hover-triggered dropdown with right-aligned positioning; mobile uses a 2-column grid within the hamburger menu.
 
 **Architecture:**
 - `GameModal` component wraps any game component
 - Games are lazy-loaded React components
-- Easy to add new games: create component, add to dropdown list
+- Games organized into 4 categories in `GamesDropdown.tsx` with inline SVG icons per category
+- Easy to add new games: create component, add to appropriate category in dropdown
 
 **Games:**
 - **Wojak Minesweeper** — Classic minesweeper. Wojak face is the bomb/mine. Grid sizes: Easy (9x9, 10 mines), Medium (16x16, 40 mines), Hard (30x16, 99 mines). Timer and mine counter. Wojak expressions change based on game state (happy, nervous, dead).
