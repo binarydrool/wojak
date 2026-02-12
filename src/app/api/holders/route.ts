@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const OG_WOJAK_CONTRACT = "0x5026F006B85729a8b14553FAE6af249aD16c9aaB";
-const ETHERSCAN_TOKEN_URL = `https://etherscan.io/token/${OG_WOJAK_CONTRACT}`;
+const ETHPLORER_URL = `https://api.ethplorer.io/getTokenInfo/${OG_WOJAK_CONTRACT}?apiKey=freekey`;
 
 // Minimum sane holder count — anything below this is obviously wrong
 const MIN_HOLDER_THRESHOLD = 1000;
@@ -11,72 +11,28 @@ let cachedHolders: number | null = null;
 let cachedAt: number = 0;
 const CACHE_TTL = 60 * 60 * 1000; // 1 hour
 
-async function scrapeHolderCount(): Promise<number | null> {
+async function fetchHolderCount(): Promise<number | null> {
   try {
-    const res = await fetch(ETHERSCAN_TOKEN_URL, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-        Accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.9",
-      },
+    const res = await fetch(ETHPLORER_URL, {
       cache: "no-store",
     });
 
     if (!res.ok) {
-      console.error(`[holders] Etherscan returned HTTP ${res.status}`);
+      console.error(`[holders] Ethplorer returned HTTP ${res.status}`);
       return null;
     }
 
-    const html = await res.text();
+    const data = await res.json();
 
-    if (html.length < 10000) {
-      console.warn(`[holders] Response too small (${html.length} bytes) — likely captcha/block`);
-      return null;
+    if (typeof data.holdersCount === "number" && data.holdersCount >= MIN_HOLDER_THRESHOLD) {
+      console.log(`[holders] Ethplorer returned holdersCount=${data.holdersCount}`);
+      return data.holdersCount;
     }
 
-    // Ordered by reliability — simplest/most stable patterns first
-    const patterns: { name: string; regex: RegExp; group: number }[] = [
-      // Pattern 1: Meta description tag — most stable, always present
-      // <meta name="Description" content="...Holders: 19,504 |..."
-      {
-        name: "meta description",
-        regex: /Holders:\s*([\d]{1,3}(?:,\d{3})+)/i,
-        group: 1,
-      },
-      // Pattern 2: tokenHolders div — the actual holder section on the page
-      // <div id="ContentPlaceHolder1_tr_tokenHolders">...<div>\n 19,504  <span
-      {
-        name: "tokenHolders div",
-        regex: /tr_tokenHolders[\s\S]{0,300}?>\s*([\d]{1,3}(?:,\d{3})+)\s/,
-        group: 1,
-      },
-      // Pattern 3: Number followed by percentage change — "19,504  <span...>(-0.031%)"
-      {
-        name: "number with pct change",
-        regex: /([\d]{1,3}(?:,\d{3})+)\s+<span[^>]*>.*?[\d.]+%/,
-        group: 1,
-      },
-    ];
-
-    for (const { name, regex, group } of patterns) {
-      const match = html.match(regex);
-      if (match) {
-        const value = parseInt(match[group].replace(/,/g, ""), 10);
-        if (isNaN(value)) continue;
-        console.log(`[holders] Pattern "${name}" matched: raw="${match[group]}" parsed=${value}`);
-        if (value >= MIN_HOLDER_THRESHOLD) {
-          return value;
-        }
-        console.warn(`[holders] Pattern "${name}" returned ${value} — below threshold, skipping`);
-      }
-    }
-
-    console.warn("[holders] No pattern matched a valid holder count");
+    console.warn(`[holders] Ethplorer holdersCount missing or invalid:`, data.holdersCount);
     return null;
   } catch (err) {
-    console.error("[holders] Scrape error:", err);
+    console.error("[holders] Ethplorer fetch error:", err);
     return null;
   }
 }
@@ -100,7 +56,7 @@ export async function GET() {
     );
   }
 
-  const holders = await scrapeHolderCount();
+  const holders = await fetchHolderCount();
 
   if (holders !== null && holders >= MIN_HOLDER_THRESHOLD) {
     cachedHolders = holders;
@@ -109,7 +65,7 @@ export async function GET() {
     return NextResponse.json(
       {
         holders,
-        source: "etherscan",
+        source: "ethplorer",
         lastUpdated: new Date(now).toISOString(),
       },
       {
@@ -120,7 +76,7 @@ export async function GET() {
     );
   }
 
-  // Scrape failed — return stale cached value if we have one
+  // Fetch failed — return stale cached value if we have one
   if (cachedHolders !== null && cachedHolders >= MIN_HOLDER_THRESHOLD) {
     return NextResponse.json(
       {
