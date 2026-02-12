@@ -2,7 +2,7 @@
 
 **The OG WOJAK — Since April 2023**
 
-Official community website for the original WOJAK token on Ethereum. Dashboard, education hub, migration analysis, and 16 games for 14,000+ OG WOJAK holders.
+Official community website for the original WOJAK token on Ethereum. Dashboard, education hub, migration analysis, and 17 games for 14,000+ OG WOJAK holders.
 
 ## About
 
@@ -29,6 +29,7 @@ wojak.io serves the holders of the original WOJAK token (`0x5026F006B85729a8b145
 - **Solitaire** — Classic Klondike Solitaire with two draw modes (Draw 1/Draw 3), 7 tableau columns, 4 foundation piles built by suit from Ace to King, click-to-select and click-destination to move, double-click to auto-send to foundation, undo support, move counter and timer, dark-themed cards with green suit symbols, mobile tap-tap interface, win animation with play again option
 - **Texas Hold'em** — Texas Hold'em Poker with WOJAK (player) vs 3 PEPE AI opponents, four difficulty levels (Beginner/Advanced/Expert/Master), standard 52-card deck with full Texas Hold'em rules (pre-flop, flop, turn, river, showdown), player actions (Fold/Check/Call/Raise/All-In) with raise slider and quick presets, 1000 starting chips per player, rotating blinds, AI opponents with distinct personalities (tight/loose/balanced), community card flip animations, hand evaluation with winning hand display, pot distribution, game over and win screens, fully responsive with touch support
 - **Spades** — Classic 4-player Spades card game with WOJAK partnered with AI teammate (ALLY) vs 2 PEPE AI opponents, four difficulty levels (Beginner/Advanced/Expert/Master), standard 52-card deck dealt evenly (13 cards each), bidding phase with clickable number buttons (0-13), trick-taking with follow-suit rules and spades as trump, spades-broken mechanic, valid plays highlighted with invalid cards dimmed, tap-to-select-then-tap-to-play interface, team scoring (10 pts per bid trick met, 1 pt per overtrick bag, -10 per bid trick if failed), nil bids (100/-100 pts), 10-bag penalty (-100 pts), round-end scorecard summaries, first to 500 wins, AI with difficulty-scaled bidding and card play strategy, fully responsive with touch support
+- **Gin Rummy** — Classic Gin Rummy card game with WOJAK (player) vs PEPE AI opponent, four difficulty levels (Beginner/Advanced/Expert/Master), standard 52-card deck with 10 cards dealt to each player, draw from stock or discard pile, form melds (sets of same rank, runs of consecutive same-suit cards), drag to rearrange hand, knock when deadwood is 10 or less, Gin bonus (25 pts) for melding all cards, undercut bonus (25 pts) if defender has equal or less deadwood, layoff phase after opponent knocks, multi-round scoring to 100 points, round-end scorecard with melds displayed, fully responsive with touch support
 
 ## Tech Stack
 

@@ -20,6 +20,7 @@ const GAMES = [
   { id: "solitaire", name: "Solitaire" },
   { id: "texasholdem", name: "Texas Hold'em" },
   { id: "spades", name: "Spades" },
+  { id: "ginrummy", name: "Gin Rummy" },
 ];
 
 interface GamesDropdownProps {

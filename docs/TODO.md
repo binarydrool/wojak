@@ -440,6 +440,33 @@
 
 ---
 
+## Phase 25 — Gin Rummy Game ✓
+- [x] Create `src/components/games/ginrummy/GinRummy.tsx` component
+- [x] Classic 2-player Gin Rummy: WOJAK (player) vs PEPE (AI opponent)
+- [x] Four difficulty levels (Beginner/Advanced/Expert/Master)
+- [x] Standard 52-card deck, 10 cards dealt to each player
+- [x] Stock pile and discard pile centered between player hands
+- [x] Draw from stock or discard pile by clicking/tapping
+- [x] Discard by clicking/tapping a card or dragging to discard pile
+- [x] Drag to rearrange hand for visual meld grouping
+- [x] Mobile: tap to draw, tap to discard, hold and drag to rearrange
+- [x] Meld detection: sets (3-4 same rank) and runs (3+ consecutive same suit)
+- [x] Knock button activates when deadwood ≤ 10
+- [x] Gin detection (0 deadwood) with 25-point bonus
+- [x] Layoff phase: after opponent knocks, player can lay off cards on knocker's melds
+- [x] Undercut: defender gets 25-point bonus if deadwood ≤ knocker's after layoffs
+- [x] Multi-round scoring to 100 points
+- [x] Round-end scorecard showing melds, deadwood, points awarded
+- [x] Draw round when stock depletes to 2 cards with no knock
+- [x] AI difficulty scaling: Beginner draws/discards randomly, Master tracks discards and infers hand
+- [x] Card styling matching other card games: dark bg, green spades/clubs, white hearts/diamonds
+- [x] WOJAK and PEPE avatars from existing project images
+- [x] Register in GameModal.tsx (lazy import) and GamesDropdown.tsx (GAMES array)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

@@ -2435,3 +2435,48 @@ Classic 4-player Spades card game. WOJAK (player) partnered with AI teammate (AL
 - Spades appears in Games dropdown in navbar (desktop and mobile)
 - Game opens in modal overlay with "Spades" title, closes with X/Escape/backdrop click
 - No existing game code or components were modified
+
+---
+
+## Phase 25: Gin Rummy Game — 2026-02-12
+
+**What was built:**
+Classic 2-player Gin Rummy card game. WOJAK (player) vs PEPE (AI opponent).
+
+**Game features:**
+- Four difficulty levels (Beginner/Advanced/Expert/Master) with same button styling as other games
+- Standard 52-card deck, 10 cards dealt to each player, remaining form stock pile, top card flipped to discard
+- Draw from stock pile or discard pile by clicking/tapping
+- Discard by clicking a card (tap to select, tap again to confirm) or dragging to discard pile
+- Drag to rearrange cards in hand for visual meld grouping (desktop drag-and-drop, mobile hold-and-drag)
+- Meld detection: sets (3-4 cards of same rank) and runs (3+ consecutive cards of same suit)
+- Optimal meld arrangement algorithm finds combination with lowest deadwood
+- Knock button appears when deadwood ≤ 10, styled with green accent
+- Gin detection (0 deadwood, all cards melded) with special "GIN!" button and 25-point bonus
+- After opponent knocks (non-Gin), player enters layoff phase to lay off cards on knocker's melds
+- Undercut: if defender's deadwood ≤ knocker's after layoffs, defender gets 25-point undercut bonus plus difference
+- Multi-round scoring, first to 100 points wins
+- Round-end scorecard showing both players' melds, deadwood cards, deadwood totals, and points awarded
+- Draw round when stock pile depletes to 2 cards with no knock (no points awarded)
+- Game over overlay with winner avatar, final scores, meld display, and Play Again button
+- AI difficulty scaling:
+  - Beginner: draws randomly, discards highest deadwood, knocks as soon as possible
+  - Advanced: draws from discard when it helps form melds, strategic discards
+  - Expert: tracks discards, avoids discarding cards player likely needs, holds for gin longer
+  - Master: infers player hand from discards, avoids feeding melds, baits discards, optimizes gin vs knock timing
+- WOJAK and PEPE avatars from existing project images (/images/wojak.jpg, /images/pepe1.jpg)
+- Card styling matching other card games: dark bg (#0d1117), green (#00ff41) for spades/clubs, white for hearts/diamonds
+- Card backs with green diagonal pattern and "W" logo
+- Score panel with avatars showing both players' running scores and round number
+- Fully responsive with mobile tap and hold-drag support
+
+**Files created:**
+- `src/components/games/ginrummy/GinRummy.tsx` — Full game component (single file, self-contained)
+
+**Files changed:**
+- `src/components/games/GameModal.tsx` — Added lazy import for GinRummy, added to GAME_COMPONENTS and GAME_NAMES (as "Gin Rummy")
+- `src/components/navbar/GamesDropdown.tsx` — Added `{ id: "ginrummy", name: "Gin Rummy" }` to GAMES array
+- `README.md` — Updated game count to 17, added Gin Rummy to Features list
+- `docs/SCOPE.md` — Added Gin Rummy description to Games section
+- `docs/TODO.md` — Added Phase 25 with all items checked off
+- `docs/PROGRESS.md` — This entry
