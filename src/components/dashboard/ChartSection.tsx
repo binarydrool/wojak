@@ -121,7 +121,7 @@ function TVLPanel({ data, loading }: { data: PoolData | null; loading: boolean }
       </div>
 
       {/* 4-column info grid */}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <div className="bg-black/20 border border-wojak-border rounded-lg p-2 text-center">
           <p className="text-[10px] text-gray-500 mb-0.5">Pool Type</p>
           <p className="text-xs font-semibold text-white">Uniswap V2</p>

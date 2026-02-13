@@ -45,7 +45,7 @@ NEXT_PUBLIC_ETHERSCAN_API_KEY=your_key_here
 ### Navbar
 Fixed top navbar with:
 - WOJAK logo + "The OG WOJAK — Since April 2023" tagline
-- Nav links: **Dashboard** | **Crypto 101** | **Wojak TV** | **Games** (dropdown)
+- Nav links: **Dashboard** | **About** (external, opens https://wojak.io in new tab) | **Crypto 101** | **Wojak TV** | **Games** (dropdown)
 - Games dropdown opens a wide categorized grid panel with 4 columns (Arcade, Puzzle, Board, Card). Each game has a category-specific inline SVG icon in #00ff41 green. Panel has dark background, subtle green border (#009926), rounded corners, and smooth fade-in animation. Mobile layout uses a 2-column grid. Clicking a game opens a modal overlay.
 - Buy WOJAK button links to the on-page CoW Swap widget or scrolls to swap section.
 

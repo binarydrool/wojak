@@ -8,6 +8,7 @@ import { SITE_TAGLINE } from "@/lib/constants";
 
 const NAV_LINKS = [
   { href: "/", label: "Dashboard" },
+  { href: "https://wojak.io", label: "About", external: true },
   { href: "/crypto-101", label: "Crypto 101" },
   { href: "/migration-report", label: "Migration Report", notify: true },
   { href: "/wojak-tv", label: "Wojak TV" },
@@ -33,22 +34,34 @@ export default function Navbar() {
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-6">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`relative text-sm transition-colors ${
-                  pathname === link.href
-                    ? "text-white font-medium"
-                    : "text-gray-300 hover:text-white"
-                }`}
-              >
-                {link.label}
-                {link.notify && (
-                  <span className="absolute -top-1 -right-2 w-2 h-2 bg-wojak-green rounded-full animate-notification-pulse" />
-                )}
-              </Link>
-            ))}
+            {NAV_LINKS.map((link) =>
+              link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-300 hover:text-white transition-colors"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`relative text-sm transition-colors ${
+                    pathname === link.href
+                      ? "text-white font-medium"
+                      : "text-gray-300 hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                  {link.notify && (
+                    <span className="absolute -top-1 -right-2 w-2 h-2 bg-wojak-green rounded-full animate-notification-pulse" />
+                  )}
+                </Link>
+              )
+            )}
             <GamesDropdown />
           </div>
 
@@ -78,23 +91,36 @@ export default function Navbar() {
         {/* Mobile Menu */}
         {mobileOpen && (
           <div className="md:hidden border-t border-wojak-border py-4 space-y-1">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={closeMobileMenu}
-                className={`relative block px-3 py-2 rounded-lg text-sm transition-colors ${
-                  pathname === link.href
-                    ? "text-white bg-white/5 font-medium"
-                    : "text-gray-300 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                {link.label}
-                {link.notify && (
-                  <span className="inline-block ml-2 w-2 h-2 bg-wojak-green rounded-full animate-notification-pulse" />
-                )}
-              </Link>
-            ))}
+            {NAV_LINKS.map((link) =>
+              link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={closeMobileMenu}
+                  className="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={closeMobileMenu}
+                  className={`relative block px-3 py-2 rounded-lg text-sm transition-colors ${
+                    pathname === link.href
+                      ? "text-white bg-white/5 font-medium"
+                      : "text-gray-300 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {link.label}
+                  {link.notify && (
+                    <span className="inline-block ml-2 w-2 h-2 bg-wojak-green rounded-full animate-notification-pulse" />
+                  )}
+                </Link>
+              )
+            )}
             <div className="px-3 py-2">
               <GamesDropdown onGameOpen={closeMobileMenu} mobile />
             </div>

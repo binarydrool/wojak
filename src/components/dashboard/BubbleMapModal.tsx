@@ -119,52 +119,6 @@ function createBubbles(
   });
 }
 
-function runSimulation(bubbles: Bubble[], steps: number): void {
-  for (let step = 0; step < steps; step++) {
-    // Fade in during first half of simulation
-    const fadeT = Math.min(1, (step / steps) * 3);
-
-    for (let i = 0; i < bubbles.length; i++) {
-      const a = bubbles[i];
-      a.opacity = Math.min(1, fadeT);
-
-      // Attract to center
-      const dx = a.targetX - a.x;
-      const dy = a.targetY - a.y;
-      a.vx += dx * ATTRACTION;
-      a.vy += dy * ATTRACTION;
-
-      // Repel from other bubbles
-      for (let j = i + 1; j < bubbles.length; j++) {
-        const b = bubbles[j];
-        const ddx = a.x - b.x;
-        const ddy = a.y - b.y;
-        const dist = Math.sqrt(ddx * ddx + ddy * ddy) || 1;
-        const minDist = a.r + b.r + 3;
-
-        if (dist < minDist) {
-          const force = ((minDist - dist) / dist) * REPULSION;
-          const fx = ddx * force;
-          const fy = ddy * force;
-          a.vx += fx;
-          a.vy += fy;
-          b.vx -= fx;
-          b.vy -= fy;
-        }
-      }
-
-      // Apply velocity with damping
-      a.vx *= DAMPING;
-      a.vy *= DAMPING;
-      a.x += a.vx;
-      a.y += a.vy;
-    }
-  }
-
-  // Ensure all fully visible after simulation
-  for (const b of bubbles) b.opacity = 1;
-}
-
 /* ── Canvas rendering ── */
 
 function drawBubbles(
@@ -319,8 +273,6 @@ export default function BubbleMapModal({ onClose }: { onClose: () => void }) {
     y: number;
     bubble: Bubble;
   } | null>(null);
-  const [animStep, setAnimStep] = useState(0);
-
   // Fetch holder data
   useEffect(() => {
     let cancelled = false;
@@ -419,7 +371,6 @@ export default function BubbleMapModal({ onClose }: { onClose: () => void }) {
           }
         }
         step = end;
-        setAnimStep(step);
       }
 
       const ctx = canvas.getContext("2d");

@@ -41,21 +41,6 @@ html {
   -webkit-touch-callout: none;
 }
 
-/* Continuous scrolling reel animation — seamless infinite loop */
-@keyframes scroll-reel {
-  0% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.animate-scroll-reel {
-  animation: scroll-reel 30s linear infinite;
-  animation-timing-function: linear;
-}
-
 /* "The One True WOJAK" title animation — green glare sweep only, no scale */
 @keyframes title-shine {
   0% {
@@ -177,6 +162,27 @@ html {
 
 .shield-fill-anim {
   animation: shieldFillIn 4s ease-out both;
+}
+
+/* Subtitle crossfade — two phrases alternate with smooth 1s fades, 38s total cycle */
+@keyframes subtitle-fade-1 {
+  0%, 47.37% { opacity: 1; }
+  50%, 97.37% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes subtitle-fade-2 {
+  0%, 47.37% { opacity: 0; }
+  50%, 97.37% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.animate-subtitle-fade-1 {
+  animation: subtitle-fade-1 38s ease-in-out infinite;
+}
+
+.animate-subtitle-fade-2 {
+  animation: subtitle-fade-2 38s ease-in-out infinite;
 }
 
 .animate-title-shine {

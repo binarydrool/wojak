@@ -801,6 +801,34 @@
 
 ---
 
+## Phase 46 — Hero Subtitle Pure CSS Crossfade ✓
+- [x] Replace JavaScript setInterval/setTimeout subtitle rotation with pure CSS @keyframes crossfade
+- [x] Two overlapping `<p>` elements with staggered `subtitle-fade-1` / `subtitle-fade-2` animations
+- [x] 38-second total cycle: 18s phrase 1 visible → 1s fade → 18s phrase 2 visible → 1s fade → repeat
+- [x] Invisible spacer element sized to the longer phrase prevents layout shift
+- [x] Removed useState, useEffect, setInterval, setTimeout — zero JavaScript timers
+- [x] Same font size, weight, color, position, text-shadow as before
+- [x] Phrases unchanged: "I know that feel, bro." / "The most recognized face on the internet."
+- [x] No other components modified
+- [x] Update PROGRESS.md
+- [x] Verify TypeScript compiles — zero errors
+
+---
+
+## Phase 47 — Fix Banner Image Marquee Seamless Loop ✓
+- [x] Delete old `@keyframes scroll-reel` (translateX -50% → 0) and `.animate-scroll-reel` from globals.css
+- [x] Add new `@keyframes marqueeScroll` using standard technique: translateX(0) → translateX(-50%)
+- [x] Add `.animate-marquee-scroll` class with 30s linear infinite
+- [x] Update ImageReel.tsx to use new `animate-marquee-scroll` class with `w-fit` container
+- [x] Remove inline `willChange` style — pure CSS only
+- [x] Duplicate image structure preserved: 10 images × 2 sets in single flex row
+- [x] No changes to image sizes, order, subtitle text, heading, or overlay
+- [x] No JavaScript scroll logic — pure CSS animation
+- [x] Update PROGRESS.md
+- [x] Update TODO.md
+
+---
+
 ## Phase 43 — Chart Tab Inactive Text Brightness ✓
 - [x] Change inactive tab text color in ChartSection.tsx from `text-gray-500` to `text-gray-400`
 - [x] Applies to both the regular TABS buttons (Chart, Transactions, TVL, Volume) and the Bubble Map button
@@ -809,6 +837,70 @@
 - [x] Hover state (`hover:text-gray-300`) unchanged
 - [x] Update PROGRESS.md
 - [x] Verify TypeScript compiles — zero errors
+
+---
+
+## Phase 48 — Banner Image Conveyor Belt Rewrite ✓
+- [x] Delete ALL old CSS marquee animation code (`@keyframes marqueeScroll`, `.animate-marquee-scroll`) from globals.css
+- [x] Delete old duplicate-and-translate approach from ImageReel.tsx (flex container, `w-fit`, `animate-marquee-scroll`)
+- [x] Implement new individual image conveyor belt using `requestAnimationFrame` for 60fps animation
+- [x] Each image positioned with `position: absolute` inside a `position: relative` container with `overflow: hidden`
+- [x] Each image tracks its own X position in a ref array (no React state, no re-renders)
+- [x] Images scroll left-to-right (matching original direction from Phase 1) at 100px/sec using delta-time for framerate independence
+- [x] When an image's left edge passes the container's right edge, it gets recycled to the left of the leftmost image
+- [x] Initial positions centered on viewport with automatic recycling of off-screen-right images on first frame
+- [x] Direct DOM manipulation via `element.style.transform` for performance
+- [x] Delta-time capped at 100ms to prevent jumps when tab is backgrounded
+- [x] Proper cleanup: `cancelAnimationFrame` on component unmount via useEffect return
+- [x] All 20 image elements (10 source images × 2) used for full viewport coverage
+- [x] Image heights/styling unchanged: `h-[150px] sm:h-[175px] md:h-[200px]`
+- [x] Heading text, subtitle crossfade, ETH diamond logo, gradient overlay — all completely untouched
+- [x] Update TODO.md, PROGRESS.md
+- [x] Verify TypeScript compiles — zero errors (only pre-existing warnings)
+
+---
+
+## Phase 49 — Banner Scroll Speed Reduction ✓
+- [x] Reduce `SCROLL_SPEED` in ImageReel.tsx from 100px/sec to 50px/sec
+- [x] Gentle, relaxed drift feel instead of fast conveyor belt
+- [x] No other banner logic, styling, or components modified
+- [x] Update TODO.md, PROGRESS.md
+
+---
+
+## Phase 50 — Banner Scroll Speed Further Reduction ✓
+- [x] Reduce `SCROLL_SPEED` in ImageReel.tsx from 50px/sec to 25px/sec
+- [x] Very gentle, barely noticeable drift
+- [x] No other banner logic, styling, or components modified
+- [x] Update TODO.md, PROGRESS.md
+
+---
+
+## Phase 51 — Final Polish & Production Readiness ✓
+- [x] **Banner gap fix**: Rewrite ImageReel.tsx conveyor belt to dynamically calculate needed image count based on container width, duplicate image array as many times as needed, tile from off-screen left to beyond right edge, recycle immediately adjacent with zero gap, handle window resize
+- [x] **Console cleanup**: Remove console.log from holders route, console.warn from holders/list route, replace console.error in WojakTV with silent catch
+- [x] **Dead code removal**: Delete unused `DextScore.tsx` component (replaced by `DextScoreInline`), remove unused `runSimulation()` function from BubbleMapModal, remove unused `animStep` state variable from BubbleMapModal
+- [x] **Unused parameter fix**: Remove unused `error` parameter from global-error.tsx
+- [x] **Meta tags**: Add `metadataBase` URL to layout.tsx metadata (fixes Next.js build warning), add og:image and twitter:images to metadata
+- [x] **Lazy loading**: Add `loading="lazy"` to SwapCard wojak.jpg image, WojakTV thumbnail images
+- [x] **Responsive fix**: Change TVL panel 4-column info grid to 2-col on mobile (`grid-cols-2 sm:grid-cols-4`)
+- [x] **Link audit**: Verified all 24 external links use `target="_blank" rel="noopener noreferrer"`
+- [x] **useEffect cleanup audit**: Verified all intervals, timeouts, requestAnimationFrame, and event listeners have proper cleanup functions
+- [x] **TypeScript audit**: Zero `any` types in codebase, zero TODO/FIXME comments in source
+- [x] **Build verification**: `npm run build` — zero errors, zero metadataBase warnings
+- [x] Update TODO.md, PROGRESS.md
+
+---
+
+## Phase 52 — Navbar About Link ✓
+- [x] Add "About" external link to NAV_LINKS array in Navbar.tsx between Dashboard and Crypto 101
+- [x] About links to https://wojak.io, opens in new tab (target="_blank" rel="noopener noreferrer")
+- [x] Render external links with `<a>` tag instead of Next.js `<Link>` component
+- [x] Desktop nav: styled identically to other nav links (text-sm, text-gray-300, hover:text-white)
+- [x] Mobile hamburger menu: About link appears in same position with same styling as other mobile nav links
+- [x] Nav order: Dashboard, About, Crypto 101, Migration Report, Wojak TV, Games
+- [x] Update SCOPE.md, TODO.md, PROGRESS.md
+- [x] No other components modified
 
 ---
 

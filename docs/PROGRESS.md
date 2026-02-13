@@ -3330,3 +3330,274 @@ The hero banner subtitle loop (2 phrases cycling every 18 seconds) would visibly
 **Verified:**
 - TypeScript compiles with zero errors
 - Only ImageReel.tsx was modified — no changes to any other components
+
+---
+
+## Phase 46 — Hero Subtitle Pure CSS Crossfade — 2026-02-12
+
+**Status:** Complete
+
+**Problem:**
+The Phase 45 fix addressed orphaned timeouts but the subtitle rotation still relied on JavaScript timers (`setInterval` + `setTimeout`), which are inherently fragile under React strict mode, HMR remounts, and tab-backgrounding throttling. A pure CSS approach eliminates all timer-based failure modes.
+
+**What was changed:**
+
+1. **`src/app/globals.css`:**
+   - Added `@keyframes subtitle-fade-1` — opacity 1 for 18s, fades to 0 over 1s, stays hidden 18s, fades back in over 1s (38s total cycle, infinite)
+   - Added `@keyframes subtitle-fade-2` — exact inverse of fade-1 (hidden while phrase 1 shows, visible while phrase 1 is hidden)
+   - Added `.animate-subtitle-fade-1` and `.animate-subtitle-fade-2` utility classes
+
+2. **`src/components/dashboard/ImageReel.tsx`:**
+   - Removed `useState` and `useEffect` imports from React
+   - Removed `subtitleIndex` state, `visible` state, and the entire `useEffect` with `setInterval`/`setTimeout`
+   - Replaced single `<p>` subtitle with a `relative` wrapper containing:
+     - An invisible spacer `<p>` sized to the longer phrase (prevents layout shift)
+     - Two absolutely positioned `<p>` elements with `animate-subtitle-fade-1` and `animate-subtitle-fade-2` classes
+   - Both phrases use the same font classes (`text-lg sm:text-xl md:text-2xl font-semibold text-gray-200`) and text-shadow as before
+
+**Files changed:**
+- `src/components/dashboard/ImageReel.tsx` — removed JS timer logic, added CSS-animated dual phrases
+- `src/app/globals.css` — added subtitle crossfade keyframes and utility classes
+- `docs/TODO.md` — added Phase 46
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- TypeScript compiles with zero errors (`npx next build` succeeds)
+- No changes to any other components, banner images, heading, or layout
+
+---
+
+## Phase 47 — Fix Banner Image Marquee Seamless Loop — 2026-02-12
+
+**Status:** Complete
+
+**Problem:**
+The hero banner image marquee (scrolling strip of wojak meme images behind "The One True WOJAK" text) jumped/reset visibly when the animation cycle restarted instead of looping seamlessly. The old animation translated from `-50%` to `0`, which caused a visible snap when resetting back to `-50%`.
+
+**What was changed:**
+
+1. **`src/app/globals.css`:**
+   - Deleted old `@keyframes scroll-reel` (translateX -50% → 0) and `.animate-scroll-reel` class
+   - Added `@keyframes marqueeScroll` using the standard seamless technique: translateX(0) → translateX(-50%)
+   - Added `.animate-marquee-scroll` utility class with `30s linear infinite` (same speed as before)
+   - The 0 → -50% direction means: at 0% the first image set is visible, at 100% the second (identical) set is visible — the snap back to 0% is invisible because both sets are identical
+
+2. **`src/components/dashboard/ImageReel.tsx`:**
+   - Replaced `animate-scroll-reel` class with `animate-marquee-scroll`
+   - Added `w-fit` to the flex container for proper width calculation
+   - Removed inline `willChange: "transform"` style (unnecessary with pure CSS animation)
+   - Image structure unchanged: 10 images duplicated (20 total) in a single flex row
+   - All image sizes, order, styling, and responsive breakpoints unchanged
+
+**Technique:**
+Classic infinite marquee: render images [1-10, 1-10] in a flex row, animate container from translateX(0) to translateX(-50%) with linear timing. At -50%, the view is identical to 0%, so the loop restart is invisible.
+
+**Files changed:**
+- `src/components/dashboard/ImageReel.tsx` — updated animation class, added w-fit
+- `src/app/globals.css` — replaced scroll-reel keyframes with marqueeScroll
+- `docs/TODO.md` — added Phase 47
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- No JavaScript driving the scroll — pure CSS animation only
+- No changes to subtitle text rotation, heading, overlay, or any other components
+
+---
+
+## Phase 48 — Banner Image Conveyor Belt Rewrite — 2026-02-12
+
+**Status:** Complete
+
+**Problem:**
+The CSS-based marquee approach (Phase 47) using `translateX(0) → translateX(-50%)` on a duplicated image strip still produced visual glitches — jumps, resets, and wrong scroll direction. The fundamental approach of animating one long strip with `translateX` is fragile across browsers and viewport sizes. A completely different technique was needed.
+
+**New Approach:**
+Replaced the single-strip CSS animation with an individual image conveyor belt system. Each image is independently positioned and animated using `requestAnimationFrame` with direct DOM manipulation. No CSS keyframes drive the scroll — it's entirely JavaScript-controlled for pixel-perfect behavior.
+
+**What was changed:**
+
+1. **`src/app/globals.css`:**
+   - Deleted `@keyframes marqueeScroll` (translateX 0 → -50%) and `.animate-marquee-scroll` class
+   - All subtitle, title-shine, rolodex, dropdown, and other animations untouched
+
+2. **`src/components/dashboard/ImageReel.tsx`:**
+   - Complete rewrite of image scrolling mechanism
+   - Removed old approach: flex container with `w-fit animate-marquee-scroll` and two duplicate `IMAGES.map()` renders
+   - New approach: `position: relative` container with 20 `position: absolute` images (10 source × 2 for coverage)
+   - Each image's X position tracked in a plain array (not React state — zero re-renders)
+   - `requestAnimationFrame` loop moves all images rightward each frame using delta-time (`SCROLL_SPEED = 100` px/sec)
+   - Framerate-independent: uses `performance.now()` timestamps, not per-frame pixel increments
+   - Delta-time capped at 100ms to prevent huge jumps when tab is backgrounded/restored
+   - When an image's left edge exceeds container width (fully off-screen right), it's recycled to `leftmostX - imageWidth`
+   - Multiple recycling events per frame handled correctly: processed rightmost-first so they stack contiguously on the left
+   - Initial positions: images arranged in a contiguous strip centered on the viewport, off-screen-right images immediately recycled
+   - Widths cached after all images load (checked via `img.complete && img.naturalWidth > 0`)
+   - Cleanup: `cancelAnimationFrame` called on unmount, `running` flag prevents orphaned frames
+   - Scroll direction: LEFT-TO-RIGHT (matching original Phase 1 direction — `translateX(-50%) → translateX(0)`)
+   - Overlay text (heading, subtitle crossfade, ETH diamond), gradient overlay — completely untouched (identical JSX)
+
+**Architecture:**
+```
+Container (position: relative, overflow: hidden, full width)
+├── img[0]  (position: absolute, transform: translateX(Xpx))
+├── img[1]  (position: absolute, transform: translateX(Xpx))
+├── ...
+└── img[19] (position: absolute, transform: translateX(Xpx))
+
+Each frame:
+  1. Compute dx = SCROLL_SPEED × deltaTime
+  2. positions[i] += dx for all images
+  3. If positions[i] >= containerWidth → recycle to leftmost - width
+  4. Apply style.transform directly (no React state)
+```
+
+**Files changed:**
+- `src/components/dashboard/ImageReel.tsx` — complete rewrite of scrolling mechanism
+- `src/app/globals.css` — removed marqueeScroll keyframes and animate-marquee-scroll class
+- `docs/TODO.md` — added Phase 48
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- TypeScript compiles with zero errors (only pre-existing `<img>` and hook dependency warnings)
+- No changes to subtitle text rotation, heading text, ETH diamond logo, gradient overlay, or any other components
+- requestAnimationFrame properly cleaned up on unmount
+
+---
+
+## Phase 49 — Banner Scroll Speed Reduction — 2026-02-12
+
+**Status:** Complete
+
+**What was changed:**
+
+1. **`src/components/dashboard/ImageReel.tsx`:**
+   - Changed `SCROLL_SPEED` from `100` to `50` (pixels per second)
+   - Halved speed for a slow, relaxed drift feel
+
+**Files changed:**
+- `src/components/dashboard/ImageReel.tsx` — speed constant only
+- `docs/TODO.md` — added Phase 49
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- Single constant change, no other logic or components modified
+
+---
+
+## Phase 50 — Banner Scroll Speed Further Reduction — 2026-02-12
+
+**Status:** Complete
+
+**What was changed:**
+
+1. **`src/components/dashboard/ImageReel.tsx`:**
+   - Changed `SCROLL_SPEED` from `50` to `25` (pixels per second)
+   - Very gentle, barely noticeable drift
+
+**Files changed:**
+- `src/components/dashboard/ImageReel.tsx` — speed constant only
+- `docs/TODO.md` — added Phase 50
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- Single constant change, no other logic or components modified
+
+---
+
+## Phase 51 — Final Polish & Production Readiness — 2026-02-12
+
+**Status:** Complete
+
+**What was changed:**
+
+### 1. Banner Gap Fix (`src/components/dashboard/ImageReel.tsx`)
+- Complete rewrite of the image conveyor belt positioning logic
+- Dynamically calculates how many images needed based on container width (viewport / avg image width + 4 buffers)
+- If initial image count is insufficient, triggers re-render with more images via `useState`
+- Tiles images from off-screen left (2 image widths) through to beyond the right edge — no gaps possible
+- Recycling places images immediately adjacent to the leftmost image (zero gap)
+- Added window resize handler with proper cleanup to reinitialize on viewport changes
+- Proper cleanup: `cancelAnimationFrame` + `removeEventListener` on unmount
+
+### 2. Console Cleanup
+- **`src/app/api/holders/route.ts`**: Removed `console.log` for successful holder count fetch, removed `console.warn` for invalid holder count
+- **`src/app/api/holders/list/route.ts`**: Removed `console.log` for successful fetch, removed 2x `console.warn` for invalid data
+- **`src/components/wojakTV/WojakTV.tsx`**: Replaced `.catch(console.error)` with `.catch(() => {})`
+- Kept `console.error` in API routes for genuine fetch failures (useful in production server logs)
+
+### 3. Dead Code Removal
+- **Deleted `src/components/dashboard/DextScore.tsx`**: Component was never imported anywhere — replaced by `DextScoreInline.tsx`
+- **`src/components/dashboard/BubbleMapModal.tsx`**: Removed unused `runSimulation()` function (45 lines) — logic was inlined in the animate loop
+- **`src/components/dashboard/BubbleMapModal.tsx`**: Removed unused `animStep` state variable and its `setAnimStep` call
+
+### 4. Unused Parameter Fix
+- **`src/app/global-error.tsx`**: Removed unused `error` parameter from destructuring (still accepted in type but not bound to variable)
+
+### 5. Meta Tags & SEO
+- **`src/app/layout.tsx`**: Added `metadataBase: new URL("https://wojak.io")` — fixes Next.js build warning about social image resolution
+- **`src/app/layout.tsx`**: Added `images` to `openGraph` metadata (Wojak_black.png, 512x512)
+- **`src/app/layout.tsx`**: Added `images` to `twitter` metadata
+
+### 6. Lazy Loading
+- **`src/components/dashboard/SwapCard.tsx`**: Added `loading="lazy"` to wojak.jpg token icon (below fold)
+- **`src/components/wojakTV/WojakTV.tsx`**: Added `loading="lazy"` to YouTube video thumbnail images
+
+### 7. Responsive Fix
+- **`src/components/dashboard/ChartSection.tsx`**: Changed TVL panel info grid from `grid-cols-4` to `grid-cols-2 sm:grid-cols-4` — prevents cramped 4-column layout on narrow mobile screens
+
+### 8. Full Audit Results (no issues found)
+- All 24 external links verified: all use `target="_blank" rel="noopener noreferrer"`
+- All `useEffect` cleanups verified: intervals, timeouts, requestAnimationFrame, event listeners all properly cleaned up
+- Zero `any` types in codebase
+- Zero TODO/FIXME comments in source code
+- All icons render without clipping at all breakpoints
+- HeroStats 2x2 grid on mobile works correctly
+- Contract address wraps properly on mobile (break-all + min-w-0)
+- No horizontal scrollbar at any breakpoint
+- Copy button functionality intact
+- All API routes have proper error handling with fallbacks
+
+**Files changed:**
+- `src/components/dashboard/ImageReel.tsx` — complete conveyor belt rewrite
+- `src/app/api/holders/route.ts` — removed console.log/warn
+- `src/app/api/holders/list/route.ts` — removed console.log/warn
+- `src/components/wojakTV/WojakTV.tsx` — silent error catch, lazy loading
+- `src/components/dashboard/BubbleMapModal.tsx` — removed dead code
+- `src/components/dashboard/DextScore.tsx` — deleted (unused)
+- `src/app/global-error.tsx` — removed unused parameter
+- `src/app/layout.tsx` — metadataBase, og:image, twitter:images
+- `src/components/dashboard/SwapCard.tsx` — lazy loading
+- `src/components/dashboard/ChartSection.tsx` — responsive grid fix
+- `docs/TODO.md` — added Phase 51
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- `npx tsc --noEmit` — zero errors
+- `npm run build` — zero errors, zero metadataBase warnings
+- All 11 routes compile and generate successfully
+
+---
+
+## Phase 52 — Navbar About Link — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+- Added "About" external link to the navbar between Dashboard and Crypto 101
+- Link points to https://wojak.io and opens in a new tab (`target="_blank" rel="noopener noreferrer"`)
+- Added `external` flag to NAV_LINKS array to distinguish external links from internal routes
+- External links render as `<a>` tags instead of Next.js `<Link>` components (avoids client-side routing for external URLs)
+- Desktop: styled identically to other nav links (`text-sm text-gray-300 hover:text-white transition-colors`)
+- Mobile hamburger menu: About link appears in same position with matching mobile styles (`block px-3 py-2 rounded-lg text-sm`)
+- Final nav order: Dashboard | About | Crypto 101 | Migration Report | Wojak TV | Games
+
+**Files changed:**
+- `src/components/navbar/Navbar.tsx` — added About link to NAV_LINKS, updated desktop and mobile rendering to handle external links
+- `docs/SCOPE.md` — updated navbar nav links description
+- `docs/TODO.md` — added Phase 52
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- Desktop and mobile nav both show About link in correct position
+- About link opens https://wojak.io in new tab
+- No other components modified

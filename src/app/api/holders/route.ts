@@ -25,11 +25,8 @@ async function fetchHolderCount(): Promise<number | null> {
     const data = await res.json();
 
     if (typeof data.holdersCount === "number" && data.holdersCount >= MIN_HOLDER_THRESHOLD) {
-      console.log(`[holders] Ethplorer returned holdersCount=${data.holdersCount}`);
       return data.holdersCount;
     }
-
-    console.warn(`[holders] Ethplorer holdersCount missing or invalid:`, data.holdersCount);
     return null;
   } catch (err) {
     console.error("[holders] Ethplorer fetch error:", err);

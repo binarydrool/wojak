@@ -26,7 +26,6 @@ async function fetchTopHolders(): Promise<HolderEntry[] | null> {
     const data = await res.json();
 
     if (!data.holders || !Array.isArray(data.holders)) {
-      console.warn("[holders/list] Unexpected response shape:", Object.keys(data));
       return null;
     }
 
@@ -39,11 +38,9 @@ async function fetchTopHolders(): Promise<HolderEntry[] | null> {
     );
 
     if (holders.length === 0) {
-      console.warn("[holders/list] Ethplorer returned empty holder list");
       return null;
     }
 
-    console.log(`[holders/list] Fetched ${holders.length} holders from Ethplorer`);
     return holders;
   } catch (err) {
     console.error("[holders/list] Ethplorer fetch error:", err);

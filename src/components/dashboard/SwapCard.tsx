@@ -282,6 +282,7 @@ export default function SwapCard() {
               <img
                 src="/images/wojak.jpg"
                 alt="WOJAK"
+                loading="lazy"
                 className="w-5 h-5 rounded-full object-cover"
               />
               <span className="text-sm font-semibold text-white">WOJAK</span>

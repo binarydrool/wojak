@@ -42,6 +42,7 @@ function VideoCard({
         <img
           src={video.thumbnail}
           alt={decodedTitle}
+          loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
         {/* Play button overlay */}
@@ -107,7 +108,7 @@ export default function WojakTV() {
   useEffect(() => {
     fetchAllChannels()
       .then(setChannels)
-      .catch(console.error)
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 

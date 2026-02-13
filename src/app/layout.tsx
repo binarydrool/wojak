@@ -9,6 +9,7 @@ import { GameProvider } from "@/components/games/GameContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://wojak.io"),
   title: "WOJAK",
   description:
     "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,000+ OG holders.",
@@ -23,12 +24,14 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://wojak.io",
     siteName: "wojak.io",
+    images: [{ url: "/images/Wojak_black.png", width: 512, height: 512, alt: "WOJAK" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "WOJAK — The OG Since April 2023",
     description:
       "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,000+ OG holders.",
+    images: ["/images/Wojak_black.png"],
   },
 };
 
