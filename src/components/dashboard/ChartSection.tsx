@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import PriceChart from "./PriceChart";
 import RecentTrades from "./RecentTrades";
 import DextScoreInline from "./DextScoreInline";
 import { formatCurrency } from "@/lib/coingecko";
 import { OG_UNISWAP_POOL, ETHERSCAN_BASE_URL, LP_LOCK_EXPIRY, UNISWAP_POOL_URL } from "@/lib/constants";
 import type { PoolData } from "@/types";
+
+const BubbleMapModal = lazy(() => import("./BubbleMapModal"));
 
 const TABS = ["Chart", "Transactions", "TVL", "Volume"] as const;
 type Tab = (typeof TABS)[number];
@@ -302,6 +304,7 @@ function VolumePanel({ data, loading }: { data: PoolData | null; loading: boolea
 
 export default function ChartSection() {
   const [activeTab, setActiveTab] = useState<Tab>("Chart");
+  const [showBubbleMap, setShowBubbleMap] = useState(false);
   const pool = usePoolData();
 
   return (
@@ -315,7 +318,7 @@ export default function ChartSection() {
             className={`relative px-3 sm:px-5 py-3 text-sm font-medium transition-colors ${
               activeTab === tab
                 ? "text-white"
-                : "text-gray-500 hover:text-gray-300"
+                : "text-gray-400 hover:text-gray-300"
             }`}
           >
             {tab}
@@ -324,10 +327,16 @@ export default function ChartSection() {
             )}
           </button>
         ))}
+        <button
+          onClick={() => setShowBubbleMap(true)}
+          className="relative px-3 sm:px-5 py-3 text-sm font-medium transition-colors text-gray-400 hover:text-gray-300"
+        >
+          Bubble Map
+        </button>
       </div>
 
-      {/* Tab content — fixed height matching chart iframe */}
-      <div className="h-[320px] sm:h-[390px] md:h-[460px]">
+      {/* Tab content — min-height on mobile so non-chart tabs can grow; fixed height on sm+ */}
+      <div className="min-h-[320px] sm:h-[390px] md:h-[460px]">
         {activeTab === "Chart" ? (
           <PriceChart />
         ) : activeTab === "Transactions" ? (
@@ -343,6 +352,13 @@ export default function ChartSection() {
       <div className="border-t border-wojak-border">
         <DextScoreInline />
       </div>
+
+      {/* Bubble Map Modal */}
+      {showBubbleMap && (
+        <Suspense fallback={null}>
+          <BubbleMapModal onClose={() => setShowBubbleMap(false)} />
+        </Suspense>
+      )}
     </div>
   );
 }

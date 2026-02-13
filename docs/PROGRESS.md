@@ -2772,3 +2772,561 @@ In `fetchPriceStats()`, there was a GeckoTerminal fallback for volume, but it on
 - `npm run build` — zero errors, all routes compile successfully
 - No game code or unrelated components modified
 - All three volume displays now source from the same GeckoTerminal direct pool data
+
+---
+
+## Phase 30: Swap Widget Enhancement — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+
+### 1. Gas Price API Route (`/api/gas/route.ts`)
+- New API route that fetches ETH gas price from public Ethereum RPCs using `eth_gasPrice` JSON-RPC method
+- Tries multiple RPC providers in sequence (LlamaRPC, Ankr, Cloudflare) with 5-second timeout per provider
+- Converts hex wei response to Gwei for display
+- 30-second in-memory cache to avoid excessive RPC calls
+- Returns `{ gasGwei, source }` JSON response
+- Stale cache fallback if all RPCs fail
+
+### 2. Interactive Swap Inputs (`SwapCard.tsx`)
+- **ETH input (Sell)**: Fully editable — user can type any ETH amount. Validates decimal number input.
+- **WOJAK input (Buy)**: Fully editable — user can type any WOJAK amount with comma-formatted numbers. Validates integer input.
+- **Bidirectional conversion**: Changing ETH recalculates WOJAK amount. Changing WOJAK reverse-calculates ETH amount. Both use live prices from `fetchFormattedStats()` (CoinGecko).
+- **Editing field tracking**: State tracks which field is being edited to prevent circular updates between the two inputs.
+- Default ETH value remains 0.0911 with auto-calculated WOJAK amount on load.
+- Input fields show `~` prefix on WOJAK amount (removed on focus for clean editing).
+
+### 3. Rolodex Ticker
+- Rotating ticker in the top-right corner of the Swap widget header, next to the "Swap" title.
+- Cycles through 3 values every 3.5 seconds:
+  1. WOJAK price in USD (e.g. "$0.00003133")
+  2. WOJAK price in ETH (e.g. "0.00000001284 ETH")
+  3. ETH Gas price in Gwei (e.g. "0.06 Gwei")
+- Smooth vertical slide animation: new value slides up from below, holds, then slides up and out.
+- Small label ("WOJAK" or "Gas") in gray to the left of the value.
+- All ticker text in green (#00ff41) monospace font.
+- Loops infinitely.
+
+### 4. Styling
+- Input focus state: green border glow (`focus-within:border-[#00ff41]/40`) on the Sell and Buy containers.
+- Text cursor on hover for both input fields (cursor-text).
+- Green selection highlight (`selection:bg-[#00ff41]/20`).
+- Buy section label changed from "Buy" to "Buy (estimate)" to clarify estimation nature.
+- All existing elements preserved: "Swap on CoW Swap" button, MEV Protected badge, "Powered by CoW Swap", Matcha.xyz link.
+- Dark theme fully maintained.
+
+### 5. CSS Animation (`globals.css`)
+- Added `@keyframes rolodex-up`: slides from translateY(100%) to translateY(0) (hold) to translateY(-100%) with opacity fade in/out.
+- Added `.animate-rolodex-up` utility class.
+
+**Files created:**
+- `src/app/api/gas/route.ts` — Gas price API route
+
+**Files changed:**
+- `src/components/dashboard/SwapCard.tsx` — Complete rewrite with interactive inputs, rolodex ticker, gas price fetching
+- `src/app/globals.css` — Added rolodex-up keyframes and animation class
+- `README.md` — Updated Dashboard feature description and Data sources
+- `docs/SCOPE.md` — Updated Swap Widget Section with full new feature description
+- `docs/TODO.md` — Added Phase 30 with all checklist items checked
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile including new `/api/gas` route
+- No game code or unrelated components modified
+- Swap button and Matcha link behavior unchanged
+
+---
+
+## Phase 31: Bubble Map Visualization — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+Interactive canvas-based bubble map visualization of top WOJAK token holders, accessible via a new "Bubble Map" tab in the chart section.
+
+### 1. API Route (`/api/holders/list/route.ts`)
+- Fetches top 100 WOJAK token holders from Ethplorer API (`getTopTokenHolders` endpoint with freekey)
+- Returns array of `{ address, balance, share }` entries
+- 30-minute in-memory cache with stale-cache fallback
+- Realistic mock data fallback (100 holders with decreasing balances) if API is unavailable
+- Response includes `source` field ("ethplorer", "cache", "stale-cache", "mock") and `count`
+
+### 2. Bubble Map Modal (`BubbleMapModal.tsx`)
+- Large modal overlay: 95vw × 90vh, max 1400px wide
+- Styled to match game modals: dark bg (#0a0a0a), green accents, X close button, Escape key, backdrop click to close
+- Body scroll locked when modal is open
+
+### 3. Canvas-Based Visualization
+- Custom force-directed simulation (no D3 dependency):
+  - Bubbles attract toward canvas center (ATTRACTION = 0.005)
+  - Bubbles repel each other when overlapping (REPULSION = 1.2)
+  - Velocity damping (DAMPING = 0.92) for smooth settling
+  - 200 simulation steps animated progressively (5 steps per frame)
+- Bubble sizing: radius proportional to sqrt(share/maxShare), range 8px–80px
+- Green color gradient by rank:
+  - Top 5%: #00ff41 (brightest)
+  - 5-15%: #33ff66
+  - 15-30%: #00e639
+  - 30-50%: #00cc33
+  - 50-70%: #4dff7a
+  - 70-85%: #009926
+  - 85-100%: #006619 (darkest)
+- Radial gradient fill on each bubble with subtle glow effect (shadowBlur)
+- Labels on larger bubbles showing truncated address and supply percentage
+- Fade-in animation during simulation startup
+
+### 4. Interactivity
+- **Pan**: Click and drag (desktop), touch drag (mobile)
+- **Zoom**: Scroll wheel (desktop), pinch to zoom (mobile) — zoom toward cursor/pinch center
+- **Zoom limits**: 0.2x to 5x
+- **Hover**: Bubble grows 8% with brighter glow, tooltip appears with:
+  - Full wallet address
+  - Formatted token balance (T/B/M/K)
+  - Supply percentage (4 decimal places)
+  - "View on Etherscan" link (opens in new tab)
+- **Click bubble**: Opens wallet on Etherscan in new tab
+- **Mobile tap**: Shows tooltip for tapped bubble
+
+### 5. Search & Controls
+- Search bar: type wallet address to find and highlight matching bubble (zooms to 2x and centers)
+- Reset View button: returns to default zoom/pan (1x), clears search highlight
+- "Scroll to zoom · Drag to pan" hint text
+
+### 6. UI Elements
+- Header: "Bubble Map" title with total holder count badge (from /api/holders)
+- Toolbar: search input, reset view button, zoom hint
+- Footer legend: color gradient circles, "Size = Token Balance", holder count
+- Loading state: spinning green loader with "Loading holder data..." text
+- Empty state: "Unable to load holder data" message
+
+### 7. Tab Integration
+- "Bubble Map" tab added after Volume in ChartSection tab bar
+- Tab does NOT switch chart view — it opens the modal overlay
+- Other tabs (Chart, Transactions, TVL, Volume) continue to work exactly as before
+- Modal lazy-loaded with React.lazy + Suspense
+
+**Files created:**
+- `src/app/api/holders/list/route.ts` — Top holders API route (Ethplorer + mock fallback)
+- `src/components/dashboard/BubbleMapModal.tsx` — Full bubble map modal component (self-contained)
+
+**Files changed:**
+- `src/components/dashboard/ChartSection.tsx` — Added lazy import for BubbleMapModal, added "Bubble Map" tab button, added modal rendering with Suspense
+- `README.md` — Added Bubble Map to Dashboard feature description
+- `docs/SCOPE.md` — Added Bubble Map to Dashboard Tabs section and file structure
+- `docs/TODO.md` — Added Phase 31 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile including new `/api/holders/list`
+- No game code or other unrelated components were modified
+- Existing chart tabs unchanged
+
+---
+
+## Phase 32: About Section — 2026-02-12
+
+**Status:** Complete
+
+**What was built:**
+Compact "About" strip positioned between the hero image reel banner and the header stats row (Market Cap / TVL / 24H Volume / Holders). Provides a brief introduction to the WOJAK token for new visitors.
+
+### Component: `AboutSection.tsx`
+- Horizontal layout: Wojak_black.png image on left, text content on right
+- Image displayed in circular frame (140-180px responsive) with subtle green (#00ff41) glow and green border
+- "THE OG WOJAK" green pill tag label at top
+- "WOJAK" heading in bold white (2xl/3xl)
+- Subtitle: "The original and very first Wojak memecoin. Since April 2023."
+- Intro paragraph covering community origins, contract renounced, LP locked, 0% tax, community identity
+- "I know that feel, bro." tagline in green italic
+- Contract address row with "CA:" label and CopyButton component (reuses existing UI component)
+- Token stats row (2×2 on mobile, 4-column on desktop): Total Supply (69.42B), Tax (0%), LP Locked (Until 2100), Contract (Renounced) — green values, dim grey labels
+- Fade-in on scroll via IntersectionObserver (threshold 0.15, one-shot)
+- Dark bg-wojak-card with wojak-border, matching site card styling
+- Responsive: stacks image above text on mobile (flex-col → flex-row at sm breakpoint)
+
+### Page Integration
+- Added to `src/app/page.tsx` between ImageReel (hero banner) and HeroStats (stats row)
+- Section numbering updated in comments (Stats Row → Section 3, Chart → Section 4, etc.)
+
+**Files created:**
+- `src/components/dashboard/AboutSection.tsx` — About strip component
+
+**Files changed:**
+- `src/app/page.tsx` — Added AboutSection import and placement between ImageReel and HeroStats
+- `README.md` — Added About strip to Dashboard feature description
+- `docs/SCOPE.md` — Added About Strip section to Dashboard spec, added AboutSection.tsx to file structure
+- `docs/TODO.md` — Added Phase 32 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors
+- No game code or other unrelated components were modified
+- Existing hero banner, stats row, chart, and all other sections unchanged
+
+---
+
+## Phase 33: About & Contract Info Redundancy Cleanup — 2026-02-12
+
+**Status:** Complete
+
+**What changed:**
+Reduced redundancy between the About section and Contract Info section. About section now handles narrative/branding only, while Contract Info handles all technical token details.
+
+### AboutSection.tsx — Removed elements:
+- Removed "THE OG WOJAK" green pill tag label
+- Removed CA: contract address line with CopyButton (already shown in Contract Info)
+- Removed entire token stats row (Total Supply, Tax, LP Locked, Contract)
+- Removed separate "I know that feel, bro." tagline line — merged inline with paragraph
+- Paragraph now ends: "We are all Wojak. *I know that feel, bro.*" on the same line
+- Removed unused imports: CopyButton, OG_WOJAK_CONTRACT
+
+### ContractInfo.tsx — Added elements:
+- Added inline token stats row between the heading and contract address: "Total Supply 69.42B | Tax 0%"
+- Green (#00ff41) values with dim grey (text-gray-500) labels, separated by a vertical divider
+- Compact inline layout matching existing section styling
+
+**Files changed:**
+- `src/components/dashboard/AboutSection.tsx` — Removed tag, CA line, stats row; merged tagline inline
+- `src/components/dashboard/ContractInfo.tsx` — Added Total Supply and Tax inline stats row
+- `README.md` — Updated Dashboard feature description
+- `docs/SCOPE.md` — Updated About Strip and Contract Info Section descriptions
+- `docs/TODO.md` — Added Phase 33 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- TypeScript compiles with zero errors (`npx tsc --noEmit`)
+- No game code, chart code, swap widget, or other unrelated components modified
+
+---
+
+## Phase 34: About Section Styling Refinement — 2026-02-12
+
+**Status:** Complete
+
+**What changed:**
+Three styling refinements to the About section for cleaner visual integration with the page.
+
+### 1. Tagline placement
+- Moved "I know that feel, bro." from inline (appended after "We are all Wojak." on the same line) to its own `<p>` element below the paragraph
+- Kept green italic styling (`text-[#00ff41]/80 italic text-sm`)
+- Added `mt-2` (8px) top margin for breathing room while staying compact
+
+### 2. Background removed
+- Removed `bg-wojak-card border border-wojak-border rounded-xl p-5 sm:p-6` from the inner card div
+- About section is now fully transparent — content sits directly on the main page background
+- No distinct card/container appearance
+
+### 3. Spacing equalized
+- Changed About section outer padding from `pt-6 pb-2` to `pt-4` (no bottom padding)
+- Gap from About content to Stats bar: 0px (no pb) + 24px (HeroStats py-6 top) = **24px**
+- Gap from Stats bar to Chart section: 24px (HeroStats py-6 bottom) + 0px = **24px**
+- Both gaps now match at 24px
+
+**Files changed:**
+- `src/components/dashboard/AboutSection.tsx` — Tagline moved to own line, background removed, spacing adjusted
+- `docs/SCOPE.md` — Updated About Strip description
+- `docs/TODO.md` — Added Phase 34 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- TypeScript compiles with zero errors (`npx tsc --noEmit`)
+- No game code, chart code, swap widget, stats bar, or other unrelated components modified
+
+---
+
+## Phase 35: Stats Bar & Contract Info Layout — 2026-02-12
+
+**Status:** Complete
+
+**What changed:**
+Two layout refinements: compact stats bar and inline Contract Info stats.
+
+### 1. HeroStats — Reduced vertical padding
+- Section outer padding: `py-6` (24px) → `py-3` (12px)
+- Card inner padding: `p-6` (24px all sides) → `px-6 py-3` (24px horizontal, 12px vertical)
+- Horizontal layout and gap between the 4 stats unchanged
+- Result: stats bar is significantly more compact vertically
+
+### 2. ContractInfo — Inline stats with badge
+- Moved Total Supply (69.42B) and Tax (0%) from their own separate row into the same row as the "Contract RENOUNCED" badge
+- Badge, Total Supply, and Tax are now separated by vertical dividers (`w-px h-3 bg-wojak-border`)
+- All items wrapped in a `flex items-center gap-3 flex-wrap` container
+- On desktop: all inline on one line — badge | Total Supply 69.42B | Tax 0%
+- On mobile: heading stacks above, badge + stats wrap naturally as a group
+- Removed the now-empty separate `mb-4` stats row div
+
+**Files changed:**
+- `src/components/dashboard/HeroStats.tsx` — Reduced `py-6` to `py-3`, `p-6` to `px-6 py-3`
+- `src/components/dashboard/ContractInfo.tsx` — Merged token stats inline with RENOUNCED badge
+- `docs/SCOPE.md` — Updated Contract Info Section description
+- `docs/TODO.md` — Added Phase 35 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- TypeScript compiles with zero errors (`npx tsc --noEmit`)
+- No game code, chart code, swap widget, About section, or other unrelated components modified
+
+---
+
+## Phase 36: Stats Bar Background Removal — 2026-02-12
+
+**Status:** Complete
+
+**What changed:**
+Removed the card background from the header stats bar so it blends transparently with the page background.
+
+- Removed `bg-wojak-card border border-wojak-border rounded-xl` from the inner grid div in HeroStats
+- The grid layout, padding (`px-6 py-3`), gap, text styling, and stat values are all unchanged
+
+**Files changed:**
+- `src/components/dashboard/HeroStats.tsx` — Removed card background, border, and rounded corners from inner div
+- `docs/TODO.md` — Added Phase 36 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- TypeScript compiles with zero errors (`npx tsc --noEmit`)
+- No other components modified
+
+---
+
+## Phase 37: Homepage Disclaimer — 2026-02-12
+
+**Status:** Complete
+
+**What changed:**
+Added a compact disclaimer section at the very bottom of the homepage, below ContractInfo and above the footer.
+
+- Single line of dim grey text (11px, `text-gray-600`), centered, transparent background
+- "We know that feel, bro." in green italic (`text-[#00ff41]/70`) matching site accent
+- Thin dark grey horizontal divider (`border-t border-gray-800/60`) above the text to separate from content
+- Full width within `max-w-5xl` content area, compact vertical padding
+- Homepage-only — added directly in `src/app/page.tsx`, not in the global layout or footer
+
+**Files changed:**
+- `src/app/page.tsx` — Added disclaimer section after ContractInfo
+- `docs/SCOPE.md` — Added Disclaimer to Dashboard section description
+- `docs/TODO.md` — Added Phase 37 with all items checked off
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- TypeScript compiles with zero errors (`npx tsc --noEmit`)
+- No other components modified — no changes to games, charts, swap widget, About, ContractInfo, footer, or layout
+
+---
+
+## Phase 38: Stats Bar Label Brightness — 2026-02-12
+
+**Status:** Complete
+
+**What changed:**
+Made the stats bar labels (MARKET CAP, TVL, 24H VOLUME, HOLDERS) brighter and more readable.
+
+- Changed label color from `text-gray-500` to `text-gray-400` (brighter grey)
+- Added `font-medium` for slightly bolder weight
+- Values below labels (`text-white`, `font-semibold`) unchanged
+
+**Files changed:**
+- `src/components/dashboard/HeroStats.tsx` — Updated StatItem label classes
+- `docs/TODO.md` — Added Phase 38
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- TypeScript compiles with zero errors (`npx tsc --noEmit`)
+- Only HeroStats label styling modified
+
+---
+
+## Phase 39: Stats Bar Mobile Fix & About Section Social Icons — 2026-02-12
+
+**Status:** Complete
+
+**What changed:**
+
+1. **Stats Bar Mobile Responsive Fix (HeroStats.tsx):**
+   - Fixed mobile layout where TVL text was overlapping other stat elements
+   - Changed grid gap from uniform `gap-6` to `gap-x-4 gap-y-4 sm:gap-6` — reduced horizontal/vertical gap on mobile, desktop unchanged
+   - Changed horizontal padding from `px-6` to `px-2 sm:px-6` — much more breathing room on small screens
+   - Desktop layout (4-column single row) completely unchanged
+   - Mobile layout remains 2x2 grid (grid-cols-2) with proper spacing
+
+2. **Social Media Icons on About Section (AboutSection.tsx):**
+   - Added Telegram and X (Twitter) inline SVG icons on the same line as the "WOJAK" heading
+   - Icons are white/light grey (text-gray-400) and turn green (#00ff41) on hover with smooth transition
+   - Telegram links to https://t.me/wojakcoincommunity
+   - X (Twitter) links to https://x.com/wojaboriginal
+   - Both links open in new tab (target="_blank" rel="noopener noreferrer")
+   - Icons sized responsively: w-5 h-5 on mobile, w-6 h-6 on sm+ screens
+   - Proper aria-labels for accessibility
+
+3. **Constants (constants.ts):**
+   - Added `TELEGRAM_COMMUNITY_URL` ("https://t.me/wojakcoincommunity")
+   - Added `X_URL` ("https://x.com/wojaboriginal")
+   - Existing social link constants unchanged
+
+**Files changed:**
+- `src/components/dashboard/HeroStats.tsx` — Mobile-responsive grid spacing
+- `src/components/dashboard/AboutSection.tsx` — Added social icons next to heading
+- `src/lib/constants.ts` — Added TELEGRAM_COMMUNITY_URL and X_URL
+- `docs/SCOPE.md` — Updated About Strip description
+- `docs/TODO.md` — Added Phase 39
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile
+- No changes to games, charts, swap widget, ContractInfo, disclaimer, or any other components
+
+---
+
+## Phase 40 — Footer OG Contract Column Removal — 2026-02-12
+
+**Status:** Complete
+
+**What was changed:**
+1. **Footer (`src/components/footer/Footer.tsx`):**
+   - Removed entire "OG Contract" column (heading, contract address, CopyButton)
+   - Removed unused `CopyButton` import and `OG_WOJAK_CONTRACT` import
+   - Changed grid from `md:grid-cols-3` to `md:grid-cols-2`
+   - Added `max-w-3xl mx-auto` to center the two remaining columns evenly across the footer
+   - Community column (X, Telegram, Etherscan links) — unchanged
+   - Disclaimer column (DYOR text, binarydrool.eth credit) — unchanged
+   - MIT License bar at bottom — unchanged
+
+**Files changed:**
+- `src/components/footer/Footer.tsx` — Removed OG Contract column, switched to 2-col centered layout
+- `docs/SCOPE.md` — Updated Footer section description
+- `docs/TODO.md` — Added Phase 40
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile
+- Only the footer was modified — no changes to any other components
+
+---
+
+## Phase 41 — Tab Content Mobile Overflow Fix — 2026-02-12
+
+**Status:** Complete
+
+**Problem:**
+On mobile, the tab content container in `ChartSection.tsx` used a fixed height (`h-[320px]`) that was sized for the chart iframe but too small for the TVL, Volume, and Transactions tab content. TVL content (Total Value Locked, Pool Balances, Pool Type/Fee Tier/Pair/LP Lock row, Pool Address, DEXscore) was being cut off on mobile viewports.
+
+**What was changed:**
+1. **`src/components/dashboard/ChartSection.tsx`:**
+   - Changed tab content container from `h-[320px]` (fixed height on mobile) to `min-h-[320px]` (minimum height, can grow)
+   - Desktop/tablet breakpoints unchanged: `sm:h-[390px]` and `md:h-[460px]` remain fixed
+   - All tab content (Chart, TVL, Volume, Transactions) benefits — any tab content can now expand on mobile
+   - Chart tab still works correctly since the iframe fills available space
+
+**Files changed:**
+- `src/components/dashboard/ChartSection.tsx` — Mobile height fix (line 339)
+- `docs/TODO.md` — Added Phase 41
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — compiled successfully, zero errors
+- Only the tab content container was modified — no changes to games, swap widget, About, Contract Info, footer, or any other components
+
+---
+
+## Phase 42 — Hero Banner Looping Text Update — 2026-02-12
+
+**Status:** Complete
+
+**What was changed:**
+
+1. **`src/components/dashboard/ImageReel.tsx`:**
+   - Removed "If it ain't broke, don't fix it." from SUBTITLES array
+   - Added "I know that feel, bro." as second phrase
+   - Added "The most recognized face on the internet." as third phrase
+   - Updated modulo from hardcoded `% 2` to `% SUBTITLES.length` for dynamic array sizing
+   - Rotation now cycles: "Since April 2023" → "I know that feel, bro." → "The most recognized face on the internet."
+   - Timing unchanged: 9-second interval per phrase, 400ms fade transition
+
+**Files changed:**
+- `src/components/dashboard/ImageReel.tsx` — SUBTITLES array and modulo update
+- `docs/TODO.md` — Added Phase 42
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- TypeScript compiles with zero errors
+- Only ImageReel.tsx was modified — no changes to any other components
+
+---
+
+## Phase 43 — Chart Tab Inactive Text Brightness — 2026-02-12
+
+**Status:** Complete
+
+**Problem:**
+Inactive chart tab labels (Transactions, TVL, Volume, Bubble Map) used `text-gray-500` which was too dim compared to the header stats labels (MARKET CAP, TVL, 24H VOLUME, HOLDERS) which use `text-gray-400`.
+
+**What was changed:**
+
+1. **`src/components/dashboard/ChartSection.tsx`:**
+   - Changed inactive tab text from `text-gray-500` to `text-gray-400` for the 4 regular TABS buttons (line 321)
+   - Changed Bubble Map button from `text-gray-500` to `text-gray-400` (line 332)
+   - Active tab styling unchanged: `text-white` with green underline
+   - Hover state unchanged: `hover:text-gray-300`
+
+**Files changed:**
+- `src/components/dashboard/ChartSection.tsx` — Inactive tab text color (2 occurrences)
+- `docs/TODO.md` — Added Phase 43
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- TypeScript compiles with zero errors
+- Only ChartSection.tsx tab button text color was modified — no changes to any other components
+
+---
+
+## Phase 44 — Hero Banner Looping Text Final — 2026-02-12
+
+**Status:** Complete
+
+**Problem:**
+Hero banner subtitle rotation had 3 phrases ("Since April 2023", "I know that feel, bro.", "The most recognized face on the internet.") and rotated every 9 seconds. User requested trimming to only the 2 signature phrases and slowing rotation to 18 seconds.
+
+**What was changed:**
+
+1. **`src/components/dashboard/ImageReel.tsx`:**
+   - Removed "Since April 2023" from SUBTITLES array (line 7)
+   - Final array: `["I know that feel, bro.", "The most recognized face on the internet."]`
+   - Changed setInterval from 9000ms to 18000ms (line 20)
+   - Fade transition animation (0.4s opacity ease-in-out) unchanged
+
+**Files changed:**
+- `src/components/dashboard/ImageReel.tsx` — SUBTITLES array and interval timing
+- `docs/TODO.md` — Added Phase 44
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- TypeScript compiles with zero errors
+- Only ImageReel.tsx was modified — no changes to any other components
+
+---
+
+## Phase 45 — Hero Banner Loop Reset Fix — 2026-02-12
+
+**Status:** Complete
+
+**Problem:**
+The hero banner subtitle loop (2 phrases cycling every 18 seconds) would visibly reset/jump instead of cycling seamlessly forever. The root cause: the `useEffect` cleanup only cleared the `setInterval` but not the nested `setTimeout` used for the fade-out delay. When React strict mode double-invokes effects or HMR triggers a remount, the orphaned `setTimeout` still fires after the interval is cleared — updating state out of sync with the new interval and causing a visible glitch.
+
+**What was changed:**
+
+1. **`src/components/dashboard/ImageReel.tsx`:**
+   - Added `let fadeTimeout` variable in the useEffect closure to track the nested setTimeout ID
+   - Assigned `fadeTimeout = setTimeout(...)` instead of bare `setTimeout(...)`
+   - Updated cleanup to `clearInterval(interval); clearTimeout(fadeTimeout);` — both timers now properly cleaned up
+   - Loop logic unchanged: `(prev + 1) % SUBTITLES.length` wraps 0 → 1 → 0 → 1 forever
+   - 18-second interval and 0.4s fade transition unchanged
+
+**Files changed:**
+- `src/components/dashboard/ImageReel.tsx` — setTimeout cleanup in useEffect
+- `docs/TODO.md` — Added Phase 45
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- TypeScript compiles with zero errors
+- Only ImageReel.tsx was modified — no changes to any other components

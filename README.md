@@ -11,7 +11,7 @@ wojak.io serves the holders of the original WOJAK token (`0x5026F006B85729a8b145
 ## Features
 
 - **Games Dropdown** — Wide categorized grid panel in the navbar with 4 columns (Arcade, Puzzle, Board, Card), each with category-specific inline SVG icons in green. Hover-triggered on desktop, 2-column grid on mobile. Clicking a game opens a full-screen modal overlay
-- **Dashboard** — Live DexTools/GeckoTerminal price chart, token stats (market cap, TVL, volume, holders) via CoinGecko + GeckoTerminal APIs, recent trades feed, and an embedded CoW Swap widget for buying WOJAK with MEV protection
+- **Dashboard** — Live DexTools/GeckoTerminal price chart, compact About strip with Wojak_black.png image and narrative overview, token stats (market cap, TVL, volume, holders) via CoinGecko + GeckoTerminal APIs, recent trades feed, interactive Bubble Map visualization of top token holders with force-directed layout, Contract Info section with total supply, tax, contract address, LP lock status, and external links, and an interactive CoW Swap widget with editable ETH/WOJAK amounts (bidirectional real-time conversion), rolodex ticker cycling WOJAK price (USD), WOJAK price (ETH), and live gas price (Gwei), plus MEV-protected swap via CoW Swap
 - **Crypto 101** — Plain-language education hub with 8 collapsible sections covering wallets, private keys, buying ETH, swapping tokens, reading Etherscan, liquidity, token safety, and revoking approvals
 - **Migration Report** — Full analysis of the hostile CTO migration attempt with side-by-side contract comparison, red flags, and action items for the community
 - **Minesweeper** — Classic minesweeper game with Wojak-themed expressions, three difficulty levels (Easy/Medium/Hard), timer, and mobile touch support. Launches from the navbar Games dropdown in a full-screen modal
@@ -43,7 +43,7 @@ wojak.io serves the holders of the original WOJAK token (`0x5026F006B85729a8b145
 - **Deployment:** Vercel (hobby tier, public repo)
 - **Swap Widget:** CoW Swap iframe embed (MEV-protected swaps)
 - **Charts:** DexTools widget / GeckoTerminal embed (fallback)
-- **Data:** CoinGecko (price, market cap) + GeckoTerminal (TVL, volume, pool data) APIs, Ethplorer (holder count)
+- **Data:** CoinGecko (price, market cap) + GeckoTerminal (TVL, volume, pool data) APIs, Ethplorer (holder count), Ethereum RPC (gas price)
 
 ## Getting Started
 
@@ -85,7 +85,8 @@ wojak.io serves the holders of the original WOJAK token (`0x5026F006B85729a8b145
 
 ## Community
 
-- **Twitter:** [@WojakToken](https://twitter.com/WojakToken)
+- **Telegram:** [WOJAK Community](https://t.me/wojakcoincommunity)
+- **X:** [@WojakToken](https://x.com/WojakToken)
 - **Etherscan:** [View Token](https://etherscan.io/token/0x5026F006B85729a8b14553FAE6af249aD16c9aaB)
 - **DexTools:** [View Chart](https://www.dextools.io/app/en/ether/pair-explorer/0x5026F006B85729a8b14553FAE6af249aD16c9aaB)
 

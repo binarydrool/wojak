@@ -22,7 +22,7 @@ function StatSkeleton() {
 function StatItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col items-center gap-1">
-      <span className="text-xs uppercase tracking-wider text-gray-500">
+      <span className="text-xs uppercase tracking-wider text-gray-400 font-medium">
         {label}
       </span>
       <span className="text-lg font-semibold text-white">{value}</span>
@@ -71,8 +71,8 @@ export default function HeroStats() {
   }, [refreshHolderCount]);
 
   return (
-    <section className="w-full max-w-5xl mx-auto px-4 py-6">
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 bg-wojak-card border border-wojak-border rounded-xl p-6">
+    <section className="w-full max-w-5xl mx-auto px-4 py-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-4 sm:gap-6 px-2 sm:px-6 py-3">
         {loading ? (
           <>
             <StatSkeleton />

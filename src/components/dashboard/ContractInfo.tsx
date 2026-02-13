@@ -25,16 +25,28 @@ export default function ContractInfo() {
   return (
     <section className="max-w-5xl mx-auto px-4 pb-4">
       <div className="bg-wojak-card border border-wojak-border rounded-2xl p-4 sm:p-6">
-        {/* Top row: heading + renounced badge */}
+        {/* Top row: heading + renounced badge + token stats inline */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
           <h2 className="text-lg font-bold text-white">Contract Info</h2>
-          <Badge variant="green" className="w-fit text-xs">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-              <polyline points="22 4 12 14.01 9 11.01" />
-            </svg>
-            Contract RENOUNCED
-          </Badge>
+          <div className="flex items-center gap-3 flex-wrap">
+            <Badge variant="green" className="w-fit text-xs">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+              Contract RENOUNCED
+            </Badge>
+            <div className="w-px h-3 bg-wojak-border" />
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] uppercase tracking-wider text-gray-500">Total Supply</span>
+              <span className="text-xs font-semibold text-[#00ff41]">69.42B</span>
+            </div>
+            <div className="w-px h-3 bg-wojak-border" />
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] uppercase tracking-wider text-gray-500">Tax</span>
+              <span className="text-xs font-semibold text-[#00ff41]">0%</span>
+            </div>
+          </div>
         </div>
 
         {/* Contract address row with copy + links */}

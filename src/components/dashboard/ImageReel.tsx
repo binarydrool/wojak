@@ -4,22 +4,27 @@ import { useState, useEffect } from "react";
 
 const IMAGES = Array.from({ length: 10 }, (_, i) => `/images/${i + 1}.jpg`);
 
-const SUBTITLES = ["Since April 2023", "If it ain't broke, don't fix it."];
+const SUBTITLES = ["I know that feel, bro.", "The most recognized face on the internet."];
 
 export default function ImageReel() {
   const [subtitleIndex, setSubtitleIndex] = useState(0);
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
+    let fadeTimeout: ReturnType<typeof setTimeout>;
+
     const interval = setInterval(() => {
       setVisible(false);
-      setTimeout(() => {
-        setSubtitleIndex((prev) => (prev + 1) % 2);
+      fadeTimeout = setTimeout(() => {
+        setSubtitleIndex((prev) => (prev + 1) % SUBTITLES.length);
         setVisible(true);
       }, 400);
-    }, 9000);
+    }, 18000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(fadeTimeout);
+    };
   }, []);
 
   return (

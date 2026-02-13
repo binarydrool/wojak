@@ -592,6 +592,226 @@
 
 ---
 
+## Phase 30 — Swap Widget Enhancement ✓
+- [x] Create `/api/gas/route.ts` — fetches ETH gas price from public Ethereum RPCs (LlamaRPC, Ankr, Cloudflare) with 30-second in-memory cache
+- [x] Make ETH input field in Sell section fully editable — user types any ETH amount
+- [x] Make WOJAK input field in Buy section editable — reverse-calculates ETH from WOJAK amount
+- [x] Bidirectional real-time conversion using live WOJAK/ETH prices from CoinGecko via `fetchFormattedStats()`
+- [x] Input fields styled with green (#00ff41) focus border glow (`focus-within:border-[#00ff41]/40`), text cursor, selection highlight
+- [x] Add rolodex ticker in top-right of Swap header cycling through 3 values every 3.5 seconds:
+  - WOJAK price in USD (e.g. "$0.00003133")
+  - WOJAK price in ETH (e.g. "0.00000001284 ETH")
+  - ETH Gas price in Gwei (e.g. "0.06 Gwei")
+- [x] Rolodex uses smooth vertical slide animation (`@keyframes rolodex-up`) — value slides up into place and slides up out
+- [x] All ticker text in green (#00ff41) with monospace font
+- [x] Gas price refreshes every 45 seconds on client
+- [x] "Swap on CoW Swap" button, MEV Protected badge, and Matcha.xyz link all preserved exactly as before
+- [x] Buy section label changed to "Buy (estimate)" to clarify estimation-only nature
+- [x] Add `rolodex-up` keyframes and `animate-rolodex-up` class to globals.css
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors, all routes compile including new `/api/gas`
+
+---
+
+## Phase 31 — Bubble Map Visualization ✓
+- [x] Create `/api/holders/list/route.ts` — fetches top 100 WOJAK token holders from Ethplorer API (`getTopTokenHolders` endpoint with freekey)
+- [x] Implement 30-minute in-memory cache with stale-cache fallback
+- [x] Implement realistic mock data fallback (100 holders) if API unavailable
+- [x] Create `src/components/dashboard/BubbleMapModal.tsx` — canvas-based interactive bubble map
+- [x] Implement force-directed simulation: bubbles attract to center, repel from each other, settle into packed layout
+- [x] Implement animated simulation: bubbles fade in and float into position over ~200 simulation steps
+- [x] Bubble size proportional to sqrt of token balance (larger balance = larger bubble)
+- [x] Green color gradient: brighter green (#00ff41) for top holders, darker green (#006619) for smaller holders
+- [x] Radial gradient fill on each bubble with glow effect
+- [x] Labels on larger bubbles showing truncated address and supply percentage
+- [x] Pan: click and drag (desktop), touch drag (mobile)
+- [x] Zoom: scroll wheel (desktop), pinch to zoom (mobile), zoom toward cursor/pinch center
+- [x] Hover: bubble grows slightly with brighter glow, shows tooltip with full address, formatted balance, supply %, Etherscan link
+- [x] Click bubble: opens wallet on Etherscan in new tab
+- [x] Mobile tap: shows tooltip for tapped bubble
+- [x] Search bar: search wallet address, highlights and zooms to matching bubble
+- [x] Reset View button: returns to default zoom/pan, clears search highlight
+- [x] Loading spinner while fetching data
+- [x] Empty state if data unavailable
+- [x] Footer legend: color gradient, "Size = Token Balance", holder count
+- [x] Modal styled to match game modals: dark bg, green accents, X close button, Escape key, backdrop click to close
+- [x] Modal size: 95vw × 90vh, max 1400px wide
+- [x] Body scroll locked when modal open
+- [x] Add "Bubble Map" tab after Volume in ChartSection tab bar
+- [x] Tab opens modal overlay (does NOT switch chart view like other tabs)
+- [x] Lazy-loaded with React.lazy + Suspense
+- [x] Existing chart tabs (Chart, Transactions, TVL, Volume) unchanged
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors, all routes compile including new `/api/holders/list`
+
+---
+
+## Phase 32 — About Section ✓
+- [x] Create `src/components/dashboard/AboutSection.tsx` — compact About strip between hero banner and stats row
+- [x] Horizontal layout: Wojak_black.png image on left, text content on right
+- [x] "THE OG WOJAK" green tag label with pill styling
+- [x] "WOJAK" heading in bold white, matching site heading style
+- [x] Subtitle: "The original and very first Wojak memecoin. Since April 2023."
+- [x] Brief intro paragraph covering community origins, contract renounced, LP locked, 0% tax
+- [x] "I know that feel, bro." tagline in green italic
+- [x] Contract address with CA label and CopyButton component
+- [x] Inline token stats row: Total Supply (69.42B), Tax (0%), LP Locked (Until 2100), Contract (Renounced) — green values, grey labels
+- [x] Subtle green glow around Wojak image, rounded with green border
+- [x] Fade-in on scroll via IntersectionObserver
+- [x] Responsive: stacks image above text on mobile
+- [x] Integrated into `src/app/page.tsx` between ImageReel and HeroStats
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
+## Phase 33 — About & Contract Info Redundancy Cleanup ✓
+- [x] Remove "THE OG WOJAK" green pill tag from AboutSection
+- [x] Remove CA: contract address line and CopyButton from AboutSection
+- [x] Remove token stats row entirely from AboutSection (Total Supply, Tax, LP Locked, Contract)
+- [x] Merge "I know that feel, bro." tagline inline with paragraph ending on same line as "We are all Wojak."
+- [x] Add Total Supply (69.42B) and Tax (0%) inline stats row to ContractInfo section
+- [x] Stats displayed with green values and dim grey labels matching existing ContractInfo styling
+- [x] Remove unused CopyButton and OG_WOJAK_CONTRACT imports from AboutSection
+- [x] TypeScript compiles with zero errors
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+
+---
+
+## Phase 34 — About Section Styling Refinement ✓
+- [x] Move "I know that feel, bro." tagline to its own line below the paragraph (no longer inline)
+- [x] Keep tagline green italic with small top margin (`mt-2`)
+- [x] Remove background card from About section (`bg-wojak-card`, `border`, `rounded-xl`, `p-5/p-6`)
+- [x] About section now transparent — blends with page background
+- [x] Equalize spacing: About-to-stats gap now matches stats-to-chart gap (both 24px via `py-6`)
+- [x] About section changed from `pt-6 pb-2` to `pt-4` (no bottom padding)
+- [x] TypeScript compiles with zero errors
+- [x] Update SCOPE.md, TODO.md, PROGRESS.md
+
+---
+
+## Phase 35 — Stats Bar & Contract Info Layout ✓
+- [x] Reduce HeroStats vertical padding: section `py-6` → `py-3`, card `p-6` → `px-6 py-3`
+- [x] Move Total Supply (69.42B) and Tax (0%) inline with "Contract RENOUNCED" badge on same row
+- [x] Badge, Total Supply, and Tax separated by vertical dividers (`w-px h-3 bg-wojak-border`)
+- [x] Grouped in flex-wrap container for clean mobile stacking
+- [x] Removed separate token stats row from ContractInfo
+- [x] TypeScript compiles with zero errors
+- [x] Update SCOPE.md, TODO.md, PROGRESS.md
+
+---
+
+## Phase 36 — Stats Bar Background Removal ✓
+- [x] Remove `bg-wojak-card border border-wojak-border rounded-xl` from HeroStats inner div
+- [x] Stats bar now fully transparent — blends with page background
+- [x] Text, values, layout, and spacing unchanged
+- [x] TypeScript compiles with zero errors
+- [x] Update TODO.md, PROGRESS.md
+
+---
+
+## Phase 37 — Homepage Disclaimer ✓
+- [x] Add compact disclaimer section at bottom of homepage (`src/app/page.tsx`), below ContractInfo
+- [x] Single line: "WOJAK is a memecoin with no intrinsic value. No team. No roadmap. For entertainment only. DYOR — never invest more than you can afford to lose. We know that feel, bro."
+- [x] Small dim grey text (11px, `text-gray-600`), centered, transparent background
+- [x] "We know that feel, bro." in green italic (`text-[#00ff41]/70`)
+- [x] Thin dark grey horizontal divider above disclaimer (`border-t border-gray-800/60`)
+- [x] Homepage-only — not in global footer, layout, or other pages
+- [x] Update SCOPE.md, TODO.md, PROGRESS.md
+- [x] TypeScript compiles with zero errors
+
+---
+
+## Phase 38 — Stats Bar Label Brightness ✓
+- [x] Change stats bar label color from `text-gray-500` to `text-gray-400` for better readability
+- [x] Add `font-medium` weight to labels for additional contrast
+- [x] Values (`text-white`, `font-semibold`) unchanged
+- [x] TypeScript compiles with zero errors
+- [x] Update TODO.md, PROGRESS.md
+
+---
+
+## Phase 39 — Stats Bar Mobile Fix & About Section Social Icons ✓
+- [x] Fix stats bar mobile layout — reduce gap and horizontal padding on mobile so TVL and other stats don't overlap
+- [x] Mobile grid: `gap-x-4 gap-y-4 sm:gap-6 px-2 sm:px-6` — desktop layout unchanged (single row, 4 columns)
+- [x] Add Telegram and X (Twitter) inline SVG icons next to "WOJAK" heading in AboutSection
+- [x] Icons styled white/light grey (text-gray-400), green (#00ff41) on hover with transition
+- [x] Telegram links to https://t.me/wojakcoincommunity, X links to https://x.com/wojaboriginal
+- [x] Both links open in new tab with proper rel attributes
+- [x] Icons responsive: w-5 h-5 mobile, w-6 h-6 on sm+ screens
+- [x] Add `TELEGRAM_COMMUNITY_URL` and `X_URL` to constants.ts
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
+## Phase 40 — Footer OG Contract Column Removal ✓
+- [x] Remove entire "OG Contract" column from Footer (heading, contract address, CopyButton)
+- [x] Remove unused CopyButton and OG_WOJAK_CONTRACT imports from Footer
+- [x] Change footer grid from 3 columns (`md:grid-cols-3`) to 2 columns (`md:grid-cols-2`)
+- [x] Center remaining columns with `max-w-3xl mx-auto` for even spacing
+- [x] Community and Disclaimer columns unchanged in content
+- [x] MIT License footer bar unchanged
+- [x] Update SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
+## Phase 41 — Tab Content Mobile Overflow Fix ✓
+- [x] Fix tab content container in `ChartSection.tsx` cutting off TVL/Volume/Transactions content on mobile
+- [x] Change `h-[320px]` (fixed height on mobile) to `min-h-[320px]` so content can grow on mobile
+- [x] Desktop/tablet layout unchanged — `sm:h-[390px]` and `md:h-[460px]` remain fixed
+- [x] All tab content (TVL, Volume, Transactions, Bubble Map) benefits from this fix
+- [x] Update TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
+## Phase 42 — Hero Banner Looping Text Update ✓
+- [x] Remove "If it ain't broke, don't fix it." from SUBTITLES array in ImageReel.tsx
+- [x] Add "I know that feel, bro." to SUBTITLES array
+- [x] Add "The most recognized face on the internet." to SUBTITLES array
+- [x] Update modulo to use SUBTITLES.length for dynamic array sizing
+- [x] Rotation: "Since April 2023" → "I know that feel, bro." → "The most recognized face on the internet."
+- [x] Update PROGRESS.md
+- [x] Verify TypeScript compiles — zero errors
+
+---
+
+## Phase 44 — Hero Banner Looping Text Final ✓
+- [x] Remove "Since April 2023" from SUBTITLES array in ImageReel.tsx — only 2 phrases remain
+- [x] Final SUBTITLES: "I know that feel, bro." and "The most recognized face on the internet."
+- [x] Increase rotation interval from 9000ms to 18000ms (18 seconds between swaps)
+- [x] Fade transition animation (0.4s opacity) unchanged
+- [x] No other components modified
+- [x] Update PROGRESS.md
+- [x] Verify TypeScript compiles — zero errors
+
+---
+
+## Phase 45 — Hero Banner Loop Reset Fix ✓
+- [x] Fix orphaned setTimeout in ImageReel.tsx useEffect causing visible loop reset
+- [x] Track fadeTimeout with `let` variable in effect closure
+- [x] Clear both setInterval and setTimeout in useEffect cleanup
+- [x] Loop now cycles seamlessly: phrase 1 → phrase 2 → phrase 1 forever with no glitch
+- [x] 18-second interval and 0.4s fade transition unchanged
+- [x] No other components modified
+- [x] Update PROGRESS.md
+- [x] Verify TypeScript compiles — zero errors
+
+---
+
+## Phase 43 — Chart Tab Inactive Text Brightness ✓
+- [x] Change inactive tab text color in ChartSection.tsx from `text-gray-500` to `text-gray-400`
+- [x] Applies to both the regular TABS buttons (Chart, Transactions, TVL, Volume) and the Bubble Map button
+- [x] Matches HeroStats label brightness (`text-gray-400 font-medium`)
+- [x] Active tab (`text-white` + green underline) unchanged
+- [x] Hover state (`hover:text-gray-300`) unchanged
+- [x] Update PROGRESS.md
+- [x] Verify TypeScript compiles — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

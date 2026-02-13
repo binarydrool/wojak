@@ -1,4 +1,5 @@
 import ImageReel from "@/components/dashboard/ImageReel";
+import AboutSection from "@/components/dashboard/AboutSection";
 import HeroStats from "@/components/dashboard/HeroStats";
 import ChartSection from "@/components/dashboard/ChartSection";
 import SwapCard from "@/components/dashboard/SwapCard";
@@ -11,7 +12,10 @@ export default function Home() {
       {/* Section 1: Image Reel Banner */}
       <ImageReel />
 
-      {/* Section 2: Stats Row */}
+      {/* Section 2: About Strip */}
+      <AboutSection />
+
+      {/* Section 3: Stats Row */}
       <HeroStats />
 
       {/* Section 3: Two-Column Layout — Chart + Right Sidebar */}
@@ -32,6 +36,16 @@ export default function Home() {
 
       {/* Section 4: Contract Info */}
       <ContractInfo />
+
+      {/* Disclaimer */}
+      <section className="max-w-5xl mx-auto px-4 pt-6 pb-8">
+        <div className="border-t border-gray-800/60 pt-4">
+          <p className="text-center text-[11px] leading-relaxed text-gray-600">
+            WOJAK is a memecoin with no intrinsic value. No team. No roadmap. For entertainment only. DYOR — never invest more than you can afford to lose.{" "}
+            <span className="italic text-[#00ff41]/70">We know that feel, bro.</span>
+          </p>
+        </div>
+      </section>
     </main>
   );
 }

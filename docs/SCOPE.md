@@ -58,7 +58,22 @@ The main page. Everything a holder or potential buyer needs at a glance.
 - WOJAK logo/branding large and centered
 - Tagline: "The OG WOJAK — Since April 2023"
 - Current price (pulled from Etherscan/DEX Screener)
+
+**About Strip (below hero, above stats):**
+- Compact horizontal layout: Wojak_black.png image (left) + text content (right)
+- "WOJAK" heading with Telegram and X (Twitter) inline SVG icons on the same line — icons are light grey, turn green (#00ff41) on hover, link to community Telegram and X profile in new tabs
+- Subtitle with founding date
+- Brief intro paragraph covering community origins, contract status, and LP lock
+- "I know that feel, bro." tagline on its own line below the paragraph, green italic
+- No background card — transparent, sits directly on page background
+- Spacing equalized: gap between About and stats bar matches gap between stats bar and chart section
+- Green (#00ff41) accents, subtle green glow around image, fade-in on scroll
+- Responsive: stacks image above text on mobile, icons stay next to heading at smaller size
+
+**Stats Row:**
 - Quick stats row: Market Cap | TVL | 24h Volume | Holders
+- Mobile: 2x2 grid (2 stats per row) with reduced gap and padding for breathing room
+- Desktop: single horizontal row (4 columns), unchanged
 
 **Price Chart:**
 - DEX Screener embed iframe pointed at OG contract
@@ -68,18 +83,31 @@ The main page. Everything a holder or potential buyer needs at a glance.
 - **Recent Trades** — Live trade feed from Etherscan API (buy/sell, amount, wallet, time)
 - **TVL / Liquidity** — Current TVL, LP lock status, lock expiry (year 2100)
 - **Holders** — Current holder count from Etherscan API, displayed prominently
+- **Bubble Map** — Interactive canvas-based visualization of top 100 token holders as force-directed bubbles. Bubble size proportional to token balance, green color gradient (brighter = larger holder). Opens as full-screen modal overlay. Features: pan (drag), zoom (scroll/pinch), wallet search, hover tooltips with address/balance/supply percentage/Etherscan link. Data from Ethplorer API via `/api/holders/list` route with 30-minute cache and mock fallback.
 
 **Contract Info Section:**
+- "Contract RENOUNCED" badge, Total Supply (69.42B), and Tax (0%) all inline on the same row — green values, dim grey labels, vertical dividers between items
 - OG contract address (click to copy)
-- Direct links: Etherscan | DEX Screener | Uniswap Pool
+- Direct links: Etherscan | DexTools | Uniswap Liquidity Pool
 - LP lock proof link
 - "Contract RENOUNCED — No admin functions" badge
 
 **Swap Widget Section:**
-- Embedded CoW Swap widget (iframe embed, no SDK dependency)
-- Pre-filled: Sell ETH → Buy WOJAK (OG contract)
+- Interactive swap estimation widget with editable ETH and WOJAK input fields
+- Bidirectional real-time conversion: changing ETH recalculates WOJAK, changing WOJAK recalculates ETH, using live price data from CoinGecko
+- Rolodex ticker in top-right corner cycling through WOJAK price (USD), WOJAK price (ETH), and ETH gas price (Gwei) with smooth vertical slide animation every 3.5 seconds
+- Gas price fetched from Ethereum RPC (eth_gasPrice) via `/api/gas` route with 30-second cache, refreshes every 45 seconds on client
+- Input fields have green (#00ff41) focus border glow and text cursor on hover
+- "Swap on CoW Swap" button links out to CoW Swap with ETH→WOJAK pre-filled (actual swaps happen on CoW Swap, widget is estimation only)
 - Secondary link to Matcha.xyz with WOJAK pre-filled
 - MEV protection badge/note explaining why CoW Swap
+
+**Disclaimer (bottom of homepage):**
+- Compact single-line disclaimer below Contract Info: "WOJAK is a memecoin with no intrinsic value. No team. No roadmap. For entertainment only. DYOR — never invest more than you can afford to lose. We know that feel, bro."
+- Small dim grey text (11px), centered, transparent background, no card
+- "We know that feel, bro." in green italic matching site accent
+- Thin dark grey horizontal divider above to separate from content
+- Homepage-only — lives in `src/app/page.tsx`, not in footer or layout
 
 ---
 
@@ -154,10 +182,10 @@ Games tab in navbar opens a wide categorized grid panel with 4 columns: **Arcade
 
 ---
 
-### 5. Footer (unchanged numbering)
+### 5. Footer
+- Two-column layout (Community and Disclaimer), centered with max-w-3xl
 - Community links: Telegram | Twitter (@WojakToken) | Etherscan
-- Contract address (click to copy)
-- "DYOR. Verify everything on-chain. The blockchain doesn't lie."
+- Disclaimer: "DYOR. Verify everything on-chain. The blockchain doesn't lie."
 - MIT License note
 
 ---
@@ -208,6 +236,7 @@ wojak-finance/
 │   │   ├── footer/
 │   │   │   └── Footer.tsx
 │   │   ├── dashboard/
+│   │   │   ├── AboutSection.tsx
 │   │   │   ├── HeroStats.tsx
 │   │   │   ├── PriceChart.tsx       (DEX Screener embed)
 │   │   │   ├── DashboardTabs.tsx
@@ -215,6 +244,7 @@ wojak-finance/
 │   │   │   ├── LiquidityInfo.tsx
 │   │   │   ├── HolderCount.tsx
 │   │   │   ├── ContractInfo.tsx
+│   │   │   ├── BubbleMapModal.tsx  (interactive holder bubble map)
 │   │   │   └── SwapWidget.tsx       (CoW Swap embed)
 │   │   ├── crypto101/
 │   │   │   ├── AccordionSection.tsx

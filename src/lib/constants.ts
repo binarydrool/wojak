@@ -16,7 +16,7 @@ export const DEXTOOLS_URL = `https://www.dextools.io/app/en/ether/pair-explorer/
 export const DEXTOOLS_EMBED_URL = `https://www.dextools.io/widget-chart/en/ether/pe-light/${OG_WOJAK_CONTRACT}?theme=dark&chartType=2&chartResolution=30&drawingToolbars=false`;
 
 // GeckoTerminal embed — fallback if DexTools doesn't load
-export const GECKOTERMINAL_EMBED_URL = `https://www.geckoterminal.com/eth/pools/${OG_UNISWAP_POOL}?embed=1&info=0&swaps=0&grayscale=0&light_chart=0`;
+export const GECKOTERMINAL_EMBED_URL = `https://www.geckoterminal.com/eth/pools/${OG_UNISWAP_POOL}?embed=1&info=0&swaps=0&grayscale=0&light_chart=0&currency=token`;
 
 // GeckoTerminal TVL chart embed
 export const GECKOTERMINAL_TVL_EMBED_URL = `https://www.geckoterminal.com/eth/pools/${OG_UNISWAP_POOL}?embed=1&info=0&swaps=0&grayscale=0&light_chart=0&chart_type=tvl`;
@@ -33,6 +33,8 @@ export const MATCHA_URL = `https://matcha.xyz/tokens/ethereum/${OG_WOJAK_CONTRAC
 export const TWITTER_URL = "https://twitter.com/WojakToken";
 export const CTO_TWITTER_URL = "https://twitter.com/wojakcto";
 export const TELEGRAM_URL = "https://t.me/Wojakog";
+export const TELEGRAM_COMMUNITY_URL = "https://t.me/wojakcoincommunity";
+export const X_URL = "https://x.com/WojakToken";
 
 // Token Approval Checker
 export const APPROVAL_CHECKER_URL = "https://etherscan.io/tokenapprovalchecker";
