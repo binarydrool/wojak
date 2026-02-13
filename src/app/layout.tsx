@@ -9,28 +9,32 @@ import { GameProvider } from "@/components/games/GameContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://wojak.io"),
-  title: "WOJAK",
+  metadataBase: new URL("https://www.wojakstats.xyz"),
+  title: "WOJAK Stats",
   description:
-    "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,000+ OG holders.",
+    "Live WOJAK token stats — price, market cap, TVL, volume, holders, and charts.",
   icons: {
     icon: "/images/favicon.png",
     apple: "/images/favicon.png",
   },
+  alternates: {
+    canonical: "https://www.wojakstats.xyz",
+  },
   openGraph: {
-    title: "WOJAK — The OG Since April 2023",
+    title: "WOJAK Stats",
     description:
-      "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,000+ OG holders.",
+      "Live WOJAK token stats — price, market cap, TVL, volume, holders, and charts.",
     type: "website",
-    url: "https://wojak.io",
-    siteName: "wojak.io",
+    url: "https://www.wojakstats.xyz",
+    siteName: "WOJAK Stats",
     images: [{ url: "/images/Wojak_black.png", width: 512, height: 512, alt: "WOJAK" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "WOJAK — The OG Since April 2023",
+    site: "WOJAK Stats",
+    title: "WOJAK Stats",
     description:
-      "The official community website for the original WOJAK token on Ethereum. Dashboard, swap, education, and games for 19,000+ OG holders.",
+      "Live WOJAK token stats — price, market cap, TVL, volume, holders, and charts.",
     images: ["/images/Wojak_black.png"],
   },
 };

@@ -1,4 +1,4 @@
-# WOJAK.IO — Project Scope
+# WOJAK Stats — Project Scope
 
 ## Tagline
 **The OG WOJAK — Since April 2023**
@@ -6,7 +6,7 @@
 ---
 
 ## Overview
-wojak.io is the official community website for the original WOJAK token (0x5026F006B85729a8b14553FAE6af249aD16c9aaB) on Ethereum. It serves as a dashboard, education hub, community rally point, and entertainment destination for OG WOJAK holders. The site exists to counter a hostile CTO migration attempt and give the 14,000+ non-migrated holders a legitimate home.
+WOJAK Stats (wojakstats.xyz) is the official community website for the original WOJAK token (0x5026F006B85729a8b14553FAE6af249aD16c9aaB) on Ethereum. It serves as a dashboard, education hub, community rally point, and entertainment destination for OG WOJAK holders. The site exists to counter a hostile CTO migration attempt and give the 14,000+ non-migrated holders a legitimate home.
 
 ---
 

@@ -1,12 +1,14 @@
-# wojak.io
+# WOJAK Stats
 
 **The OG WOJAK — Since April 2023**
 
-Official community website for the original WOJAK token on Ethereum. Dashboard, education hub, migration analysis, and 20 games for 14,000+ OG WOJAK holders.
+Official community website for the original WOJAK token on Ethereum. Live stats, dashboard, education hub, migration analysis, and 20 games for 14,000+ OG WOJAK holders.
+
+**Live site:** [https://www.wojakstats.xyz](https://www.wojakstats.xyz)
 
 ## About
 
-wojak.io serves the holders of the original WOJAK token (`0x5026F006B85729a8b14553FAE6af249aD16c9aaB`) on Ethereum. The site exists to provide a legitimate home for the OG community and counter a hostile CTO migration attempt.
+WOJAK Stats (wojakstats.xyz) serves the holders of the original WOJAK token (`0x5026F006B85729a8b14553FAE6af249aD16c9aaB`) on Ethereum. The site exists to provide a legitimate home for the OG community and counter a hostile CTO migration attempt.
 
 ## Features
 

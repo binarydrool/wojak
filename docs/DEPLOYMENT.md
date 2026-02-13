@@ -1,6 +1,6 @@
-# WOJAK.IO — Deployment Guide
+# WOJAK Stats — Deployment Guide
 
-Step-by-step instructions for deploying wojak.io to GitHub + Vercel.
+Step-by-step instructions for deploying wojakstats.xyz to GitHub + Vercel.
 
 ---
 
@@ -22,7 +22,7 @@ From the project root directory:
 ```bash
 git init
 git add -A
-git commit -m "Initial commit — wojak.io v1"
+git commit -m "Initial commit — WOJAK Stats v1"
 git branch -M main
 git remote add origin https://github.com/YOUR-USERNAME/wojak-finance.git
 git push -u origin main
@@ -83,17 +83,17 @@ Click **Add** to save the variable.
 
 ## 7. Add Custom Domain (Later)
 
-When the `wojak.io` domain is acquired:
+The custom domain `wojakstats.xyz` is configured:
 
 1. Go to your Vercel project → **Settings → Domains**
-2. Enter `wojak.io` and click **Add**
+2. Enter `wojakstats.xyz` and click **Add**
 3. Vercel will show DNS records you need to add at your domain registrar:
    - **A Record:** `76.76.21.21` (for root domain)
-   - **CNAME:** `cname.vercel-dns.com` (for www subdomain, optional)
+   - **CNAME:** `cname.vercel-dns.com` (for www subdomain)
 4. Add these DNS records at your registrar (Namecheap, GoDaddy, Cloudflare, etc.)
 5. Wait for DNS propagation (usually 5-30 minutes, can take up to 48 hours)
 6. Vercel will auto-provision a free SSL certificate once DNS is verified
-7. The site will be live at `https://wojak.io`
+7. The site is live at `https://www.wojakstats.xyz`
 
 ---
 

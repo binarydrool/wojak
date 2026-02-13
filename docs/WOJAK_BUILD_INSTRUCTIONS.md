@@ -1,6 +1,6 @@
-# WOJAK.IO — Build Instructions
+# WOJAK Stats — Build Instructions
 
-I'm building wojak.io, the official community website for the OG WOJAK token on Ethereum. I've attached three files:
+I'm building WOJAK Stats (wojakstats.xyz), the official community website for the OG WOJAK token on Ethereum. I've attached three files:
 
 1. **SCOPE.md** — Full project scope, tech stack, site structure, file architecture, design direction, and all contract/link references.
 2. **TODO.md** — Phased build plan with checkboxes. 10 phases from project setup to deployment. Every task is listed.
