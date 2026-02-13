@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://www.wojakstats.xyz",
     siteName: "WOJAK Stats",
-    images: [{ url: "https://www.wojakstats.xyz/images/shared.jpg", width: 1200, height: 630, alt: "WOJAK Stats" }],
+    images: [{ url: "https://www.wojakstats.xyz/images/Wojak_black.png", width: 1200, height: 630, alt: "WOJAK Stats" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: "WOJAK Stats",
     description:
       "Live WOJAK token stats — price, market cap, TVL, volume, holders, and charts.",
-    images: ["https://www.wojakstats.xyz/images/shared.jpg"],
+    images: ["https://www.wojakstats.xyz/images/Wojak_black.png"],
   },
 };
 
