@@ -25,6 +25,7 @@ interface Bubble {
   targetX: number;
   targetY: number;
   opacity: number;
+  tier: 1 | 2 | 3 | 4;
 }
 
 interface Transform {
@@ -33,24 +34,24 @@ interface Transform {
   scale: number;
 }
 
+type TierVisibility = Record<1 | 2 | 3 | 4, boolean>;
+
 /* ── Constants ── */
 
-const GREEN_PALETTE = [
-  "#00ff41",
-  "#33ff66",
-  "#00cc33",
-  "#00e639",
-  "#4dff7a",
-  "#009926",
-  "#006619",
+const TIER_DEFS = [
+  { tier: 1 as const, color: "#00ff41", glowBase: "rgba(0,255,65,", btnLabel: "Top 100", legendLabel: "Top 100", start: 0, end: 100 },
+  { tier: 2 as const, color: "#00d4ff", glowBase: "rgba(0,212,255,", btnLabel: "Top 250", legendLabel: "Top 101\u2013250", start: 100, end: 250 },
+  { tier: 3 as const, color: "#a855f7", glowBase: "rgba(168,85,247,", btnLabel: "Top 500", legendLabel: "Top 251\u2013500", start: 250, end: 500 },
+  { tier: 4 as const, color: "#ffd700", glowBase: "rgba(255,215,0,", btnLabel: "Top 1000", legendLabel: "Top 501\u20131000", start: 500, end: 1000 },
 ];
 
-const MIN_RADIUS = 8;
-const MAX_RADIUS = 80;
+const MIN_RADIUS = 3;
+const MAX_RADIUS = 65;
 const DAMPING = 0.92;
-const ATTRACTION = 0.005;
-const REPULSION = 1.2;
-const SIM_STEPS = 200;
+const ATTRACTION = 0.006;
+const REPULSION = 1.0;
+const SIM_STEPS = 120;
+const GRID_CELL = 150;
 
 /* ── Helpers ── */
 
@@ -67,22 +68,45 @@ function formatBalance(bal: number): string {
   return bal.toFixed(0);
 }
 
-function getBubbleColor(rank: number, total: number): { fill: string; glow: string } {
-  // Brighter green for higher rank (larger holders)
-  const t = total > 1 ? rank / (total - 1) : 0;
-  if (t < 0.05) return { fill: "#00ff41", glow: "rgba(0,255,65,0.6)" };
-  if (t < 0.15) return { fill: "#33ff66", glow: "rgba(51,255,102,0.5)" };
-  if (t < 0.3) return { fill: "#00e639", glow: "rgba(0,230,57,0.4)" };
-  if (t < 0.5) return { fill: "#00cc33", glow: "rgba(0,204,51,0.35)" };
-  if (t < 0.7) return { fill: "#4dff7a", glow: "rgba(77,255,122,0.3)" };
-  if (t < 0.85) return { fill: "#009926", glow: "rgba(0,153,38,0.25)" };
-  return { fill: "#006619", glow: "rgba(0,102,25,0.2)" };
+function getTier(rank: number): 1 | 2 | 3 | 4 {
+  if (rank < 100) return 1;
+  if (rank < 250) return 2;
+  if (rank < 500) return 3;
+  return 4;
+}
+
+function getBubbleColor(rank: number): { fill: string; glow: string; tier: 1 | 2 | 3 | 4 } {
+  for (const cfg of TIER_DEFS) {
+    if (rank < cfg.end) {
+      const t = (rank - cfg.start) / Math.max(1, cfg.end - cfg.start - 1);
+      const glowOpacity = 0.55 - t * 0.25;
+      return { fill: cfg.color, glow: cfg.glowBase + glowOpacity.toFixed(2) + ")", tier: cfg.tier };
+    }
+  }
+  const last = TIER_DEFS[TIER_DEFS.length - 1];
+  return { fill: last.color, glow: last.glowBase + "0.20)", tier: last.tier };
 }
 
 function scaleRadius(share: number, maxShare: number): number {
   if (maxShare <= 0) return MIN_RADIUS;
   const t = Math.sqrt(share / maxShare);
   return MIN_RADIUS + t * (MAX_RADIUS - MIN_RADIUS);
+}
+
+function lightenColor(hex: string, amt: number): string {
+  const num = parseInt(hex.replace("#", ""), 16);
+  const r = Math.min(255, (num >> 16) + amt);
+  const g = Math.min(255, ((num >> 8) & 0xff) + amt);
+  const b = Math.min(255, (num & 0xff) + amt);
+  return `rgb(${r},${g},${b})`;
+}
+
+function darkenColor(hex: string, amt: number): string {
+  const num = parseInt(hex.replace("#", ""), 16);
+  const r = Math.max(0, (num >> 16) - amt);
+  const g = Math.max(0, ((num >> 8) & 0xff) - amt);
+  const b = Math.max(0, (num & 0xff) - amt);
+  return `rgb(${r},${g},${b})`;
 }
 
 /* ── Force simulation ── */
@@ -95,11 +119,11 @@ function createBubbles(
   const maxShare = Math.max(...holders.map((h) => h.share), 0.001);
 
   return holders.map((h, i) => {
+    const { fill, glow, tier } = getBubbleColor(i);
     const r = scaleRadius(h.share, maxShare);
-    const { fill, glow } = getBubbleColor(i, holders.length);
-    // Start in a large ring around center
-    const angle = (i / holders.length) * Math.PI * 2 + Math.random() * 0.3;
-    const dist = 150 + Math.random() * 250;
+    // All tiers scattered evenly — random angle and distance across full radius
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 50 + Math.random() * 450;
 
     return {
       x: cx + Math.cos(angle) * dist,
@@ -115,8 +139,73 @@ function createBubbles(
       targetX: cx,
       targetY: cy,
       opacity: 0,
+      tier,
     };
   });
+}
+
+function runSimulationStep(bubbles: Bubble[], tierVis: TierVisibility) {
+  // Build spatial grid for O(n*k) collision detection
+  const grid: Record<string, number[]> = {};
+
+  for (let i = 0; i < bubbles.length; i++) {
+    const a = bubbles[i];
+    if (!tierVis[a.tier]) continue;
+
+    const gx = Math.floor(a.x / GRID_CELL);
+    const gy = Math.floor(a.y / GRID_CELL);
+    const key = `${gx},${gy}`;
+    (grid[key] || (grid[key] = [])).push(i);
+
+    // Attraction toward center
+    a.vx += (a.targetX - a.x) * ATTRACTION;
+    a.vy += (a.targetY - a.y) * ATTRACTION;
+  }
+
+  // Collision detection — check adjacent grid cells
+  for (let i = 0; i < bubbles.length; i++) {
+    const a = bubbles[i];
+    if (!tierVis[a.tier]) continue;
+
+    const gx = Math.floor(a.x / GRID_CELL);
+    const gy = Math.floor(a.y / GRID_CELL);
+
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        const cell = grid[`${gx + dx},${gy + dy}`];
+        if (!cell) continue;
+        for (let ci = 0; ci < cell.length; ci++) {
+          const j = cell[ci];
+          if (j <= i) continue;
+          const b = bubbles[j];
+          const ddx = a.x - b.x;
+          const ddy = a.y - b.y;
+          const distSq = ddx * ddx + ddy * ddy;
+          const minDist = a.r + b.r + 2;
+          if (distSq < minDist * minDist) {
+            const dist = Math.sqrt(distSq) || 1;
+            const force = ((minDist - dist) / dist) * REPULSION;
+            const fx = ddx * force;
+            const fy = ddy * force;
+            a.vx += fx;
+            a.vy += fy;
+            b.vx -= fx;
+            b.vy -= fy;
+          }
+        }
+      }
+    }
+  }
+
+  // Apply velocity and damping
+  for (let i = 0; i < bubbles.length; i++) {
+    const a = bubbles[i];
+    if (!tierVis[a.tier]) continue;
+    a.vx *= DAMPING;
+    a.vy *= DAMPING;
+    a.x += a.vx;
+    a.y += a.vy;
+  }
 }
 
 /* ── Canvas rendering ── */
@@ -146,7 +235,7 @@ function drawBubbles(
   // Draw bubbles back-to-front (smallest last = on top)
   for (let i = bubbles.length - 1; i >= 0; i--) {
     const b = bubbles[i];
-    if (b.opacity <= 0) continue;
+    if (b.opacity <= 0.01) continue;
 
     const isHovered = i === hoveredIdx;
     const isHighlighted = i === highlightIdx;
@@ -186,7 +275,7 @@ function drawBubbles(
 
     // Border
     if (isHovered || isHighlighted) {
-      ctx.strokeStyle = isHighlighted ? "#ffffff" : "#00ff41";
+      ctx.strokeStyle = isHighlighted ? "#ffffff" : b.color;
       ctx.lineWidth = 2 / scale;
       ctx.stroke();
     }
@@ -212,22 +301,6 @@ function drawBubbles(
   ctx.restore();
 }
 
-function lightenColor(hex: string, amt: number): string {
-  const num = parseInt(hex.replace("#", ""), 16);
-  const r = Math.min(255, (num >> 16) + amt);
-  const g = Math.min(255, ((num >> 8) & 0xff) + amt);
-  const b = Math.min(255, (num & 0xff) + amt);
-  return `rgb(${r},${g},${b})`;
-}
-
-function darkenColor(hex: string, amt: number): string {
-  const num = parseInt(hex.replace("#", ""), 16);
-  const r = Math.max(0, (num >> 16) - amt);
-  const g = Math.max(0, ((num >> 8) & 0xff) - amt);
-  const b = Math.max(0, (num & 0xff) - amt);
-  return `rgb(${r},${g},${b})`;
-}
-
 /* ── Hit detection ── */
 
 function findBubbleAt(
@@ -243,6 +316,7 @@ function findBubbleAt(
   // Check front-to-back (smallest bubbles are on top visually)
   for (let i = 0; i < bubbles.length; i++) {
     const b = bubbles[i];
+    if (b.opacity <= 0.01) continue;
     const dx = wx - b.x;
     const dy = wy - b.y;
     if (dx * dx + dy * dy <= b.r * b.r) return i;
@@ -263,16 +337,35 @@ export default function BubbleMapModal({ onClose }: { onClose: () => void }) {
   const lastTouchDistRef = useRef(0);
   const hoveredRef = useRef<number | null>(null);
   const highlightRef = useRef<number | null>(null);
+  const tierVisRef = useRef<TierVisibility>({ 1: true, 2: true, 3: true, 4: true });
 
   const [holders, setHolders] = useState<HolderEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [holderCount, setHolderCount] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [tierVisibility, setTierVisibility] = useState<TierVisibility>({ 1: true, 2: true, 3: true, 4: true });
   const [tooltip, setTooltip] = useState<{
     x: number;
     y: number;
     bubble: Bubble;
   } | null>(null);
+
+  // Keep ref in sync for animation loop access
+  useEffect(() => {
+    tierVisRef.current = tierVisibility;
+  }, [tierVisibility]);
+
+  // Derived counts
+  const tierCounts: Record<1 | 2 | 3 | 4, number> = {
+    1: Math.min(holders.length, 100),
+    2: Math.max(0, Math.min(holders.length, 250) - 100),
+    3: Math.max(0, Math.min(holders.length, 500) - 250),
+    4: Math.max(0, holders.length - 500),
+  };
+  const showingCount = holders.reduce((acc, _, i) => {
+    return acc + (tierVisibility[getTier(i)] ? 1 : 0);
+  }, 0);
+
   // Fetch holder data
   useEffect(() => {
     let cancelled = false;
@@ -330,47 +423,23 @@ export default function BubbleMapModal({ onClose }: { onClose: () => void }) {
     bubblesRef.current = bubbles;
     transformRef.current = { x: 0, y: 0, scale: 1 };
 
-    // Animate the simulation progressively
-    let step = 0;
-    const stepsPerFrame = 5;
-    const totalSteps = SIM_STEPS;
+    // Pre-compute layout synchronously so bubbles snap into place
+    const tv = tierVisRef.current;
+    for (let s = 0; s < SIM_STEPS; s++) {
+      runSimulationStep(bubbles, tv);
+    }
+    // Start all visible bubbles at full opacity
+    for (let i = 0; i < bubbles.length; i++) {
+      bubbles[i].opacity = tv[bubbles[i].tier] ? 1 : 0;
+    }
 
     function animate() {
-      if (step < totalSteps) {
-        // Run a few simulation steps
-        const end = Math.min(step + stepsPerFrame, totalSteps);
-        for (let s = step; s < end; s++) {
-          const fadeT = Math.min(1, (s / totalSteps) * 3);
-          for (let i = 0; i < bubbles.length; i++) {
-            const a = bubbles[i];
-            a.opacity = Math.min(1, fadeT);
-            const dx = a.targetX - a.x;
-            const dy = a.targetY - a.y;
-            a.vx += dx * ATTRACTION;
-            a.vy += dy * ATTRACTION;
-            for (let j = i + 1; j < bubbles.length; j++) {
-              const b = bubbles[j];
-              const ddx = a.x - b.x;
-              const ddy = a.y - b.y;
-              const dist = Math.sqrt(ddx * ddx + ddy * ddy) || 1;
-              const minDist = a.r + b.r + 3;
-              if (dist < minDist) {
-                const force = ((minDist - dist) / dist) * REPULSION;
-                const fx = ddx * force;
-                const fy = ddy * force;
-                a.vx += fx;
-                a.vy += fy;
-                b.vx -= fx;
-                b.vy -= fy;
-              }
-            }
-            a.vx *= DAMPING;
-            a.vy *= DAMPING;
-            a.x += a.vx;
-            a.y += a.vy;
-          }
-        }
-        step = end;
+      const tv = tierVisRef.current;
+
+      // Smooth opacity transitions for tier toggling
+      for (let i = 0; i < bubbles.length; i++) {
+        const target = tv[bubbles[i].tier] ? 1 : 0;
+        bubbles[i].opacity += (target - bubbles[i].opacity) * 0.12;
       }
 
       const ctx = canvas.getContext("2d");
@@ -675,6 +744,11 @@ export default function BubbleMapModal({ onClose }: { onClose: () => void }) {
     redraw();
   }, [redraw]);
 
+  // Toggle tier
+  const toggleTier = useCallback((tier: 1 | 2 | 3 | 4) => {
+    setTierVisibility((prev) => ({ ...prev, [tier]: !prev[tier] }));
+  }, []);
+
   return (
     <div
       className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm flex items-center justify-center"
@@ -685,11 +759,16 @@ export default function BubbleMapModal({ onClose }: { onClose: () => void }) {
       <div className="relative w-[95vw] h-[90vh] max-w-[1400px] mx-4 bg-wojak-dark rounded-2xl border border-wojak-border flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-wojak-border shrink-0">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <h2 className="text-lg font-bold text-white">Bubble Map</h2>
             {holderCount && (
               <span className="text-xs text-gray-400 bg-wojak-border px-2 py-0.5 rounded-full">
                 {holderCount.toLocaleString()} holders
+              </span>
+            )}
+            {holders.length > 0 && (
+              <span className="text-xs text-gray-500 bg-wojak-border/50 px-2 py-0.5 rounded-full">
+                showing {showingCount.toLocaleString()}
               </span>
             )}
           </div>
@@ -765,6 +844,39 @@ export default function BubbleMapModal({ onClose }: { onClose: () => void }) {
             Reset View
           </button>
 
+          {/* Tier toggle buttons */}
+          {TIER_DEFS.map(({ tier, color, btnLabel }) => {
+            const active = tierVisibility[tier];
+            const count = tierCounts[tier];
+            return (
+              <button
+                key={tier}
+                onClick={() => toggleTier(tier)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition-all ${
+                  active
+                    ? "bg-black/40 text-white"
+                    : "bg-black/20 text-gray-500"
+                }`}
+                style={{
+                  borderWidth: 1,
+                  borderStyle: "solid",
+                  borderColor: active ? color : "rgba(30,30,30,0.5)",
+                  opacity: count === 0 ? 0.4 : 1,
+                }}
+                disabled={count === 0}
+              >
+                <span
+                  className="w-2 h-2 rounded-full shrink-0"
+                  style={{
+                    backgroundColor: color,
+                    opacity: active ? 1 : 0.3,
+                  }}
+                />
+                {btnLabel}
+              </button>
+            );
+          })}
+
           {/* Zoom info */}
           <span className="text-[10px] text-gray-500 hidden sm:inline">
             Scroll to zoom · Drag to pan
@@ -811,8 +923,10 @@ export default function BubbleMapModal({ onClose }: { onClose: () => void }) {
                 top: Math.max(tooltip.y - 10, 10),
               }}
             >
-              <div className="bg-black/95 border border-wojak-green/40 rounded-lg p-3 shadow-lg shadow-black/50 max-w-[260px]">
-                <p className="text-xs font-mono text-wojak-green mb-1.5 break-all">
+              <div className="bg-black/95 border border-wojak-border rounded-lg p-3 shadow-lg shadow-black/50 max-w-[260px]"
+                style={{ borderColor: tooltip.bubble.color + "66" }}
+              >
+                <p className="text-xs font-mono mb-1.5 break-all" style={{ color: tooltip.bubble.color }}>
                   {tooltip.bubble.address}
                 </p>
                 <div className="space-y-1">
@@ -833,7 +947,8 @@ export default function BubbleMapModal({ onClose }: { onClose: () => void }) {
                   href={`${ETHERSCAN_BASE_URL}/address/${tooltip.bubble.address}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="pointer-events-auto inline-flex items-center gap-1 mt-2 text-[10px] text-wojak-green hover:underline"
+                  className="pointer-events-auto inline-flex items-center gap-1 mt-2 text-[10px] hover:underline"
+                  style={{ color: tooltip.bubble.color }}
                   onClick={(e) => e.stopPropagation()}
                 >
                   View on Etherscan
@@ -858,27 +973,25 @@ export default function BubbleMapModal({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Footer legend */}
-        <div className="flex items-center justify-between px-4 py-2 border-t border-wojak-border shrink-0">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between px-4 py-2 border-t border-wojak-border shrink-0 flex-wrap gap-2">
+          <div className="flex items-center gap-4 flex-wrap">
             <span className="text-[10px] text-gray-500 uppercase tracking-wider">
               Size = Token Balance
             </span>
-            <div className="flex items-center gap-1">
-              {GREEN_PALETTE.slice(0, 5).map((c, i) => (
-                <div
-                  key={i}
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: c, opacity: 1 - i * 0.15 }}
-                />
+            <div className="flex items-center gap-3">
+              {TIER_DEFS.map(({ tier, color, legendLabel }) => (
+                <div key={tier} className="flex items-center gap-1">
+                  <div
+                    className="w-2.5 h-2.5 rounded-full"
+                    style={{ backgroundColor: color }}
+                  />
+                  <span className="text-[10px] text-gray-400">
+                    {legendLabel}
+                  </span>
+                </div>
               ))}
-              <span className="text-[10px] text-gray-500 ml-1">
-                Larger → Smaller
-              </span>
             </div>
           </div>
-          <span className="text-[10px] text-gray-500">
-            {holders.length} top holders shown
-          </span>
         </div>
       </div>
     </div>

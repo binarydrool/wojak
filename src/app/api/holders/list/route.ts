@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const OG_WOJAK_CONTRACT = "0x5026F006B85729a8b14553FAE6af249aD16c9aaB";
-const ETHPLORER_URL = `https://api.ethplorer.io/getTopTokenHolders/${OG_WOJAK_CONTRACT}?apiKey=freekey&limit=100`;
+const ETHPLORER_URL = `https://api.ethplorer.io/getTopTokenHolders/${OG_WOJAK_CONTRACT}?apiKey=freekey&limit=1000`;
 
 export interface HolderEntry {
   address: string;
@@ -64,10 +64,10 @@ function getMockHolders(): HolderEntry[] {
     { address: "0x6B175474E89094C44Da98b954EedeAC495271d0F", pct: 0.76 },
   ];
 
-  // Generate 90 more holders with decreasing percentages
+  // Generate 990 more holders with decreasing percentages
   let remaining = 100 - mockData.reduce((s, h) => s + h.pct, 0);
-  for (let i = 0; i < 90; i++) {
-    const pct = Math.max(0.001, remaining * (0.15 * Math.pow(0.95, i)));
+  for (let i = 0; i < 990; i++) {
+    const pct = Math.max(0.0001, remaining * 0.008 * Math.pow(0.997, i));
     remaining -= pct;
     const addr =
       "0x" +

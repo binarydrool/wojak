@@ -917,6 +917,100 @@
 
 ---
 
+## Phase 54 — Bubble Map: Top 1000 Holders with Tier Colors & Toggles ✓
+- [x] Expand API from top 100 to top 1000 holders (Ethplorer limit=1000)
+- [x] Update mock fallback data to generate 1000 holders instead of 100
+- [x] Three-tier color coding: Top 250 green (#00ff41), Top 251-500 cyan (#00d4ff), Top 501-1000 purple (#a855f7)
+- [x] Toggle buttons in toolbar: "Top 250", "Top 500", "Top 1000" with colored dot indicators
+- [x] All three tiers ON by default — all holders visible on load
+- [x] Smooth fade animation when toggling tiers on/off via opacity lerp
+- [x] Toggle button active state: full opacity, bright tier-colored border
+- [x] Toggle button inactive state: dimmed, faded border
+- [x] Disabled toggle buttons for tiers with zero holders
+- [x] "showing X" dynamic count badge in header updates based on active toggles
+- [x] Updated footer legend: three-color dots with tier range labels (Top 250, Top 251–500, Top 501–1000)
+- [x] Footer shows "X of Y top holders shown" count
+- [x] Tooltip border and address text color matches bubble tier color
+- [x] Spatial grid-based collision detection (O(n*k) instead of O(n^2)) for 1000-bubble performance
+- [x] Adaptive simulation steps per frame (2/3/5) based on holder count
+- [x] Reduced MIN_RADIUS (3px) and MAX_RADIUS (65px) for denser packing
+- [x] Hit detection skips hidden (opacity ≤ 0.01) bubbles
+- [x] All existing features preserved: search, zoom, pan, touch, Etherscan links
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
+## Phase 55 — Bubble Map: Top 2500 Holders with 4th Pink Tier ✓
+- [x] Expand API from top 1000 to top 2500 holders (Ethplorer limit=2500)
+- [x] Update mock fallback data to generate 2500 holders instead of 1000
+- [x] Four-tier color coding: Top 250 green (#00ff41), Top 251-500 cyan (#00d4ff), Top 501-1000 purple (#a855f7), Top 1001-2500 pink (#ff69b4)
+- [x] 4th toggle button "Top 2500" with pink dot indicator after "Top 1000"
+- [x] All four tiers ON by default — all 2500 holders visible on load
+- [x] Performance: Tier 4 (pink) skips collision detection — attraction-only physics
+- [x] Performance: Tier 4 uses simplified flat rendering (no glow, no gradient)
+- [x] Performance: Tier 4 max radius capped at 35% of MAX_RADIUS for smaller bubbles
+- [x] Performance: Tier 4 starts at wider distribution radius to reduce overlap
+- [x] Performance: Adaptive steps per frame (1/2/3/5) — 1 step for 1500+ holders
+- [x] Updated Bubble interface tier type from `1|2|3` to `1|2|3|4`
+- [x] Updated TierVisibility, getTier, getBubbleColor, scaleRadius, tierCounts
+- [x] Updated footer legend: four-color dots with tier range labels
+- [x] Footer shows "X of Y top holders shown" count for all four tiers
+- [x] Hover/highlight still works on pink bubbles (upgrades to full rendering)
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
+## Phase 56 — Bubble Map: 5-Tier System with Gold Whales (1000 max) ✓
+- [x] Scale back from 2500 to 1000 holders max
+- [x] Revert API from limit=2500 to limit=1000
+- [x] Revert mock fallback from 2500 to 1000 holders
+- [x] New 5-tier system: Gold top 10 (#ffd700), Green top 100 (#00ff41), Cyan top 250 (#00d4ff), Purple top 500 (#a855f7), Pink top 1000 (#ff69b4)
+- [x] 5 toggle buttons: "Top 10", "Top 100", "Top 250", "Top 500", "Top 1000" with colored dots
+- [x] All 5 tiers ON by default
+- [x] Top 10 gold whales: 20% radius boost, extra glow, always-visible border, always-visible address+percentage labels
+- [x] Fixed bubble distribution: all tiers scattered evenly with random angles and distances (no tier-based clumping)
+- [x] Removed all tier-4-specific simplified physics — all tiers get full collision detection
+- [x] Removed all tier-4-specific simplified rendering — all tiers get full gradient/glow
+- [x] Updated Bubble interface tier type from `1|2|3|4` to `1|2|3|4|5`
+- [x] Updated TierVisibility, getTier, getBubbleColor, scaleRadius, tierCounts for 5 tiers
+- [x] Updated footer legend: 5-color dots with tier range labels
+- [x] Adaptive steps per frame reverted to (2/3/5) for 1000-holder max
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
+## Phase 57 — Bubble Map: 4-Tier System (Green/Cyan/Purple/Yellow) ✓
+- [x] Replace 5-tier system with 4-tier system: Top 100 green (#00ff41), Top 101-250 cyan (#00d4ff), Top 251-500 purple (#a855f7), Top 501-1000 yellow (#ffd700)
+- [x] Remove gold top-10 whale tier (no special treatment, no radius boost, no always-visible labels)
+- [x] Remove pink tier (#ff69b4) entirely
+- [x] 4 toggle buttons: "Top 100", "Top 250", "Top 500", "Top 1000" with colored dots
+- [x] All 4 tiers ON by default
+- [x] Updated types: `Bubble.tier`, `TierVisibility`, `tierCounts`, `toggleTier` from `1|2|3|4|5` to `1|2|3|4`
+- [x] Updated `getTier` boundaries: <100, <250, <500, else
+- [x] Updated `tierCounts` boundaries: 100/250/500/1000
+- [x] Simplified `scaleRadius` — removed tier parameter and gold boost
+- [x] Standard rendering for all tiers — no special glow, border, or label treatment
+- [x] Even bubble distribution preserved (random angles and distances)
+- [x] API route unchanged (limit=1000, 1000-holder mock fallback)
+- [x] Updated footer legend: 4-color dots with tier range labels
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
+## Phase 58 — Bubble Map: Fast Layout & Footer Cleanup ✓
+- [x] Pre-compute force simulation layout synchronously before starting animation loop — bubbles snap into position instantly
+- [x] Start all visible bubbles at full opacity instead of slow fade-in (opacity lerp only used for tier toggling)
+- [x] Remove "X of Y top holders shown" text from bottom-right of bubble map footer
+- [x] All existing features preserved: tier toggles, search, zoom, pan, hover tooltips, Etherscan links
+- [x] Update TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

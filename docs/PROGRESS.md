@@ -3627,3 +3627,177 @@ Added Etherscan inline SVG icon to the About section heading, next to the existi
 **Verified:**
 - `npm run build` — zero TypeScript errors, compiled successfully
 - No other components modified
+
+---
+
+## Phase 54 — Bubble Map: Top 1000 Holders with Tier Colors & Toggles — 2026-02-13
+
+**What was built:**
+Expanded the Bubble Map from top 100 to top 1000 holders with three-tier color coding, interactive toggle buttons, performance optimizations, and updated legend.
+
+**API Changes (`src/app/api/holders/list/route.ts`):**
+- Changed Ethplorer API `limit` from 100 to 1000
+- Updated mock fallback data from 100 to 1000 generated holders (10 predefined + 990 generated with exponential decay distribution)
+
+**BubbleMapModal Changes (`src/components/dashboard/BubbleMapModal.tsx`):**
+- **Tier system:** Added `tier` property to Bubble interface (1 | 2 | 3)
+- **Three-tier colors:** Top 250 = #00ff41 (green), Top 251-500 = #00d4ff (cyan), Top 501-1000 = #a855f7 (purple)
+- **TIER_DEFS config:** Centralized tier definitions with color, glow, labels, and rank ranges
+- **Toggle buttons:** Three tier toggle buttons in toolbar next to Reset View. Active state: bright tier-colored border, full opacity. Inactive: dimmed border, faded dot. Disabled if tier has zero holders.
+- **Smooth fade:** Opacity lerp (0.12 factor) per frame for tier toggle transitions — bubbles smoothly fade in/out
+- **"showing X" count:** Dynamic badge in header showing count of visible holders based on active toggles
+- **Updated legend:** Three colored dots with range labels (Top 250, Top 251-500, Top 501-1000), "X of Y top holders shown" footer text
+- **Tier-colored tooltip:** Tooltip border and address text color match the bubble's tier color
+- **Spatial grid collision detection:** Grid-based spatial partitioning (GRID_CELL=150px) reduces collision checks from O(n^2) to O(n*k) where k = average neighbors per cell. Essential for 1000 bubbles.
+- **Adaptive simulation:** stepsPerFrame scales with holder count (>500: 2, >200: 3, else: 5)
+- **Adjusted physics:** MIN_RADIUS=3 (from 8), MAX_RADIUS=65 (from 80), ATTRACTION=0.006 (from 0.005), REPULSION=1.0 (from 1.2), SIM_STEPS=120 (from 200)
+- **Hit detection:** Skips bubbles with opacity <= 0.01 (hidden tier bubbles)
+- **All existing features preserved:** search with auto-center, zoom (scroll/pinch), pan (drag), Etherscan links on click, touch support, keyboard (Esc to close)
+
+**Files changed:**
+- `src/app/api/holders/list/route.ts` — limit 100→1000, mock data 100→1000 holders
+- `src/components/dashboard/BubbleMapModal.tsx` — tier colors, toggle buttons, spatial grid physics, legend, tooltip colors, showing count
+- `README.md` — updated Bubble Map feature description
+- `docs/SCOPE.md` — updated Bubble Map specification
+- `docs/TODO.md` — added Phase 54
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- `npx tsc --noEmit` — zero TypeScript errors
+- `npx next build` — clean build, all routes compile
+- No other components modified
+
+---
+
+## Phase 55 — Bubble Map: Top 2500 Holders with 4th Pink Tier — 2026-02-13
+
+**What was built:**
+Expanded the Bubble Map from top 1000 to top 2500 holders with a 4th pink tier (#ff69b4) for ranks 1001-2500, performance-optimized rendering, and updated toggle/legend UI.
+
+**API Changes (`src/app/api/holders/list/route.ts`):**
+- Changed Ethplorer API limit from 1000 to 2500
+- Updated mock fallback from 990 generated to 2490 generated holders (10 predefined + 2490 = 2500 total)
+- Adjusted mock decay curve (0.005 multiplier, 0.998 decay) for realistic distribution across 2500 holders
+
+**BubbleMapModal Changes (`src/components/dashboard/BubbleMapModal.tsx`):**
+- **4th tier:** Added pink (#ff69b4) tier for ranks 1001-2500 in TIER_DEFS
+- **Types:** Updated `Bubble.tier`, `TierVisibility`, `getTier`, `getBubbleColor` return types from `1|2|3` to `1|2|3|4`
+- **Tier counts:** Updated to properly count tier 3 as `min(length, 1000) - 500` and tier 4 as `length - 1000`
+- **Toggle button:** 4th "Top 2500" button renders automatically from TIER_DEFS with pink dot
+- **Legend:** 4th pink dot with "Top 1001–2500" label renders automatically from TIER_DEFS
+- **Performance — Physics:** Tier 4 bubbles skip collision detection entirely; only gentle attraction (50% strength) applied
+- **Performance — Rendering:** Tier 4 uses simplified flat fill (no glow pass, no gradient, no shadow blur) — significantly reduces draw calls
+- **Performance — Sizing:** Tier 4 max radius capped at 35% of MAX_RADIUS (≈22.75px) making them noticeably smaller than purple
+- **Performance — Distribution:** Tier 4 starts at wider radius (350-650px from center vs 100-500px for tiers 1-3)
+- **Performance — Simulation:** Added 1-step-per-frame tier for 1500+ holders (was minimum 2 steps)
+- **Hover upgrade:** When hovering/highlighting a tier 4 bubble, it upgrades to full gradient rendering with glow
+
+**Files changed:**
+- `src/app/api/holders/list/route.ts` — limit 1000→2500, mock data 1000→2500 holders
+- `src/components/dashboard/BubbleMapModal.tsx` — 4th tier, performance optimizations, toggle, legend
+- `README.md` — updated Bubble Map feature description
+- `docs/SCOPE.md` — updated Bubble Map specification
+- `docs/TODO.md` — added Phase 55
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- `npm run build` — clean build, zero TypeScript errors, all routes compile
+- No other components modified
+
+---
+
+## Phase 56 — Bubble Map: 5-Tier System with Gold Whales (1000 max) — 2026-02-13
+
+**What was built:**
+Replaced the 4-tier / 2500-holder Bubble Map with a new 5-tier / 1000-holder system featuring gold whale bubbles for the top 10 holders.
+
+**API Changes (`src/app/api/holders/list/route.ts`):**
+- Reverted Ethplorer API limit from 2500 back to 1000
+- Reverted mock fallback from 2490 generated to 990 generated holders (10 predefined + 990 = 1000 total)
+- Restored original mock decay curve (0.008 multiplier, 0.997 decay)
+
+**BubbleMapModal Changes (`src/components/dashboard/BubbleMapModal.tsx`):**
+- **New 5-tier system:**
+  - Tier 1: Top 10 — Gold (#ffd700) — the whales
+  - Tier 2: Top 11–100 — Green (#00ff41)
+  - Tier 3: Top 101–250 — Cyan (#00d4ff)
+  - Tier 4: Top 251–500 — Purple (#a855f7)
+  - Tier 5: Top 501–1000 — Pink (#ff69b4)
+- **Types:** Updated `Bubble.tier`, `TierVisibility`, `getTier`, `getBubbleColor` from `1|2|3|4` to `1|2|3|4|5`
+- **Gold whale treatment:** Top 10 get 20% radius boost (MAX_RADIUS * 1.2), extra glow (0.6 alpha vs 0.4), stronger shadow blur (20 vs 15), always-visible border (1.5px), always-visible address + percentage labels with slightly larger font
+- **Even distribution:** All bubbles initialized with fully random angles and uniform distance range (50–500px) — no tier-based clumping
+- **Restored full physics:** Removed all tier-4-specific simplified physics; all 5 tiers get full collision detection via spatial grid
+- **Restored full rendering:** Removed tier-4 flat-fill shortcut; all tiers get gradient + glow rendering
+- **5 toggle buttons:** "Top 10" (gold), "Top 100" (green), "Top 250" (cyan), "Top 500" (purple), "Top 1000" (pink)
+- **5-color legend:** All 5 tiers shown in footer
+- **Tier counts:** Updated for 5-tier boundaries (10/100/250/500/1000)
+- **Adaptive steps:** Reverted to (2/3/5) for 1000-holder max
+
+**Files changed:**
+- `src/app/api/holders/list/route.ts` — limit 2500→1000, mock data 2500→1000 holders
+- `src/components/dashboard/BubbleMapModal.tsx` — 5-tier system, gold whales, even distribution, full physics restored
+- `README.md` — updated Bubble Map feature description
+- `docs/SCOPE.md` — updated Bubble Map specification
+- `docs/TODO.md` — added Phase 56
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- `npm run build` — clean build, zero TypeScript errors, all routes compile
+- No other components modified
+
+---
+
+## Phase 57 — Bubble Map: 4-Tier System (Green/Cyan/Purple/Yellow) — 2026-02-13
+
+**What was built:**
+Replaced the 5-tier Bubble Map (with gold whales and pink tier) with a clean 4-tier system using green, cyan, purple, and yellow.
+
+**BubbleMapModal Changes (`src/components/dashboard/BubbleMapModal.tsx`):**
+- **New 4-tier system:**
+  - Tier 1: Top 100 — Green (#00ff41)
+  - Tier 2: Top 101–250 — Cyan (#00d4ff)
+  - Tier 3: Top 251–500 — Purple (#a855f7)
+  - Tier 4: Top 501–1000 — Yellow (#ffd700)
+- **Types:** Updated `Bubble.tier`, `TierVisibility`, `tierCounts`, `toggleTier` from `1|2|3|4|5` to `1|2|3|4`
+- **Removed gold whale treatment:** No radius boost, no extra glow, no always-visible border/labels — all tiers rendered identically
+- **Removed pink tier:** No 5th tier for any range
+- **Simplified scaleRadius:** Removed tier parameter and gold boost logic — pure share-based scaling
+- **Updated getTier boundaries:** <100 → tier 1, <250 → tier 2, <500 → tier 3, else → tier 4
+- **Updated tierCounts:** 100/250/500/1000 boundaries
+- **4 toggle buttons:** "Top 100" (green), "Top 250" (cyan), "Top 500" (purple), "Top 1000" (yellow)
+- **4-color legend:** All 4 tiers shown in footer
+- **Even distribution preserved:** Random angles and distances for all bubbles
+- **API unchanged:** limit=1000, 1000-holder mock fallback — no route changes needed
+
+**Files changed:**
+- `src/components/dashboard/BubbleMapModal.tsx` — 4-tier system, removed gold whales, removed pink tier
+- `README.md` — updated Bubble Map feature description
+- `docs/SCOPE.md` — updated Bubble Map specification
+- `docs/TODO.md` — added Phase 57
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- `npm run build` — clean build, zero TypeScript errors, all routes compile
+- No other components modified
+
+---
+
+## Phase 58 — Bubble Map: Fast Layout & Footer Cleanup — 2026-02-13
+
+**What was built:**
+Two targeted improvements to the Bubble Map component: instant layout and footer text removal.
+
+**BubbleMapModal Changes (`src/components/dashboard/BubbleMapModal.tsx`):**
+- **Instant layout:** Pre-compute all 120 force simulation steps synchronously before starting the animation loop. Bubbles now snap into their settled positions immediately when the modal opens, instead of slowly drifting into place over ~1 second.
+- **No fade-in delay:** All visible bubbles start at full opacity (1.0) instead of fading from 0. The opacity lerp (0.12/frame) is preserved only for tier toggle animations.
+- **Removed footer holder count text:** Deleted the "X of Y top holders shown" span from the bottom-right of the footer legend. The legend (Size = Token Balance, tier color dots) remains unchanged.
+- **Animation loop simplified:** Removed the `step` counter and `stepsPerFrame` adaptive logic from the animation loop since all simulation is pre-computed. The loop now only handles opacity transitions for tier toggling and canvas rendering.
+
+**Files changed:**
+- `src/components/dashboard/BubbleMapModal.tsx` — pre-computed simulation, instant opacity, removed footer text
+- `docs/TODO.md` — added Phase 58
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- `npm run build` — clean build, zero TypeScript errors, all routes compile
+- No other components modified (no game, chart, swap, or About changes)
