@@ -904,6 +904,19 @@
 
 ---
 
+## Phase 53 — About Section Etherscan Icon ✓
+- [x] Add Etherscan inline SVG icon next to existing Telegram and X icons in AboutSection heading
+- [x] Icon order: Telegram, X, Etherscan — matching the same row layout
+- [x] Etherscan SVG copied from Footer component for visual consistency
+- [x] Links to ETHERSCAN_TOKEN_URL (OG WOJAK contract on Etherscan) from constants.ts
+- [x] Opens in new tab (target="_blank" rel="noopener noreferrer")
+- [x] Same size (w-5 h-5 sm:w-6 sm:h-6), color (text-gray-400), and hover behavior (hover:text-[#00ff41]) as Telegram and X icons
+- [x] Import ETHERSCAN_TOKEN_URL added to AboutSection.tsx
+- [x] Update README.md, SCOPE.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

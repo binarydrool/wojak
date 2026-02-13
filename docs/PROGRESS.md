@@ -3601,3 +3601,29 @@ Each frame:
 - Desktop and mobile nav both show About link in correct position
 - About link opens https://wojak.io in new tab
 - No other components modified
+
+---
+
+## Phase 53 — About Section Etherscan Icon — 2026-02-13
+
+**What was built:**
+Added Etherscan inline SVG icon to the About section heading, next to the existing Telegram and X (Twitter) icons.
+
+**Details:**
+- Added `EtherscanIcon` component to `AboutSection.tsx` — SVG copied from `Footer.tsx` for visual consistency
+- Icon placed after X icon (order: Telegram, X, Etherscan)
+- Links to `ETHERSCAN_TOKEN_URL` (`https://etherscan.io/token/0x5026F006B85729a8b14553FAE6af249aD16c9aaB`)
+- Opens in new tab (`target="_blank" rel="noopener noreferrer"`)
+- Same size (`w-5 h-5 sm:w-6 sm:h-6`), color (`text-gray-400`), and hover (`hover:text-[#00ff41]`) as sibling icons
+- Imported `ETHERSCAN_TOKEN_URL` from `@/lib/constants`
+
+**Files changed:**
+- `src/components/dashboard/AboutSection.tsx` — added EtherscanIcon component, added Etherscan link, added ETHERSCAN_TOKEN_URL import
+- `README.md` — updated Dashboard feature description to mention Etherscan icon
+- `docs/SCOPE.md` — updated About Strip description to include Etherscan icon
+- `docs/TODO.md` — added Phase 53
+- `docs/PROGRESS.md` — this entry
+
+**Verified:**
+- `npm run build` — zero TypeScript errors, compiled successfully
+- No other components modified

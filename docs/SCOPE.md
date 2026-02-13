@@ -61,7 +61,7 @@ The main page. Everything a holder or potential buyer needs at a glance.
 
 **About Strip (below hero, above stats):**
 - Compact horizontal layout: Wojak_black.png image (left) + text content (right)
-- "WOJAK" heading with Telegram and X (Twitter) inline SVG icons on the same line — icons are light grey, turn green (#00ff41) on hover, link to community Telegram and X profile in new tabs
+- "WOJAK" heading with Telegram, X (Twitter), and Etherscan inline SVG icons on the same line — icons are light grey, turn green (#00ff41) on hover, link to community Telegram, X profile, and Etherscan token page in new tabs
 - Subtitle with founding date
 - Brief intro paragraph covering community origins, contract status, and LP lock
 - "I know that feel, bro." tagline on its own line below the paragraph, green italic
