@@ -101,6 +101,84 @@ html {
   animation: games-dropdown-in 0.15s ease-out;
 }
 
+/* Rolodex ticker — vertical slide animation for swap widget */
+@keyframes rolodex-up {
+  0% {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  8% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  92% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-110%);
+    opacity: 0;
+  }
+}
+
+.animate-rolodex-up {
+  animation: rolodex-up 7s ease-in-out forwards;
+}
+
+/* Mock cursor blink for swap intro — standard blink rate */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-cursor-blink {
+  animation: cursor-blink 1.06s step-end infinite;
+}
+
+/* Mock focus border glow — one-time intro animation, auto-stops via forwards */
+@keyframes mockFocusBorder {
+  0%, 70% {
+    border-color: rgba(0, 255, 65, 0.4);
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.15);
+  }
+  100% {
+    border-color: #1e1e1e;
+    box-shadow: none;
+  }
+}
+
+.mock-focus-anim {
+  animation: mockFocusBorder 4s ease-out both;
+}
+
+/* Mock cursor container fade — fades blinking cursor out at end of intro */
+@keyframes mockCursorFade {
+  0%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.mock-cursor-fade {
+  animation: mockCursorFade 4s ease-out both;
+}
+
+/* Shield fill animation — outline always visible, interior fill animates in sync with mock-focus fade-out */
+@keyframes shieldFillIn {
+  0%, 70% {
+    fill-opacity: 0;
+  }
+  100% {
+    fill-opacity: 1;
+  }
+}
+
+.shield-fill-anim {
+  animation: shieldFillIn 4s ease-out both;
+}
+
 .animate-title-shine {
   background-image: linear-gradient(
     110deg,
