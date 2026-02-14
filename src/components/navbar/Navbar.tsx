@@ -9,6 +9,7 @@ import { SITE_TAGLINE } from "@/lib/constants";
 const NAV_LINKS = [
   { href: "/", label: "Dashboard" },
   { href: "https://wojak.io", label: "About", external: true },
+  { href: "https://www.wojakdao.xyz/", label: "DAO", external: true },
   { href: "/crypto-101", label: "Crypto 101" },
   { href: "/migration-report", label: "Migration Report", notify: true },
   { href: "/wojak-tv", label: "Wojak TV" },
