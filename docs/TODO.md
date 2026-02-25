@@ -1011,6 +1011,25 @@
 
 ---
 
+## Phase 59 — Price Stats ETH/USD Toggle ✓
+- [x] Add `TICKER_INTERVAL = 7000` to `src/lib/constants.ts` as shared constant
+- [x] Update `SwapCard.tsx` to import `TICKER_INTERVAL` from constants instead of defining locally
+- [x] Add `getEthPriceAtBlock()` to `src/lib/subgraph.ts` — reads WETH/USDC reserves at historical blocks
+- [x] Refactor `getReservesAtBlock()` to accept any pair address
+- [x] Update `fetchPriceHistory()` to return both ETH-denominated and USD-denominated % changes (8 fields)
+- [x] Export `PriceHistoryResult` interface from `src/lib/subgraph.ts`
+- [x] Update `/api/price-stats/route.ts` cache type and unavailable fallback to include all 8 fields
+- [x] Extend `PriceStats` interface in `src/lib/coingecko.ts` with `usdChange1h/24h/7d/30d`
+- [x] Update `fetchPriceStats()` to parse all 8 fields
+- [x] Rewrite `PriceStatsCard.tsx` with ETH/USD auto-toggle on 7s interval (synced with rolodex)
+- [x] Add `animate-rolodex-up` animation to both mode indicator and stat grid
+- [x] Add ETH diamond SVG icon (ETH mode) and circled $ SVG icon (USD mode) with "ETH"/"USD" label
+- [x] Fallback: if current mode has no data, show the other mode's data
+- [x] Update README.md, TODO.md, PROGRESS.md
+- [x] Verify `npm run build` — zero errors
+
+---
+
 ## Future Additions (Post v1)
 - [ ] Find the Pair memory game (crypto meme faces)
 - [ ] Holder count historical chart (requires tracking over time)

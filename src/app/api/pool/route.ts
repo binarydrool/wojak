@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { OG_UNISWAP_POOL } from "@/lib/constants";
-
-const GECKOTERMINAL_POOL_URL = `https://api.geckoterminal.com/api/v2/networks/eth/pools/${OG_UNISWAP_POOL}`;
+import { fetchOnChainData } from "@/lib/onchain";
+import { fetchVolumeMultiTimeframe, fetchBuySellCounts24h } from "@/lib/subgraph";
 
 // In-memory cache — 5 minutes
 let cached: PoolCache | null = null;
@@ -24,75 +23,34 @@ interface PoolCache {
   sellers24h: number;
 }
 
-interface GeckoPoolResponse {
-  data?: {
-    attributes?: {
-      reserve_in_usd?: string;
-      base_token_price_usd?: string;
-      quote_token_price_usd?: string;
-      volume_usd?: {
-        h1?: string;
-        h6?: string;
-        h24?: string;
-      };
-      transactions?: {
-        h24?: {
-          buys?: number;
-          sells?: number;
-          buyers?: number;
-          sellers?: number;
-        };
-      };
-    };
-  };
-}
-
 async function fetchPoolData(): Promise<PoolCache | null> {
   try {
-    const res = await fetch(GECKOTERMINAL_POOL_URL, { cache: "no-store" });
-    if (!res.ok) {
-      console.error(`[pool] GeckoTerminal returned HTTP ${res.status}`);
-      return null;
-    }
+    const [onchain, volumes, txCounts] = await Promise.all([
+      fetchOnChainData(),
+      fetchVolumeMultiTimeframe(),
+      fetchBuySellCounts24h(),
+    ]);
 
-    const json: GeckoPoolResponse = await res.json();
-    const attrs = json.data?.attributes;
-    if (!attrs) return null;
-
-    const tvlUsd = parseFloat(attrs.reserve_in_usd ?? "0");
-    const wojakPrice = parseFloat(attrs.base_token_price_usd ?? "0");
-    const ethPrice = parseFloat(attrs.quote_token_price_usd ?? "0");
-
-    // Uniswap V2 is 50/50 — each side holds half the TVL
-    const wojakReserve = wojakPrice > 0 ? (tvlUsd / 2) / wojakPrice : 0;
-    const ethReserve = ethPrice > 0 ? (tvlUsd / 2) / ethPrice : 0;
-
-    const volume24h = parseFloat(attrs.volume_usd?.h24 ?? "0");
-    const volume6h = parseFloat(attrs.volume_usd?.h6 ?? "0");
-    const volume1h = parseFloat(attrs.volume_usd?.h1 ?? "0");
-
-    const fees24h = volume24h * 0.003;
-
-    const txns = attrs.transactions?.h24;
-    const buys24h = txns?.buys ?? 0;
-    const sells24h = txns?.sells ?? 0;
-    const buyers24h = txns?.buyers ?? 0;
-    const sellers24h = txns?.sellers ?? 0;
+    // Volumes from event logs are in ETH — convert to USD
+    const ethPrice = onchain.ethPriceUsd;
+    const volume24hUsd = volumes.volume24h * ethPrice;
+    const volume6hUsd = volumes.volume6h * ethPrice;
+    const volume1hUsd = volumes.volume1h * ethPrice;
 
     return {
-      tvlUsd,
-      wojakReserve,
-      ethReserve,
-      wojakPrice,
+      tvlUsd: onchain.tvlUsd,
+      wojakReserve: onchain.wojakReserve,
+      ethReserve: onchain.ethReserve,
+      wojakPrice: onchain.wojakPriceUsd,
       ethPrice,
-      volume24h,
-      volume6h,
-      volume1h,
-      fees24h,
-      buys24h,
-      sells24h,
-      buyers24h,
-      sellers24h,
+      volume24h: volume24hUsd,
+      volume6h: volume6hUsd,
+      volume1h: volume1hUsd,
+      fees24h: volume24hUsd * 0.003,
+      buys24h: txCounts.buys,
+      sells24h: txCounts.sells,
+      buyers24h: txCounts.buyers,
+      sellers24h: txCounts.sellers,
     };
   } catch (err) {
     console.error("[pool] Fetch error:", err);
@@ -117,7 +75,7 @@ export async function GET() {
     cached = data;
     cachedAt = now;
     return NextResponse.json(
-      { ...data, source: "geckoterminal", lastUpdated: new Date(now).toISOString() },
+      { ...data, source: "onchain", lastUpdated: new Date(now).toISOString() },
       { headers: { "Cache-Control": "public, max-age=300, s-maxage=300" } }
     );
   }

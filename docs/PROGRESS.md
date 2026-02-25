@@ -3801,3 +3801,34 @@ Two targeted improvements to the Bubble Map component: instant layout and footer
 **Verified:**
 - `npm run build` — clean build, zero TypeScript errors, all routes compile
 - No other components modified (no game, chart, swap, or About changes)
+
+---
+
+## Phase 59 — Price Stats ETH/USD Toggle — 2026-02-25
+
+**What was built:**
+The price change percentage widget (1H, 24H, 7D, 1M) now toggles between ETH-denominated and USD-denominated percentage changes on the same 7-second timer as the SwapCard rolodex ticker, with a matching rolodex slide animation and an ETH/USD icon indicator.
+
+**Backend — dual price change calculation:**
+- `src/lib/subgraph.ts` — Added `getEthPriceAtBlock()` to read WETH/USDC Uniswap V2 pair reserves at historical blocks. Updated `fetchPriceHistory()` to return both ETH % changes (WOJAK/WETH reserve ratio) and USD % changes (factors in ETH/USD price at each timepoint). New `PriceHistoryResult` interface with 8 fields (4 ETH + 4 USD). Refactored `getReservesAtBlock()` to accept any pair address.
+- `src/app/api/price-stats/route.ts` — Updated cache type to use `PriceHistoryResult` from subgraph. Unavailable fallback now includes all 8 null fields.
+- `src/lib/coingecko.ts` — Extended `PriceStats` interface with `usdChange1h/24h/7d/30d` fields. Updated `fetchPriceStats()` to parse all 8 fields from the API response.
+
+**Frontend — toggle animation and icon:**
+- `src/components/dashboard/PriceStatsCard.tsx` — Full rewrite. Toggles between ETH and USD modes on 7s interval (shared `TICKER_INTERVAL` constant). Uses `animate-rolodex-up` CSS class on both the mode indicator and the stat grid (keyed re-mount triggers animation). Shows an ETH diamond SVG icon in ETH mode and a circled $ icon in USD mode, with "ETH"/"USD" text label. Falls back to whichever mode has data if one is unavailable.
+- `src/lib/constants.ts` — Added `TICKER_INTERVAL = 7000` shared constant.
+- `src/components/dashboard/SwapCard.tsx` — Imports `TICKER_INTERVAL` from constants instead of defining locally.
+
+**Files changed (with line numbers of key changes):**
+- `src/lib/constants.ts:43` — Added `TICKER_INTERVAL` export
+- `src/lib/subgraph.ts:200-290` — New `getEthPriceAtBlock()`, refactored `getReservesAtBlock()`, `getWojakReservesAtBlock()`, expanded `fetchPriceHistory()` with `PriceHistoryResult`
+- `src/app/api/price-stats/route.ts:2-7,44-47` — Updated imports, cache type, unavailable fallback
+- `src/lib/coingecko.ts:95-130` — Extended `PriceStats`, updated `fetchPriceStats()`
+- `src/components/dashboard/SwapCard.tsx:4` — Import `TICKER_INTERVAL` from constants
+- `src/components/dashboard/PriceStatsCard.tsx:1-140` — Full rewrite with ETH/USD toggle, icons, animation
+- `docs/TODO.md` — Added Phase 59
+- `docs/PROGRESS.md` — This entry
+
+**Verified:**
+- `npm run build` — zero errors, all routes compile
+- No other components modified

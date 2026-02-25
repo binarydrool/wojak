@@ -113,6 +113,19 @@ export default function AboutSection() {
                 >
                   <EtherscanIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </a>
+                <a
+                  href="https://wojak.io"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group"
+                  aria-label="Wojak"
+                >
+                  <img
+                    src="/images/wojakIcon.svg"
+                    alt="Wojak"
+                    className="w-5 h-5 sm:w-6 sm:h-6 transition-[filter,opacity] duration-200 opacity-60 group-hover:opacity-100 [filter:grayscale(100%)_brightness(1.5)] group-hover:[filter:brightness(1.1)_drop-shadow(0_0_3px_rgba(0,255,65,0.5))]"
+                  />
+                </a>
               </div>
             </div>
 

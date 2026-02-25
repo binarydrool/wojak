@@ -1,55 +1,4 @@
-import { OG_WOJAK_CONTRACT, OG_UNISWAP_POOL } from "./constants";
-
-const COINGECKO_BASE = "https://api.coingecko.com/api/v3";
-const GECKOTERMINAL_BASE = "https://api.geckoterminal.com/api/v2";
-
-interface CoinGeckoTokenData {
-  market_data?: {
-    current_price?: { usd?: number };
-    market_cap?: { usd?: number };
-    total_volume?: { usd?: number };
-    price_change_percentage_1h_in_currency?: { usd?: number };
-    price_change_percentage_24h?: number;
-    price_change_percentage_7d?: number;
-    price_change_percentage_30d?: number;
-  };
-  image?: {
-    small?: string;
-    thumb?: string;
-    large?: string;
-  };
-}
-
-interface GeckoTerminalPoolData {
-  data?: Array<{
-    attributes?: {
-      reserve_in_usd?: string;
-      price_change_percentage?: {
-        h1?: string;
-        h24?: string;
-        h6?: string;
-      };
-      volume_usd?: {
-        h24?: string;
-      };
-    };
-  }>;
-}
-
-interface GeckoTerminalSinglePool {
-  data?: {
-    attributes?: {
-      price_change_percentage?: {
-        h1?: string;
-        h24?: string;
-        h6?: string;
-      };
-      volume_usd?: {
-        h24?: string;
-      };
-    };
-  };
-}
+const WOJAK_TOTAL_SUPPLY = 69_420_000_000;
 
 export interface WojakMarketData {
   price: number;
@@ -72,22 +21,6 @@ function formatCurrency(value: number): string {
 export { formatCurrency };
 
 /**
- * Fetch 24h volume from the /api/pool route (GeckoTerminal direct pool data).
- * This is the accurate volume for the specific Uniswap V2 WOJAK/WETH pool,
- * unlike CoinGecko's total_volume which aggregates across all exchanges.
- */
-async function fetchPoolVolume(): Promise<number> {
-  try {
-    const res = await fetch("/api/pool");
-    if (!res.ok) return 0;
-    const data = await res.json();
-    return data.volume24h ?? 0;
-  } catch {
-    return 0;
-  }
-}
-
-/**
  * Fetch dynamic holder count from our /api/holders scraper route.
  * Falls back to null if the API is unavailable.
  */
@@ -103,63 +36,26 @@ export async function fetchHolderCount(): Promise<number | null> {
 }
 
 /**
- * Fetch WOJAK token data from CoinGecko free API.
- * Endpoint: /coins/ethereum/contract/{address}
- * Returns: price, market_cap, total_volume, image
- */
-async function fetchCoinGeckoData(): Promise<CoinGeckoTokenData | null> {
-  try {
-    const url = `${COINGECKO_BASE}/coins/ethereum/contract/${OG_WOJAK_CONTRACT}`;
-    const res = await fetch(url);
-    if (!res.ok) return null;
-    return await res.json();
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Fetch TVL from GeckoTerminal by looking at the top pool's reserve_in_usd.
- */
-async function fetchGeckoTerminalTVL(): Promise<number> {
-  try {
-    const url = `${GECKOTERMINAL_BASE}/networks/eth/tokens/${OG_WOJAK_CONTRACT}/pools?page=1`;
-    const res = await fetch(url);
-    if (!res.ok) return 0;
-    const data: GeckoTerminalPoolData = await res.json();
-    if (data.data && data.data.length > 0) {
-      const reserveStr = data.data[0].attributes?.reserve_in_usd;
-      return reserveStr ? parseFloat(reserveStr) : 0;
-    }
-    return 0;
-  } catch {
-    return 0;
-  }
-}
-
-/**
- * Fetch all WOJAK market data from CoinGecko + GeckoTerminal.
- * Returns formatted stats ready for display.
+ * Fetch all WOJAK market data from on-chain sources via /api/pool.
  */
 export async function fetchWojakMarketData(): Promise<WojakMarketData> {
-  const [cgData, tvl, holders, poolVolume] = await Promise.all([
-    fetchCoinGeckoData(),
-    fetchGeckoTerminalTVL(),
+  const [poolRes, holders] = await Promise.all([
+    fetch("/api/pool").then((r) => (r.ok ? r.json() : null)).catch(() => null),
     fetchHolderCount(),
-    fetchPoolVolume(),
   ]);
 
-  const price = cgData?.market_data?.current_price?.usd ?? 0;
-  const marketCap = cgData?.market_data?.market_cap?.usd ?? 0;
-  const imageUrl = cgData?.image?.small ?? "";
+  const price = poolRes?.wojakPrice ?? 0;
+  const marketCap = price * WOJAK_TOTAL_SUPPLY;
+  const volume24h = poolRes?.volume24h ?? 0;
+  const tvl = poolRes?.tvlUsd ?? 0;
 
   return {
     price,
     marketCap,
-    volume24h: poolVolume,
+    volume24h,
     tvl,
     holders: holders ?? 0,
-    imageUrl,
+    imageUrl: "",
   };
 }
 
@@ -174,28 +70,24 @@ export async function fetchFormattedStats(): Promise<{
   price: number;
   ethPrice: number;
 }> {
-  const data = await fetchWojakMarketData();
+  const [poolRes, holders] = await Promise.all([
+    fetch("/api/pool").then((r) => (r.ok ? r.json() : null)).catch(() => null),
+    fetchHolderCount(),
+  ]);
 
-  // Also fetch ETH price for swap calculation
-  let ethPrice = 0;
-  try {
-    const res = await fetch(
-      `${COINGECKO_BASE}/simple/price?ids=ethereum&vs_currencies=usd`
-    );
-    if (res.ok) {
-      const ethData = await res.json();
-      ethPrice = ethData?.ethereum?.usd ?? 0;
-    }
-  } catch {
-    // ignore
-  }
+  const price = poolRes?.wojakPrice ?? 0;
+  const marketCap = price * WOJAK_TOTAL_SUPPLY;
+  const tvl = poolRes?.tvlUsd ?? 0;
+  const volume24h = poolRes?.volume24h ?? 0;
+  const ethPrice = poolRes?.ethPrice ?? 0;
+  const holderCount = holders ?? 0;
 
   return {
-    marketCap: data.marketCap > 0 ? formatCurrency(data.marketCap) : "—",
-    tvl: data.tvl > 0 ? formatCurrency(data.tvl) : "—",
-    volume24h: data.volume24h > 0 ? formatCurrency(data.volume24h) : "—",
-    holders: data.holders > 0 ? data.holders.toLocaleString() : "—",
-    price: data.price,
+    marketCap: marketCap > 0 ? formatCurrency(marketCap) : "—",
+    tvl: tvl > 0 ? formatCurrency(tvl) : "—",
+    volume24h: volume24h > 0 ? formatCurrency(volume24h) : "—",
+    holders: holderCount > 0 ? holderCount.toLocaleString() : "—",
+    price,
     ethPrice,
   };
 }
@@ -205,51 +97,36 @@ export interface PriceStats {
   change24h: number | null;
   change7d: number | null;
   change30d: number | null;
+  usdChange1h: number | null;
+  usdChange24h: number | null;
+  usdChange7d: number | null;
+  usdChange30d: number | null;
 }
 
 /**
- * Fetch price change stats for display below the chart.
- * Tries CoinGecko first, falls back to GeckoTerminal for missing fields.
+ * Fetch price change stats from the /api/price-stats route (subgraph data).
+ * Returns both ETH-denominated and USD-denominated percentage changes.
  */
 export async function fetchPriceStats(): Promise<PriceStats> {
-  const stats: PriceStats = {
-    change1h: null,
-    change24h: null,
-    change7d: null,
-    change30d: null,
+  const nullStats: PriceStats = {
+    change1h: null, change24h: null, change7d: null, change30d: null,
+    usdChange1h: null, usdChange24h: null, usdChange7d: null, usdChange30d: null,
   };
-
-  const cgData = await fetchCoinGeckoData();
-
-  if (cgData?.market_data) {
-    const md = cgData.market_data;
-    stats.change1h = md.price_change_percentage_1h_in_currency?.usd ?? null;
-    stats.change24h = md.price_change_percentage_24h ?? null;
-    stats.change7d = md.price_change_percentage_7d ?? null;
-    stats.change30d = md.price_change_percentage_30d ?? null;
+  try {
+    const res = await fetch("/api/price-stats");
+    if (!res.ok) return nullStats;
+    const data = await res.json();
+    return {
+      change1h: data.change1h ?? null,
+      change24h: data.change24h ?? null,
+      change7d: data.change7d ?? null,
+      change30d: data.change30d ?? null,
+      usdChange1h: data.usdChange1h ?? null,
+      usdChange24h: data.usdChange24h ?? null,
+      usdChange7d: data.usdChange7d ?? null,
+      usdChange30d: data.usdChange30d ?? null,
+    };
+  } catch {
+    return nullStats;
   }
-
-  // Fill price change gaps from GeckoTerminal pool data
-  if (stats.change1h === null || stats.change24h === null) {
-    try {
-      const url = `${GECKOTERMINAL_BASE}/networks/eth/pools/${OG_UNISWAP_POOL}`;
-      const res = await fetch(url);
-      if (res.ok) {
-        const pool: GeckoTerminalSinglePool = await res.json();
-        const attrs = pool.data?.attributes;
-        if (attrs) {
-          if (stats.change1h === null && attrs.price_change_percentage?.h1) {
-            stats.change1h = parseFloat(attrs.price_change_percentage.h1);
-          }
-          if (stats.change24h === null && attrs.price_change_percentage?.h24) {
-            stats.change24h = parseFloat(attrs.price_change_percentage.h24);
-          }
-        }
-      }
-    } catch {
-      // ignore
-    }
-  }
-
-  return stats;
 }

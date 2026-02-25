@@ -32,12 +32,15 @@ export const MATCHA_URL = `https://matcha.xyz/tokens/ethereum/${OG_WOJAK_CONTRAC
 // Social Links
 export const TWITTER_URL = "https://twitter.com/WojakToken";
 export const CTO_TWITTER_URL = "https://twitter.com/wojakcto";
-export const TELEGRAM_URL = "https://t.me/Wojakog";
-export const TELEGRAM_COMMUNITY_URL = "https://t.me/wojakcoincommunity";
+export const TELEGRAM_URL = "https://t.me/+-6E6iU6h7h42ZTcx";
+export const TELEGRAM_COMMUNITY_URL = "https://t.me/+-6E6iU6h7h42ZTcx";
 export const X_URL = "https://x.com/WojakToken";
 
 // Token Approval Checker
 export const APPROVAL_CHECKER_URL = "https://etherscan.io/tokenapprovalchecker";
+
+// Shared timing — used by SwapCard rolodex ticker and PriceStatsCard toggle
+export const TICKER_INTERVAL = 7000;
 
 // Site Metadata
 export const SITE_NAME = "WOJAK Stats";

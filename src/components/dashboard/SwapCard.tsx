@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { COW_SWAP_URL, MATCHA_URL } from "@/lib/constants";
+import { COW_SWAP_URL, MATCHA_URL, TICKER_INTERVAL } from "@/lib/constants";
 
 interface PriceData {
   wojakPriceUsd: number;
   wojakPriceEth: number;
   ethPriceUsd: number;
 }
-
-const TICKER_INTERVAL = 7000;
 
 export default function SwapCard() {
   const [ethValue, setEthValue] = useState("0.0911");
@@ -44,7 +42,7 @@ export default function SwapCard() {
     setIntroAnim(true);
   }, []);
 
-  // Fetch prices from /api/pool (GeckoTerminal pool data — same source as rest of site)
+  // Fetch prices from /api/pool (on-chain data — same source as rest of site)
   useEffect(() => {
     fetch("/api/pool")
       .then((res) => (res.ok ? res.json() : null))

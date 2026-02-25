@@ -13,7 +13,7 @@ WOJAK Stats (wojakstats.xyz) serves the holders of the original WOJAK token (`0x
 ## Features
 
 - **Games Dropdown** — Wide categorized grid panel in the navbar with 4 columns (Arcade, Puzzle, Board, Card), each with category-specific inline SVG icons in green. Hover-triggered on desktop, 2-column grid on mobile. Clicking a game opens a full-screen modal overlay
-- **Dashboard** — Live DexTools/GeckoTerminal price chart, compact About strip with Wojak_black.png image, narrative overview, and social icons (Telegram, X, Etherscan), token stats (market cap, TVL, volume, holders) via CoinGecko + GeckoTerminal APIs, recent trades feed, interactive Bubble Map visualization of top 1000 token holders with force-directed layout, four-tier color coding (green/cyan/purple/yellow for Top 100/101-250/251-500/501-1000), tier toggle buttons, spatial-grid physics optimization, and smooth fade animations, Contract Info section with total supply, tax, contract address, LP lock status, and external links, and an interactive CoW Swap widget with editable ETH/WOJAK amounts (bidirectional real-time conversion), rolodex ticker cycling WOJAK price (USD), WOJAK price (ETH), and live gas price (Gwei), plus MEV-protected swap via CoW Swap
+- **Dashboard** — Live DexTools/GeckoTerminal price chart, compact About strip with Wojak_black.png image, narrative overview, and social icons (Telegram, X, Etherscan), token stats (market cap, TVL, volume, holders) via CoinGecko + GeckoTerminal APIs, price change widget (1H/24H/7D/1M) auto-toggling between ETH-denominated and USD-denominated percentage changes with rolodex animation and ETH/USD icon indicator, recent trades feed, interactive Bubble Map visualization of top 1000 token holders with force-directed layout, four-tier color coding (green/cyan/purple/yellow for Top 100/101-250/251-500/501-1000), tier toggle buttons, spatial-grid physics optimization, and smooth fade animations, Contract Info section with total supply, tax, contract address, LP lock status, and external links, and an interactive CoW Swap widget with editable ETH/WOJAK amounts (bidirectional real-time conversion), rolodex ticker cycling WOJAK price (USD), WOJAK price (ETH), and live gas price (Gwei), plus MEV-protected swap via CoW Swap
 - **Crypto 101** — Plain-language education hub with 8 collapsible sections covering wallets, private keys, buying ETH, swapping tokens, reading Etherscan, liquidity, token safety, and revoking approvals
 - **Migration Report** — Full analysis of the hostile CTO migration attempt with side-by-side contract comparison, red flags, and action items for the community
 - **Minesweeper** — Classic minesweeper game with Wojak-themed expressions, three difficulty levels (Easy/Medium/Hard), timer, and mobile touch support. Launches from the navbar Games dropdown in a full-screen modal
@@ -87,7 +87,7 @@ WOJAK Stats (wojakstats.xyz) serves the holders of the original WOJAK token (`0x
 
 ## Community
 
-- **Telegram:** [WOJAK Community](https://t.me/wojakcoincommunity)
+- **Telegram:** [WOJAK Community](https://t.me/+-6E6iU6h7h42ZTcx)
 - **X:** [@WojakToken](https://x.com/WojakToken)
 - **Etherscan:** [View Token](https://etherscan.io/token/0x5026F006B85729a8b14553FAE6af249aD16c9aaB)
 - **DexTools:** [View Chart](https://www.dextools.io/app/en/ether/pair-explorer/0x5026F006B85729a8b14553FAE6af249aD16c9aaB)

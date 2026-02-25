@@ -1,4 +1,4 @@
-// Recent trade from GeckoTerminal API
+// Recent trade from on-chain swap events
 export interface Trade {
   hash: string;
   type: "buy" | "sell";
@@ -48,7 +48,7 @@ export interface AccordionItem {
   content: React.ReactNode;
 }
 
-// Pool data from /api/pool (GeckoTerminal)
+// Pool data from /api/pool (on-chain)
 export interface PoolData {
   tvlUsd: number | null;
   wojakReserve: number | null;
