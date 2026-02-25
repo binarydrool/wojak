@@ -14,7 +14,7 @@ const RPC_URLS = [
 /**
  * Raw eth_call with RPC fallback chain. Returns hex result string.
  */
-async function ethCall(to: string, data: string): Promise<string> {
+export async function ethCall(to: string, data: string): Promise<string> {
   for (const rpcUrl of RPC_URLS) {
     try {
       const res = await fetch(rpcUrl, {

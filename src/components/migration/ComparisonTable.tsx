@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import {
   OG_WOJAK_CONTRACT,
   CTO_CONTRACT,
@@ -11,12 +14,25 @@ type RowData = {
   newDanger: boolean;
 };
 
-const rows: RowData[] = [
+interface ComparisonResponse {
+  og: { liquidity: number | null };
+  new: { liquidity: number | null };
+  lastUpdated: string | null;
+}
+
+function formatNumber(n: number): string {
+  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
+  if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;
+  return `$${n.toFixed(0)}`;
+}
+
+// Static rows — snapshot from Feb 11, 2025
+const staticRows: RowData[] = [
   {
     metric: "Token Name",
     og: "Wojak Coin (WOJAK)",
     ogAdvantage: false,
-    newToken: "wojak (wojak) — lowercase",
+    newToken: "wojak (wojak)",
     newDanger: false,
   },
   {
@@ -35,21 +51,14 @@ const rows: RowData[] = [
   },
   {
     metric: "Market Cap",
-    og: "~$2.04M",
+    og: "~$2M",
     ogAdvantage: false,
-    newToken: "~$14.76M",
+    newToken: "~$15M",
     newDanger: false,
   },
   {
-    metric: "Liquidity",
-    og: "$932K (100% locked)",
-    ogAdvantage: true,
-    newToken: "$513K (100%)",
-    newDanger: true,
-  },
-  {
     metric: "LP Lock",
-    og: "Until year 2100 (~75 yrs)",
+    og: "Until year 2100 (~74 yrs)",
     ogAdvantage: true,
     newToken: "Unknown",
     newDanger: true,
@@ -62,24 +71,10 @@ const rows: RowData[] = [
     newDanger: true,
   },
   {
-    metric: "Volatility",
-    og: "0.3066",
-    ogAdvantage: true,
-    newToken: "0.7371 (2.4x higher)",
-    newDanger: true,
-  },
-  {
     metric: "Pool Created",
     og: "April 17, 2023",
     ogAdvantage: true,
     newToken: "Recent",
-    newDanger: false,
-  },
-  {
-    metric: "Total TXs",
-    og: "100K+",
-    ogAdvantage: true,
-    newToken: "~45K",
     newDanger: false,
   },
   {
@@ -91,7 +86,43 @@ const rows: RowData[] = [
   },
 ];
 
+function SkeletonCell() {
+  return (
+    <span className="inline-block h-4 w-20 animate-pulse rounded bg-white/10" />
+  );
+}
+
 export default function ComparisonTable() {
+  const [data, setData] = useState<ComparisonResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/comparison")
+      .then((res) => res.json())
+      .then((json) => setData(json))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const liquidityRow: RowData = {
+    metric: "Liquidity",
+    og: data?.og?.liquidity != null
+      ? `${formatNumber(data.og.liquidity)} (100% locked)`
+      : "—",
+    ogAdvantage: true,
+    newToken: data?.new?.liquidity != null
+      ? formatNumber(data.new.liquidity)
+      : "—",
+    newDanger: true,
+  };
+
+  // Insert liquidity after Market Cap (index 4)
+  const rows: RowData[] = [
+    ...staticRows.slice(0, 4),
+    liquidityRow,
+    ...staticRows.slice(4),
+  ];
+
   return (
     <div className="overflow-x-auto -mx-4 sm:mx-0">
       <div className="min-w-[640px] px-4 sm:px-0">
@@ -110,34 +141,37 @@ export default function ComparisonTable() {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, i) => (
-              <tr
-                key={row.metric}
-                className={i % 2 === 0 ? "bg-white/[0.02]" : ""}
-              >
-                <td className="px-4 py-3 text-sm font-medium text-gray-300 border-b border-wojak-border/50">
-                  {row.metric}
-                </td>
-                <td
-                  className={`px-4 py-3 text-sm border-b border-wojak-border/50 ${
-                    row.ogAdvantage
-                      ? "text-green-400 bg-green-500/[0.06]"
-                      : "text-gray-300"
-                  }`}
+            {rows.map((row, i) => {
+              const isDynamic = row.metric === "Liquidity";
+              return (
+                <tr
+                  key={row.metric}
+                  className={i % 2 === 0 ? "bg-white/[0.02]" : ""}
                 >
-                  {row.og}
-                </td>
-                <td
-                  className={`px-4 py-3 text-sm border-b border-wojak-border/50 ${
-                    row.newDanger
-                      ? "text-red-400 bg-red-500/[0.06]"
-                      : "text-gray-300"
-                  }`}
-                >
-                  {row.newToken}
-                </td>
-              </tr>
-            ))}
+                  <td className="px-4 py-3 text-sm font-medium text-gray-300 border-b border-wojak-border/50">
+                    {row.metric}
+                  </td>
+                  <td
+                    className={`px-4 py-3 text-sm border-b border-wojak-border/50 ${
+                      row.ogAdvantage
+                        ? "text-green-400 bg-green-500/[0.06]"
+                        : "text-gray-300"
+                    }`}
+                  >
+                    {isDynamic && loading ? <SkeletonCell /> : row.og}
+                  </td>
+                  <td
+                    className={`px-4 py-3 text-sm border-b border-wojak-border/50 ${
+                      row.newDanger
+                        ? "text-red-400 bg-red-500/[0.06]"
+                        : "text-gray-300"
+                    }`}
+                  >
+                    {isDynamic && loading ? <SkeletonCell /> : row.newToken}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -152,6 +186,13 @@ export default function ComparisonTable() {
           New: <span className="font-mono">{CTO_CONTRACT.slice(0, 6)}...{CTO_CONTRACT.slice(-4)}</span>
         </span>
       </div>
+
+      {/* Last updated timestamp for live liquidity */}
+      {data?.lastUpdated && (
+        <div className="mt-2 px-4 sm:px-0 text-xs text-gray-600">
+          Liquidity updated: {new Date(data.lastUpdated).toLocaleString()}
+        </div>
+      )}
     </div>
   );
 }

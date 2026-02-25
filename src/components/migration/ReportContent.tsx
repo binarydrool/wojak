@@ -7,6 +7,7 @@ import {
   TWITTER_URL,
   CTO_TWITTER_URL,
   SITE_NAME,
+  TELEGRAM_COMMUNITY_URL,
 } from "@/lib/constants";
 
 function SectionCard({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
@@ -48,15 +49,16 @@ export default function ReportContent() {
         <ol className="columns-1 sm:columns-2 gap-x-8 space-y-1.5">
           {[
             { id: "tldr", label: "TL;DR" },
-            { id: "what-is-happening", label: "What Is Happening" },
-            { id: "comparison", label: "The Two Contracts — Side by Side" },
+            { id: "what-is-happening", label: "What Happened" },
+            { id: "comparison", label: "The Two Contracts \u2014 Side by Side" },
             { id: "red-flags", label: "Contract Design Concerns (0x8D)" },
-            { id: "migration-mechanics", label: "How the Migration Works" },
-            { id: "platform-attacks", label: "What They Have Done to the OG Token" },
+            { id: "migration-mechanics", label: "The Swap Was Not Fair" },
+            { id: "platform-attacks", label: "What They Did to the OG Token" },
             { id: "numbers", label: "The Numbers Don\u2019t Add Up" },
-            { id: "og-strengths", label: "What the OG Contract Has Going For It" },
+            { id: "og-strengths", label: "The OG Contract Is Flawless" },
+            { id: "bigger-picture", label: "The Bigger Picture" },
             { id: "what-to-do", label: "What You Should Do" },
-            { id: "contracts", label: "Contract Addresses" },
+            { id: "contracts", label: "Contract Addresses & Links" },
           ].map((item, i) => (
             <li key={item.id} className="break-inside-avoid">
               <a
@@ -75,38 +77,61 @@ export default function ReportContent() {
         <div className="flex items-start gap-3">
           <span className="text-yellow-400 text-xl mt-0.5 shrink-0"><svg className="inline w-5 h-5 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
           <div>
-            <h2 className="text-lg font-bold text-yellow-400 mb-2">TL;DR</h2>
+            <h2 className="text-lg font-bold text-yellow-400 mb-3">TL;DR</h2>
             <p className="text-gray-200 font-medium leading-relaxed">
-              A group operating as @wojakcto is running a hostile &ldquo;migration&rdquo; from the original WOJAK contract
-              to a new token they control. Every migration is a sell order on the OG token — this is likely why market cap
-              dropped from ~$29M to ~$2M. Both contracts are now renounced, but they are NOT the same: the new contract
-              (0x8D) was deployed with blacklist, setRule, and trading control functions that were active before ownership
-              was renounced — any settings or blacklisted wallets from that period are now permanently locked in. The OG
-              contract (0x50) is a clean OpenZeppelin ERC-20 that never had ANY admin functions — no blacklist was ever
-              possible, no trading controls ever existed. OG LP is locked until 2100. 14,000+ holders have not migrated.
-              Do your own research and verify everything on-chain before taking any action.
+              A small group organized privately and, without the wider community&apos;s voice, moved forward with
+              a migration from the original WOJAK contract (0x50) to a new token (0x8D) they control.
+              We&apos;re talking about a community of over 19,000 holders who never got a say.
+            </p>
+            <p className="text-gray-200 font-medium leading-relaxed mt-3">
+              The swap was NOT 1-to-1. Migrators lose{" "}
+              <span className="text-red-400 font-bold">83.75% of their supply percentage</span>.
+              If you held 1% of the original token, you do NOT get 1% of the new one &mdash; you&apos;d get
+              roughly 0.1625%. Supply was inflated from 69.42B to 420.69T &mdash;{" "}
+              a <span className="text-red-400 font-bold">6,000%+ dilution</span>.
+            </p>
+            <p className="text-gray-200 font-medium leading-relaxed mt-3">
+              The new contract (0x8D) was deployed with blacklist, setRule, and trading control functions that were
+              active before ownership was renounced &mdash; any settings or blacklisted wallets from that period
+              are permanently locked in. The OG contract (0x50) is a clean ERC-20 that never had ANY admin
+              functions. No blacklist. No trading controls. Nothing. $1M+ liquidity locked for 74+ years.
+            </p>
+            <p className="text-gray-200 font-medium leading-relaxed mt-3">
+              If you held on a centralized exchange, you had zero say &mdash; the swap happened without your
+              permission. 14,000+ holders have not migrated. This story is far from over.
             </p>
           </div>
         </div>
       </SectionCard>
 
-      {/* 3. What Is Happening */}
+      {/* 3. What Happened */}
       <SectionCard id="what-is-happening">
-        <SectionHeading>What Is Happening</SectionHeading>
-        <p className="text-gray-300 leading-relaxed">
-          A group operating under{" "}
-          <a href={CTO_TWITTER_URL} target="_blank" rel="noopener noreferrer" className="text-red-400 hover:underline">
-            @wojakcto
-          </a>{" "}
-          on X is running a &ldquo;migration&rdquo; from the original WOJAK contract (0x50) to a new token (0x8d). They
-          claim the OG token is dead and everyone must migrate within a 2-week window via migrate.wojakcto.com at a 1:958
-          swap ratio. This report breaks down why the OG community should be cautious, backed by on-chain facts.
-        </p>
+        <SectionHeading>What Happened</SectionHeading>
+        <div className="space-y-4 text-gray-300 leading-relaxed">
+          <p>
+            Someone from within the original community reached out to a builder group &mdash; or vice versa &mdash;
+            about creating an entirely new WOJAK project under the same ticker but with a different contract
+            address. These new builders, from what we understand, weren&apos;t original holders &mdash; but
+            they&apos;ve been involved with other token launches.
+          </p>
+          <p>
+            They organized privately and, without the wider community&apos;s voice, moved forward with a migration
+            from the original 0x50 contract to their new 0x8D contract. This migration had a limited time window
+            for on-chain holders &mdash; and was{" "}
+            <span className="text-red-400 font-semibold">fully automated on centralized exchanges</span>.
+          </p>
+          <p>
+            If you held tokens on a centralized exchange,{" "}
+            <span className="text-white font-semibold">you had zero say</span>. The swap happened without your
+            permission. If you were an OG on-chain holder who was skeptical, you probably felt the pressure of the
+            deadline they set. Many OG holders were against this for a lot of reasons.
+          </p>
+        </div>
       </SectionCard>
 
       {/* 4. Side-by-Side Comparison Table */}
       <SectionCard id="comparison">
-        <SectionHeading>The Two Contracts — Side by Side</SectionHeading>
+        <SectionHeading>The Two Contracts &mdash; Side by Side</SectionHeading>
         <ComparisonTable />
       </SectionCard>
 
@@ -132,7 +157,7 @@ export default function ReportContent() {
               <p className="text-gray-300 mt-1">
                 This function allowed the owner to freeze any wallet. Now that ownership is renounced, no NEW wallets
                 can be blacklisted. However, any wallets that WERE blacklisted before renouncing remain permanently
-                frozen — there is no way to remove them.
+                frozen &mdash; there is no way to remove them.
               </p>
             </div>
           </li>
@@ -156,7 +181,7 @@ export default function ReportContent() {
               </code>
               <p className="text-gray-300 mt-1">
                 Every transfer still checks the blacklist and trading rules. These checks are hardcoded and permanent
-                — they cannot be removed even with ownership renounced.
+                &mdash; they cannot be removed even with ownership renounced.
               </p>
             </div>
           </li>
@@ -179,86 +204,84 @@ export default function ReportContent() {
             The OG contract (0x50) was deployed as a clean ERC-20 with{" "}
             <span className="text-green-400 font-semibold">ZERO admin functions from day one</span>. No blacklist was
             ever possible. No trading controls were ever possible. The contract was designed to be trustless from the
-            start — not made trustless after the fact.
+            start &mdash; not made trustless after the fact.
           </p>
         </div>
       </SectionCard>
 
-      {/* 6. How the Migration Works */}
+      {/* 6. The Swap Was Not Fair */}
       <SectionCard id="migration-mechanics">
-        <SectionHeading>How the Migration Works — And Why It Hurts OG Holders</SectionHeading>
-        <p className="text-gray-400 text-sm mb-4">
-          The portal describes: &ldquo;Send, receive, swap, buy, and burn done automatically.&rdquo; Based on this, the
-          most likely sequence:
-        </p>
-        <ol className="space-y-3 mb-6">
-          <li className="flex gap-3 items-start">
-            <span className="bg-red-500/20 text-red-400 font-bold rounded-full w-7 h-7 flex items-center justify-center shrink-0 text-sm">
-              1
-            </span>
-            <p className="text-gray-300">
-              Your OG 0x50 tokens are <span className="text-red-400 font-semibold">SOLD on Uniswap for ETH</span> —
-              direct sell pressure on OG.
-            </p>
-          </li>
-          <li className="flex gap-3 items-start">
-            <span className="bg-red-500/20 text-red-400 font-bold rounded-full w-7 h-7 flex items-center justify-center shrink-0 text-sm">
-              2
-            </span>
-            <p className="text-gray-300">
-              ETH is used to <span className="text-red-400 font-semibold">BUY new 0x8d tokens</span> — buy pressure on
-              new token.
-            </p>
-          </li>
-          <li className="flex gap-3 items-start">
-            <span className="bg-red-500/20 text-red-400 font-bold rounded-full w-7 h-7 flex items-center justify-center shrink-0 text-sm">
-              3
-            </span>
-            <p className="text-gray-300">
-              New 0x8d tokens sent to your wallet. Some portion may be burned.
-            </p>
-          </li>
-        </ol>
-        <div className="bg-red-500/5 border border-red-500/20 rounded-lg px-4 py-3 space-y-3">
-          <p className="text-gray-200 font-medium">
-            EVERY MIGRATION IS A SELL ORDER ON THE OG TOKEN.{" "}
-            <span className="text-gray-400 font-normal">
-              This is likely why OG market cap dropped from ~$29M to ~$2M. Whoever controls the new token&apos;s LP
-              catches the buy pressure. Every migration enriches 0x8d LP holders at OG holders&apos; expense.
-            </span>
+        <SectionHeading>The Swap Was Not Fair</SectionHeading>
+        <div className="space-y-4 text-gray-300 leading-relaxed mb-6">
+          <p>
+            Not only was this never agreed upon by the wider community &mdash; the new token&apos;s supply was
+            inflated by over <span className="text-red-400 font-semibold">6,000%</span>. The original supply was
+            69.42 billion. The new one? 420.69 trillion.
           </p>
-          <p className="text-red-400 text-sm font-medium">
-            The migration portal does NOT disclose the migration contract address. Without it, nobody can verify what
-            happens to your tokens. This alone is a massive red flag.
+          <p>
+            The swap was NOT 1-to-1. Their offer was 1 old WOJAK for 958 new WOJAK &mdash; when a fair swap based
+            on supply ratio should have been closer to{" "}
+            <span className="text-white font-semibold">1 for 6,000</span>.
+          </p>
+          <p>
+            If you held 1% of the original token, you do NOT get 1% of the new one. You&apos;d get roughly{" "}
+            <span className="text-red-400 font-semibold">0.1625%</span> of the new supply.
+          </p>
+        </div>
+        <div className="bg-red-500/5 border border-red-500/20 rounded-lg px-4 py-4 space-y-4">
+          <p className="text-2xl sm:text-3xl font-bold text-red-400 text-center">
+            83.75% reduction.
+          </p>
+          <p className="text-gray-300 text-center">
+            You heard that right. <span className="text-red-400 font-bold">83.75%</span>.
+            The swap rate led many OG holders to stand firm and stay in the original.
+          </p>
+        </div>
+        <div className="mt-4 space-y-3">
+          <p className="text-gray-300 leading-relaxed">
+            Every migration is a sell order on the OG token. This is likely why OG market cap dropped from ~$29M
+            to ~$2M. Whoever controls the new token&apos;s LP catches the buy pressure.
+          </p>
+          <p className="text-gray-300 leading-relaxed">
+            If you held on a centralized exchange, the swap was{" "}
+            <span className="text-red-400 font-semibold">fully automated</span> &mdash; you had zero say. It
+            happened without your permission. MEXC and BitMart announced contract swaps, calling the OG
+            &ldquo;former.&rdquo;
           </p>
         </div>
       </SectionCard>
 
-      {/* 7. What They Have Done to the OG Token */}
+      {/* 7. What They Did to the OG Token */}
       <SectionCard id="platform-attacks">
-        <SectionHeading>What They Have Done to the OG Token</SectionHeading>
+        <SectionHeading>What They Did to the OG Token</SectionHeading>
+        <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+          They didn&apos;t just launch a new token &mdash; they actively worked to bury the original.
+        </p>
         <ul className="space-y-3">
           {[
             {
-              platform: "Etherscan",
-              detail: "Submitted CTO update request, got OG logo/branding changed or removed.",
+              platform: "Centralized Exchanges",
+              detail: "Took over the ticker on MEXC and BitMart, effectively making OG WOJAK untradeable on those platforms. CEX holders were auto-swapped without consent.",
             },
             {
-              platform: "DEX Screener / DexTools",
-              detail: "Spam/warning banner added to OG token's page, misleading migration notices.",
+              platform: "DEX Screener",
+              detail: "Listed warning banners stating the old token is dead.",
+            },
+            {
+              platform: "Uniswap",
+              detail: "Added malicious token warnings on the decentralized exchange to scare people away from trading OG.",
+            },
+            {
+              platform: "Etherscan",
+              detail: "Got OG WOJAK removed from wallet view. Submitted CTO update request, got OG logo/branding changed or removed.",
             },
             {
               platform: "CoinMarketCap",
-              detail: "Listed new 0x8d contract under WOJAK name with their branding.",
-            },
-            {
-              platform: "CEXs",
-              detail:
-                "MEXC (Feb 3) and BitMart (Feb 2) announced contract swaps, calling 0x50 \"former.\"",
+              detail: "Listed the new 0x8D contract under the WOJAK name with their branding.",
             },
             {
               platform: "X/Twitter",
-              detail: "migrate.wojakcto.com flagged by Twitter safety as \"potentially spammy or unsafe.\"",
+              detail: "migrate.wojakcto.com was flagged by Twitter safety as \"potentially spammy or unsafe.\"",
             },
           ].map((item) => (
             <li key={item.platform} className="flex gap-3 items-start">
@@ -287,20 +310,24 @@ export default function ReportContent() {
               ~5,580 new).
             </>,
             <>
-              OG has <span className="text-wojak-green font-semibold">$932K liquidity</span> vs new&apos;s $513K —
-              nearly 2x more.
+              OG has <span className="text-wojak-green font-semibold">$1M+ locked liquidity</span> for over 74
+              years &mdash; locked until 2100.
             </>,
             <>
               OG has <span className="text-wojak-green font-semibold">100K+ transactions</span>. Battle-tested for 2+
               years.
             </>,
             <>
-              New token volatility is{" "}
-              <span className="text-red-400 font-semibold">2.4x higher</span> (0.7371 vs 0.3066) — more speculative.
+              Supply ballooned from 69.42B to 420.69T &mdash;{" "}
+              <span className="text-red-400 font-semibold">6,000%+ dilution</span>.
             </>,
             <>
-              Supply ballooned from 69.42B to 420.69T —{" "}
-              <span className="text-red-400 font-semibold">6,057x dilution</span>.
+              1:958 swap ratio offered when fair ratio should have been ~1:6,000 &mdash;{" "}
+              <span className="text-red-400 font-semibold">83.75% loss</span> for migrators.
+            </>,
+            <>
+              CEX holders were auto-swapped{" "}
+              <span className="text-red-400 font-semibold">without consent</span>.
             </>,
           ].map((content, i) => (
             <li key={i} className="flex gap-3 items-start">
@@ -316,16 +343,20 @@ export default function ReportContent() {
         </ul>
       </SectionCard>
 
-      {/* 9. What the OG Contract Has Going For It */}
+      {/* 9. The OG Contract Is Flawless */}
       <SectionCard id="og-strengths" className="border-green-500/20">
-        <SectionHeading>What the OG Contract Has Going For It</SectionHeading>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <SectionHeading>The OG Contract Is Flawless</SectionHeading>
+        <p className="text-gray-300 leading-relaxed mb-4">
+          Here&apos;s the reality. The original WOJAK token and its contract are flawless. One million dollars of
+          locked liquidity for over 74 years. Contract renounced. No admin keys. No blacklist. Nothing.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           {[
             { label: "Clean from Day One", icon: "shield" },
             { label: "LP locked until 2100", icon: "lock" },
             { label: "Zero taxes", icon: "zap" },
             { label: "19,000+ holders", icon: "users" },
-            { label: "~$1M liquidity", icon: "dollar" },
+            { label: "$1M+ liquidity", icon: "dollar" },
             { label: "Clean ERC-20 code", icon: "code" },
             { label: "100K+ transactions", icon: "activity" },
             { label: "@WojakToken on X", icon: "twitter" },
@@ -364,15 +395,50 @@ export default function ReportContent() {
             </div>
           ))}
         </div>
+        <p className="text-gray-300 leading-relaxed">
+          It may be a little harder to get your hands on OG WOJAK now, but you can easily copy and paste the
+          contract address into Uniswap. Disregard banners claiming the OG is dead. It&apos;s not.
+        </p>
       </SectionCard>
 
-      {/* 10. What You Should Do */}
+      {/* 10. The Bigger Picture */}
+      <SectionCard id="bigger-picture">
+        <SectionHeading>The Bigger Picture</SectionHeading>
+        <div className="space-y-4 text-gray-300 leading-relaxed">
+          <p>
+            This isn&apos;t just about WOJAK. This is about a small group making decisions for thousands of
+            people and walking away with the better end of the deal while the wider community absorbed the loss.
+            That goes against everything crypto stands for.
+          </p>
+          <p className="text-white font-medium">
+            One small group. One closed-door decision. Thousands of holders who never got a say.
+          </p>
+          <p>
+            The community wasn&apos;t brought together &mdash; it was used as leverage.
+          </p>
+          <div className="bg-green-500/5 border border-green-500/20 rounded-lg px-4 py-3 mt-2">
+            <p className="text-gray-300 leading-relaxed">
+              People have been coming into the{" "}
+              <a href={TELEGRAM_COMMUNITY_URL} target="_blank" rel="noopener noreferrer" className="text-wojak-green hover:underline">
+                Telegram chat
+              </a>{" "}
+              explaining how they got burned holding on a centralized exchange, sold the new token for ETH, moved
+              it off the exchange, and bought back the OG. If that&apos;s not a lesson in{" "}
+              <span className="text-wojak-green font-semibold">&ldquo;not your keys, not your crypto&rdquo;</span>{" "}
+              &mdash; we don&apos;t know what is.
+            </p>
+          </div>
+          <p>
+            The migration window has closed &mdash; but this story is far from over. There are probably thousands
+            of holders who still have no idea what&apos;s going on. New people are coming into the chat every day
+            asking questions. This isn&apos;t finished.
+          </p>
+        </div>
+      </SectionCard>
+
+      {/* 11. What You Should Do */}
       <SectionCard id="what-to-do" className="border-yellow-500/20">
         <SectionHeading>What You Should Do</SectionHeading>
-        <p className="text-gray-400 text-sm mb-4">
-          We are not saying the new token is a scam. We are saying the OG token is fundamentally cleaner by design,
-          and the migration creates unnecessary sell pressure on OG holders. Make informed decisions.
-        </p>
         <div className="space-y-3">
           {/* DO NOT items — red/warning */}
           <div className="bg-red-500/5 border border-red-500/20 rounded-lg p-4 space-y-3">
@@ -419,6 +485,12 @@ export default function ReportContent() {
             <div className="flex gap-3 items-start">
               <span className="text-green-400 font-bold text-lg shrink-0"><svg className="inline w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
               <p className="text-gray-300">
+                Copy and paste the contract address into Uniswap to trade OG WOJAK directly
+              </p>
+            </div>
+            <div className="flex gap-3 items-start">
+              <span className="text-green-400 font-bold text-lg shrink-0"><svg className="inline w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <p className="text-gray-300">
                 Report{" "}
                 <a
                   href={CTO_TWITTER_URL}
@@ -440,16 +512,16 @@ export default function ReportContent() {
             <div className="flex gap-3 items-start">
               <span className="text-green-400 font-bold text-lg shrink-0"><svg className="inline w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
               <p className="text-gray-300">
-                Spread this information to the community
+                Spread this information to the community &mdash; thousands of holders still don&apos;t know what happened
               </p>
             </div>
           </div>
         </div>
       </SectionCard>
 
-      {/* 11. Contract Addresses Reference Table */}
+      {/* 12. Contract Addresses & Links Reference Table */}
       <SectionCard id="contracts">
-        <SectionHeading>Contract Addresses for Reference</SectionHeading>
+        <SectionHeading>Contract Addresses &amp; Links</SectionHeading>
         <div className="overflow-x-auto -mx-4 sm:mx-0">
           <div className="min-w-[400px] px-4 sm:px-0">
             <table className="w-full">
@@ -464,9 +536,33 @@ export default function ReportContent() {
                   },
                   { label: "OG Website", value: SITE_NAME, mono: false },
                   {
+                    label: "wojak.io",
+                    value: "wojak.io",
+                    href: "https://wojak.io",
+                    mono: false,
+                  },
+                  {
+                    label: "wojakstats.xyz",
+                    value: "wojakstats.xyz",
+                    href: "https://wojakstats.xyz",
+                    mono: false,
+                  },
+                  {
+                    label: "wojakdao.xyz",
+                    value: "wojakdao.xyz",
+                    href: "https://wojakdao.xyz",
+                    mono: false,
+                  },
+                  {
                     label: "OG X/Twitter",
                     value: "@WojakToken",
                     href: TWITTER_URL,
+                    mono: false,
+                  },
+                  {
+                    label: "Telegram",
+                    value: "OG WOJAK Community",
+                    href: TELEGRAM_COMMUNITY_URL,
                     mono: false,
                   },
                   { label: "CTO Website", value: "wojakcto.com", mono: false },
@@ -505,7 +601,7 @@ export default function ReportContent() {
         </div>
       </SectionCard>
 
-      {/* 12. DYOR Footer */}
+      {/* 13. DYOR Footer */}
       <div className="text-center py-6">
         <p className="text-gray-400 font-medium">
           DYOR. Verify everything on-chain.{" "}
