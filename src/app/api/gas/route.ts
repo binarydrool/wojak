@@ -5,9 +5,27 @@ let cached: { gasGwei: number } | null = null;
 let cachedAt = 0;
 const CACHE_TTL = 30 * 1000;
 
-async function fetchGasPrice(): Promise<number | null> {
-  // Try public Ethereum RPC (eth_gasPrice returns hex wei)
+async function fetchFromEtherscan(): Promise<number | null> {
+  const apiKey = process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY;
+  if (!apiKey || apiKey === "your_key_here") return null;
+  try {
+    const res = await fetch(
+      `https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=${apiKey}`,
+      { signal: AbortSignal.timeout(5000) }
+    );
+    if (!res.ok) return null;
+    const json = await res.json();
+    if (json.status === "1" && json.result?.ProposeGasPrice) {
+      return parseFloat(json.result.ProposeGasPrice);
+    }
+  } catch {}
+  return null;
+}
+
+async function fetchFromRpc(): Promise<number | null> {
   const rpcUrls = [
+    "https://ethereum-rpc.publicnode.com",
+    "https://1rpc.io/eth",
     "https://eth.llamarpc.com",
     "https://rpc.ankr.com/eth",
     "https://cloudflare-eth.com",
@@ -40,6 +58,15 @@ async function fetchGasPrice(): Promise<number | null> {
   }
 
   return null;
+}
+
+async function fetchGasPrice(): Promise<number | null> {
+  // Try Etherscan gas oracle first (most reliable with API key)
+  const etherscanResult = await fetchFromEtherscan();
+  if (etherscanResult !== null) return etherscanResult;
+
+  // Fallback to public RPC endpoints
+  return fetchFromRpc();
 }
 
 export async function GET() {

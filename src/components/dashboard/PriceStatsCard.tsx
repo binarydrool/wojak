@@ -19,10 +19,7 @@ function EthIcon() {
 /* ── tiny USD icon ──────────────────────────────────────────────────── */
 function UsdIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline-block -mt-0.5 shrink-0">
-      <circle cx="12" cy="12" r="10" stroke="#00ff41" strokeWidth="1.5" fill="none" />
-      <text x="12" y="16.5" textAnchor="middle" fill="#00ff41" fontSize="13" fontWeight="bold" fontFamily="monospace">$</text>
-    </svg>
+    <span className="text-sm font-bold font-mono text-[#00ff41] leading-none shrink-0">$</span>
   );
 }
 

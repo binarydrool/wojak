@@ -25,9 +25,13 @@ export const GECKOTERMINAL_TVL_EMBED_URL = `https://www.geckoterminal.com/eth/po
 export const UNISWAP_POOL_URL = `https://app.uniswap.org/explore/pools/ethereum/0x0f23d49bc92ec52ff591d091b3e16c937034496e`;
 export const UNISWAP_ADD_LIQUIDITY = "https://app.uniswap.org/positions/create/v3?currencyA=NATIVE&currencyB=0x5026f006b85729a8b14553fae6af249ad16c9aab&chain=ethereum";
 
-// Swap Links
+// Swap Links (legacy — kept for reference)
 export const COW_SWAP_URL = `https://swap.cow.fi/#/1/swap/ETH/${OG_WOJAK_CONTRACT}`;
 export const MATCHA_URL = `https://matcha.xyz/tokens/ethereum/${OG_WOJAK_CONTRACT}`;
+
+// Uniswap V2 Router + WETH (for on-chain swaps)
+export const UNISWAP_V2_ROUTER = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
+export const WETH_ADDRESS = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 
 // Social Links
 export const TWITTER_URL = "https://twitter.com/WojakToken";

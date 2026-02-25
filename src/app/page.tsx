@@ -26,9 +26,11 @@ export default function Home() {
             <ChartSection />
           </div>
 
-          {/* Right: Swap Card + Price Stats */}
-          <div className="flex flex-col gap-3 lg:gap-2 lg:self-start">
-            <SwapCard />
+          {/* Right: Swap Card + Price Stats (height matches chart) */}
+          <div className="flex flex-col gap-3 lg:gap-2">
+            <div className="lg:flex-1">
+              <SwapCard />
+            </div>
             <PriceStatsCard />
           </div>
         </div>
