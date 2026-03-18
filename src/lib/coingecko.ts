@@ -1,4 +1,4 @@
-const WOJAK_TOTAL_SUPPLY = 69_420_000_000;
+const WOJAK_TOTAL_SUPPLY = 420_690_000_000_000;
 
 export interface WojakMarketData {
   price: number;
@@ -45,7 +45,7 @@ export async function fetchWojakMarketData(): Promise<WojakMarketData> {
   ]);
 
   const price = poolRes?.wojakPrice ?? 0;
-  const marketCap = price * WOJAK_TOTAL_SUPPLY;
+  const marketCap = poolRes?.marketCapUsd ?? 0;
   const volume24h = poolRes?.volume24h ?? 0;
   const tvl = poolRes?.tvlUsd ?? 0;
 
@@ -70,15 +70,24 @@ export async function fetchFormattedStats(): Promise<{
   price: number;
   ethPrice: number;
 }> {
-  const [poolRes, holders] = await Promise.all([
+  const [poolRes, holders, geckoRes] = await Promise.all([
     fetch("/api/pool").then((r) => (r.ok ? r.json() : null)).catch(() => null),
     fetchHolderCount(),
+    fetch("https://api.geckoterminal.com/api/v2/networks/eth/pools/0xcaA3A16F8440F85303aFaab1992f2b97D12469B1", {
+      headers: { Accept: "application/json" },
+      signal: AbortSignal.timeout(10000),
+    }).then((r) => (r.ok ? r.json() : null)).catch(() => null),
   ]);
 
+  const geckoAttrs = geckoRes?.data?.attributes;
+  const geckoMarketCap = parseFloat(geckoAttrs?.market_cap_usd) || 0;
+  const geckoTvl = parseFloat(geckoAttrs?.reserve_in_usd) || 0;
+  const geckoVolume24h = parseFloat(geckoAttrs?.volume_usd?.h24) || 0;
+
   const price = poolRes?.wojakPrice ?? 0;
-  const marketCap = price * WOJAK_TOTAL_SUPPLY;
-  const tvl = poolRes?.tvlUsd ?? 0;
-  const volume24h = poolRes?.volume24h ?? 0;
+  const marketCap = geckoMarketCap > 0 ? geckoMarketCap : (poolRes?.marketCapUsd ?? 0);
+  const tvl = geckoTvl > 0 ? geckoTvl : (poolRes?.tvlUsd ?? 0);
+  const volume24h = geckoVolume24h > 0 ? geckoVolume24h : (poolRes?.volume24h ?? 0);
   const ethPrice = poolRes?.ethPrice ?? 0;
   const holderCount = holders ?? 0;
 

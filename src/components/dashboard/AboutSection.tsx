@@ -68,7 +68,7 @@ export default function AboutSection() {
                 }}
               />
               <Image
-                src="/images/Wojak_black.png"
+                src="/images/whitewojakcoin.jpg"
                 alt="WOJAK"
                 width={180}
                 height={180}
@@ -114,7 +114,7 @@ export default function AboutSection() {
                   <EtherscanIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                 </a>
                 <a
-                  href="https://wojak.io"
+                  href="https://wojakcto.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group"
@@ -131,14 +131,14 @@ export default function AboutSection() {
 
             {/* Subtitle */}
             <p className="text-sm text-gray-400 mb-3">
-              The original and very first Wojak memecoin. Since April 2023.
+              
             </p>
 
             {/* Paragraph */}
             <p className="text-sm leading-relaxed text-gray-300">
               Wojak. Feels Guy. The most recognized face on the internet. Born from meme culture,
               brought on-chain as the first community-led memecoin on Ethereum for the Wojak meme.
-              Contract renounced. LP locked until 2100. 0% tax. 100% feels. We are all Wojak.
+              Contract renounced.
             </p>
 
             {/* Tagline on its own line */}

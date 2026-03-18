@@ -165,7 +165,7 @@ export default function ImageReel() {
           <polygon fill="rgba(255,255,255,0.4)" points="0.0009 212.3207 127.9609 287.9577 127.9609 154.1587" />
         </svg>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-center animate-title-shine">
-          The One True WOJAK
+          WOJAK
         </h1>
         <div className="relative mt-2">
           {/* Invisible spacer — sized to the longer phrase to prevent layout shift */}

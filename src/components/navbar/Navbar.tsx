@@ -4,14 +4,10 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import GamesDropdown from "./GamesDropdown";
-import { SITE_TAGLINE } from "@/lib/constants";
 
 const NAV_LINKS = [
   { href: "/", label: "Dashboard" },
-  { href: "https://wojak.io", label: "About", external: true },
-  { href: "https://www.wojakdao.xyz/", label: "DAO", external: true },
   { href: "/crypto-101", label: "Crypto 101" },
-  { href: "/migration-report", label: "Migration Report", notify: true },
   { href: "/wojak-tv", label: "Wojak TV" },
 ];
 
@@ -29,14 +25,13 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo + Tagline */}
           <Link href="/" className="flex items-center gap-3 shrink-0" onClick={closeMobileMenu}>
-            <span className="text-xl font-bold text-white tracking-tight">WOJAK</span>
-            <span className="hidden sm:block text-xs text-gray-400">{SITE_TAGLINE}</span>
+            <span className="text-white font-bold text-lg">WOJAK</span>
           </Link>
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-6">
             {NAV_LINKS.map((link) =>
-              link.external ? (
+              (link as any).external ? (
                 <a
                   key={link.href}
                   href={link.href}
@@ -57,7 +52,7 @@ export default function Navbar() {
                   }`}
                 >
                   {link.label}
-                  {link.notify && (
+                  {(link as any).notify && (
                     <span className="absolute -top-1 -right-2 w-2 h-2 bg-wojak-green rounded-full animate-notification-pulse" />
                   )}
                 </Link>
@@ -93,7 +88,7 @@ export default function Navbar() {
         {mobileOpen && (
           <div className="md:hidden border-t border-wojak-border py-4 space-y-1">
             {NAV_LINKS.map((link) =>
-              link.external ? (
+              (link as any).external ? (
                 <a
                   key={link.href}
                   href={link.href}
@@ -116,7 +111,7 @@ export default function Navbar() {
                   }`}
                 >
                   {link.label}
-                  {link.notify && (
+                  {(link as any).notify && (
                     <span className="inline-block ml-2 w-2 h-2 bg-wojak-green rounded-full animate-notification-pulse" />
                   )}
                 </Link>

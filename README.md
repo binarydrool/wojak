@@ -8,7 +8,7 @@ Official community website for the original WOJAK token on Ethereum. Live stats,
 
 ## About
 
-WOJAK Stats (wojakstats.xyz) serves the holders of the original WOJAK token (`0x5026F006B85729a8b14553FAE6af249aD16c9aaB`) on Ethereum. The site exists to provide a legitimate home for the OG community and counter a hostile CTO migration attempt.
+WOJAK Stats (wojakstats.xyz) serves the holders of the original WOJAK token (`0x8De39B057CC6522230AB19C0205080a8663331Ef`) on Ethereum. The site exists to provide a legitimate home for the OG community and counter a hostile CTO migration attempt.
 
 ## Features
 
@@ -79,7 +79,7 @@ WOJAK Stats (wojakstats.xyz) serves the holders of the original WOJAK token (`0x
 
 | | Details |
 |---|---|
-| **Contract Address** | `0x5026F006B85729a8b14553FAE6af249aD16c9aaB` |
+| **Contract Address** | `0x8De39B057CC6522230AB19C0205080a8663331Ef` |
 | **Uniswap V2 Pool** | `0x0f23D49bC92Ec52FF591D091b3e16c937034496e` |
 | **LP Lock** | Locked until year 2100 |
 | **Contract Status** | Renounced — no admin functions |
@@ -89,8 +89,8 @@ WOJAK Stats (wojakstats.xyz) serves the holders of the original WOJAK token (`0x
 
 - **Telegram:** [WOJAK Community](https://t.me/+-6E6iU6h7h42ZTcx)
 - **X:** [@WojakToken](https://x.com/WojakToken)
-- **Etherscan:** [View Token](https://etherscan.io/token/0x5026F006B85729a8b14553FAE6af249aD16c9aaB)
-- **DexTools:** [View Chart](https://www.dextools.io/app/en/ether/pair-explorer/0x5026F006B85729a8b14553FAE6af249aD16c9aaB)
+- **Etherscan:** [View Token](https://etherscan.io/token/0x8De39B057CC6522230AB19C0205080a8663331Ef)
+- **DexTools:** [View Chart](https://www.dextools.io/app/en/ether/pair-explorer/0x8De39B057CC6522230AB19C0205080a8663331Ef)
 
 ## License
 

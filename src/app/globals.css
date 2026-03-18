@@ -41,7 +41,7 @@ html {
   -webkit-touch-callout: none;
 }
 
-/* "The One True WOJAK" title animation — green glare sweep only, no scale */
+/* "WOJAK" title animation — green glare sweep only, no scale */
 @keyframes title-shine {
   0% {
     background-position: -200% center;

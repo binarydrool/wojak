@@ -353,13 +353,12 @@ export default function ReportContent() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           {[
             { label: "Clean from Day One", icon: "shield" },
-            { label: "LP locked until 2100", icon: "lock" },
             { label: "Zero taxes", icon: "zap" },
             { label: "19,000+ holders", icon: "users" },
             { label: "$1M+ liquidity", icon: "dollar" },
             { label: "Clean ERC-20 code", icon: "code" },
             { label: "100K+ transactions", icon: "activity" },
-            { label: "@WojakToken on X", icon: "twitter" },
+            { label: "@Wojakcto on X", icon: "twitter" },
           ].map((item) => (
             <div
               key={item.label}
@@ -536,9 +535,9 @@ export default function ReportContent() {
                   },
                   { label: "OG Website", value: SITE_NAME, mono: false },
                   {
-                    label: "wojak.io",
-                    value: "wojak.io",
-                    href: "https://wojak.io",
+                    label: "wojakcto.com",
+                    value: "wojakcto.com",
+                    href: "https://wojakcto.com",
                     mono: false,
                   },
                   {
@@ -555,7 +554,7 @@ export default function ReportContent() {
                   },
                   {
                     label: "OG X/Twitter",
-                    value: "@WojakToken",
+                    value: "@Wojakcto",
                     href: TWITTER_URL,
                     mono: false,
                   },

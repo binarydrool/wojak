@@ -68,7 +68,7 @@ export default function TokenSafety() {
           </p>
           <div className="bg-wojak-green/10 border border-wojak-green/30 rounded-xl p-4 text-sm">
             <p>
-              <strong className="text-wojak-green">OG WOJAK&apos;s contract is fully renounced.</strong>{" "}
+              <strong className="text-wojak-green">WOJAK&apos;s contract is fully renounced.</strong>{" "}
               Zero admin functions. Zero taxes. Zero blacklisting. It&apos;s a clean ERC-20 token
               that can&apos;t be tampered with. You can verify this on Etherscan by reading the
               contract code.

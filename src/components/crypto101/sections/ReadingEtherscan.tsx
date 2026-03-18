@@ -26,7 +26,7 @@ export default function ReadingEtherscan() {
             >
               etherscan.io
             </a>{" "}
-            and paste a contract address in the search bar. For example, OG WOJAK&apos;s contract:{" "}
+            and paste a contract address in the search bar. For example, WOJAK&apos;s contract:{" "}
             <code className="text-wojak-green bg-white/5 px-2 py-0.5 rounded text-sm break-all">
               {OG_WOJAK_CONTRACT}
             </code>

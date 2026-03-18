@@ -10,7 +10,6 @@ import {
   DEXTOOLS_URL,
   UNISWAP_POOL_URL,
   UNISWAP_ADD_LIQUIDITY,
-  LP_LOCK_EXPIRY,
 } from "@/lib/constants";
 
 const LINKS = [
@@ -39,7 +38,7 @@ export default function ContractInfo() {
             <div className="w-px h-3 bg-wojak-border" />
             <div className="flex items-center gap-1.5">
               <span className="text-[10px] uppercase tracking-wider text-gray-500">Total Supply</span>
-              <span className="text-xs font-semibold text-[#00ff41]">69.42B</span>
+              <span className="text-xs font-semibold text-[#00ff41]">420.69T</span>
             </div>
             <div className="w-px h-3 bg-wojak-border" />
             <div className="flex items-center gap-1.5">
@@ -82,7 +81,7 @@ export default function ContractInfo() {
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
           <span>
-            <span className="text-wojak-green font-medium">LP Locked</span> until {LP_LOCK_EXPIRY} — liquidity cannot be rugged
+            
           </span>
         </div>
 

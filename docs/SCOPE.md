@@ -6,7 +6,7 @@
 ---
 
 ## Overview
-WOJAK Stats (wojakstats.xyz) is the official community website for the original WOJAK token (0x5026F006B85729a8b14553FAE6af249aD16c9aaB) on Ethereum. It serves as a dashboard, education hub, community rally point, and entertainment destination for OG WOJAK holders. The site exists to counter a hostile CTO migration attempt and give the 14,000+ non-migrated holders a legitimate home.
+WOJAK Stats (wojakstats.xyz) is the official community website for the original WOJAK token (0x8De39B057CC6522230AB19C0205080a8663331Ef) on Ethereum. It serves as a dashboard, education hub, community rally point, and entertainment destination for OG WOJAK holders. The site exists to counter a hostile CTO migration attempt and give the 14,000+ non-migrated holders a legitimate home.
 
 ---
 
@@ -32,7 +32,7 @@ NEXT_PUBLIC_ETHERSCAN_API_KEY=your_key_here
 ---
 
 ## Key Contract Info
-- **OG WOJAK Contract:** 0x5026F006B85729a8b14553FAE6af249aD16c9aaB
+- **OG WOJAK Contract:** 0x8De39B057CC6522230AB19C0205080a8663331Ef
 - **OG Uniswap Pool:** 0x0f23...496e (created April 17, 2023)
 - **New/CTO Contract (hostile):** 0x8De39B057CC6522230AB19C0205080a8663331Ef
 - **OG Twitter:** @WojakToken

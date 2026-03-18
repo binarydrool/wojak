@@ -90,7 +90,7 @@
   - Full loading skeleton state: animated pulse placeholders for price and all 4 stat items
   - Fetches data from `fetchTokenStats()` on mount
 - `src/components/dashboard/PriceChart.tsx` — Client component with:
-  - DEX Screener iframe embed pointed at OG contract (0x5026F006B85729a8b14553FAE6af249aD16c9aaB)
+  - DEX Screener iframe embed pointed at OG contract (0x8De39B057CC6522230AB19C0205080a8663331Ef)
   - Embed URL from constants: `https://dexscreener.com/ethereum/{contract}?embed=1&theme=dark`
   - Responsive container: full width, max-w-5xl, 500px height
   - Loading state: spinning wojak-green ring + "Loading chart..." text overlays until iframe loads
@@ -185,7 +185,7 @@
   - Pill-shaped (rounded-full), inline-flex with gap for icon + text
 - `src/components/dashboard/ContractInfo.tsx` — Contract info section:
   - "Contract Info" heading with prominent green "Contract RENOUNCED — No admin functions" Badge (checkmark icon)
-  - OG WOJAK contract address (0x5026F006B85729a8b14553FAE6af249aD16c9aaB) displayed in a dark input-like container with CopyButton
+  - OG WOJAK contract address (0x8De39B057CC6522230AB19C0205080a8663331Ef) displayed in a dark input-like container with CopyButton
   - Three quick links: Etherscan | DEX Screener | Uniswap Pool — each opens in new tab with external link icon
   - LP Lock proof note: green-tinted callout with lock icon, "LP Locked — Liquidity is locked until Year 2100", links to pool on Etherscan
   - All addresses, URLs, and lock info sourced from `src/lib/constants.ts`
@@ -274,7 +274,7 @@
 - `src/components/crypto101/sections/WhatIsAWallet.tsx` — What a crypto wallet is:
   - Wallet as personal blockchain account analogy
   - MetaMask setup: 5-step installation guide
-  - Wallet address explained (looks like 0x5026F006...9aaB, safe to share)
+  - Wallet address explained (looks like 0x8De39B057...331Ef, safe to share)
   - Hot wallets vs cold wallets (MetaMask vs Ledger/Trezor)
 - `src/components/crypto101/sections/PrivateKeys.tsx` — Private keys & seed phrases:
   - Private key = master password, full wallet control
@@ -1135,8 +1135,8 @@ This is a major redesign of the dashboard page (`src/app/page.tsx`) based on use
   - Loading skeletons while APIs fetch
   - Fallback to "—" / "19,630" on error
 - **API endpoints used:**
-  - `https://api.coingecko.com/api/v3/coins/ethereum/contract/0x5026F006B85729a8b14553FAE6af249aD16c9aaB`
-  - `https://api.geckoterminal.com/api/v2/networks/eth/tokens/0x5026F006B85729a8b14553FAE6af249aD16c9aaB/pools?page=1`
+  - `https://api.coingecko.com/api/v3/coins/ethereum/contract/0x8De39B057CC6522230AB19C0205080a8663331Ef`
+  - `https://api.geckoterminal.com/api/v2/networks/eth/tokens/0x8De39B057CC6522230AB19C0205080a8663331Ef/pools?page=1`
   - `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`
 - **Holders:** Hardcoded 19,630 (Etherscan free tier doesn't expose holder count endpoint)
 - **Verified:** CoinGecko returns price=$0.00004523, mcap=$3.14M, vol=$12.7M. GeckoTerminal returns TVL=$946.7K.
@@ -1150,7 +1150,7 @@ This is a major redesign of the dashboard page (`src/app/page.tsx`) based on use
   - Loading state shows "—" until API responds
 
 ### TASK 3: Removed ALL DEX Screener References — Replaced with DexTools
-- **`src/lib/constants.ts`** — Replaced `DEXSCREENER_URL` with `DEXTOOLS_URL` pointing to `https://www.dextools.io/app/en/ether/pair-explorer/0x5026F006B85729a8b14553FAE6af249aD16c9aaB`
+- **`src/lib/constants.ts`** — Replaced `DEXSCREENER_URL` with `DEXTOOLS_URL` pointing to `https://www.dextools.io/app/en/ether/pair-explorer/0x8De39B057CC6522230AB19C0205080a8663331Ef`
 - **`src/components/dashboard/ContractInfo.tsx`** — Changed "DEX Screener" link to "DexTools" with new URL, updated import
 - **`src/components/migration/ReportContent.tsx`** — Updated data source attribution from "DEX Screener" to "DexTools". Platform attacks section updated to "DEX Screener / DexTools"
 - **`src/lib/etherscan.ts`** — Replaced all `DexScreener` references in TODO comments with `CoinGecko`
@@ -1168,7 +1168,7 @@ This is a major redesign of the dashboard page (`src/app/page.tsx`) based on use
 
 ### TASK 5: Fixed Uniswap LP Link
 - **`src/lib/constants.ts`** — Updated `UNISWAP_ADD_LIQUIDITY` from broken v2 URL to correct v3 URL:
-  - `https://app.uniswap.org/positions/create/v3?currencyA=NATIVE&currencyB=0x5026f006b85729a8b14553fae6af249ad16c9aab&chain=ethereum`
+  - `https://app.uniswap.org/positions/create/v3?currencyA=NATIVE&currencyB=0x8de39b057cc6522230ab19c0205080a8663331ef&chain=ethereum`
 
 ### TASK 6: Fixed Telegram Link
 - **`src/lib/constants.ts`** — Updated `TELEGRAM_URL` from `https://t.me/WojakTokenOfficial` to `https://t.me/Wojakog`
@@ -1243,7 +1243,7 @@ This is a major redesign of the dashboard page (`src/app/page.tsx`) based on use
 ### FIX 5: Uniswap Pool Link — Changed to Token Explorer
 - **`src/lib/constants.ts`** — Updated `UNISWAP_POOL_URL` from swap page to explore page:
   - FROM: `https://app.uniswap.org/#/swap?outputCurrency={contract}`
-  - TO: `https://app.uniswap.org/explore/tokens/ethereum/0x5026f006b85729a8b14553fae6af249ad16c9aab`
+  - TO: `https://app.uniswap.org/explore/tokens/ethereum/0x8de39b057cc6522230ab19c0205080a8663331ef`
 - Used everywhere "Uniswap Pool" link appears (ContractInfo.tsx)
 
 ### FIX 6: Added TVL Tab to Chart Section
@@ -3612,7 +3612,7 @@ Added Etherscan inline SVG icon to the About section heading, next to the existi
 **Details:**
 - Added `EtherscanIcon` component to `AboutSection.tsx` — SVG copied from `Footer.tsx` for visual consistency
 - Icon placed after X icon (order: Telegram, X, Etherscan)
-- Links to `ETHERSCAN_TOKEN_URL` (`https://etherscan.io/token/0x5026F006B85729a8b14553FAE6af249aD16c9aaB`)
+- Links to `ETHERSCAN_TOKEN_URL` (`https://etherscan.io/token/0x8De39B057CC6522230AB19C0205080a8663331Ef`)
 - Opens in new tab (`target="_blank" rel="noopener noreferrer"`)
 - Same size (`w-5 h-5 sm:w-6 sm:h-6`), color (`text-gray-400`), and hover (`hover:text-[#00ff41]`) as sibling icons
 - Imported `ETHERSCAN_TOKEN_URL` from `@/lib/constants`

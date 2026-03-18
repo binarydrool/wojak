@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   description:
     "Live WOJAK token stats — price, market cap, TVL, volume, holders, and charts.",
   icons: {
-    icon: "/images/favicon.png",
-    apple: "/images/favicon.png",
+    icon: "/images/whitewojakcoin.jpg",
+    apple: "/images/whitewojakcoin.jpg",
   },
   alternates: {
     canonical: "https://www.wojakstats.xyz",

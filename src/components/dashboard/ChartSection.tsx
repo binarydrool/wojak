@@ -1,11 +1,11 @@
 "use client";
+import { OG_UNISWAP_POOL, ETHERSCAN_BASE_URL, UNISWAP_POOL_URL } from "@/lib/constants";
 
 import { useState, useEffect, lazy, Suspense } from "react";
 import PriceChart from "./PriceChart";
 import RecentTrades from "./RecentTrades";
 import DextScoreInline from "./DextScoreInline";
 import { formatCurrency } from "@/lib/coingecko";
-import { OG_UNISWAP_POOL, ETHERSCAN_BASE_URL, LP_LOCK_EXPIRY, UNISWAP_POOL_URL } from "@/lib/constants";
 import type { PoolData } from "@/types";
 
 const BubbleMapModal = lazy(() => import("./BubbleMapModal"));
@@ -136,7 +136,6 @@ function TVLPanel({ data, loading }: { data: PoolData | null; loading: boolean }
         </div>
         <div className="bg-black/20 border border-wojak-border rounded-lg p-2 text-center">
           <p className="text-[10px] text-gray-500 mb-0.5">LP Lock</p>
-          <p className="text-xs font-semibold text-wojak-green">{LP_LOCK_EXPIRY}</p>
         </div>
       </div>
 
@@ -159,7 +158,6 @@ function TVLPanel({ data, loading }: { data: PoolData | null; loading: boolean }
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
           <div>
-            <p className="text-xs font-semibold text-wojak-green">Locked Until {LP_LOCK_EXPIRY}</p>
             <p className="text-[10px] text-gray-300">Cannot be rugged or withdrawn</p>
           </div>
         </div>

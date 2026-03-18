@@ -30,7 +30,7 @@ export default function WhatIsAWallet() {
           <p>
             Once your wallet is set up, you&apos;ll get a public address that looks something like:{" "}
             <code className="text-wojak-green bg-white/5 px-2 py-0.5 rounded text-sm">
-              0x5026F006...9aaB
+              0x8De39B057...331Ef
             </code>
           </p>
           <p>

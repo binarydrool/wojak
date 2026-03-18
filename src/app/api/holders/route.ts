@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const OG_WOJAK_CONTRACT = "0x5026F006B85729a8b14553FAE6af249aD16c9aaB";
+const OG_WOJAK_CONTRACT = "0x8De39B057CC6522230AB19C0205080a8663331Ef";
 const ETHPLORER_URL = `https://api.ethplorer.io/getTokenInfo/${OG_WOJAK_CONTRACT}?apiKey=freekey`;
 
 // Minimum sane holder count — anything below this is obviously wrong

@@ -1,6 +1,6 @@
 import { OG_UNISWAP_POOL } from "./constants";
 
-const WOJAK_ADDRESS = "0x5026F006B85729a8b14553FAE6af249aD16c9aaB";
+const WOJAK_ADDRESS = "0x8De39B057CC6522230AB19C0205080a8663331Ef";
 // WETH/USDC Uniswap V2 pair — used to derive ETH/USD price on-chain
 // token0 = USDC (6 decimals), token1 = WETH (18 decimals)
 const WETH_USDC_PAIR = "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc";
@@ -40,20 +40,20 @@ export async function ethCall(to: string, data: string): Promise<string> {
 }
 
 // Cache token order (module-level, persists across requests in same server instance)
-let _isWojakToken0: boolean | null = null;
+let _isWojakcto0: boolean | null = null;
 
 /**
  * Determine token order in the Uniswap V2 pair by calling token0().
  * WOJAK (0x5026) < WETH (0xC02a) lexicographically, so WOJAK should be token0.
  */
 async function getTokenOrder(): Promise<boolean> {
-  if (_isWojakToken0 !== null) return _isWojakToken0;
+  if (_isWojakcto0 !== null) return _isWojakcto0;
   // token0() selector: 0x0dfe1681
   const result = await ethCall(OG_UNISWAP_POOL, "0x0dfe1681");
   // Result is 32 bytes, address is in the last 20 bytes
   const token0Addr = "0x" + result.slice(26).toLowerCase();
-  _isWojakToken0 = token0Addr === WOJAK_ADDRESS.toLowerCase();
-  return _isWojakToken0;
+  _isWojakcto0 = token0Addr === WOJAK_ADDRESS.toLowerCase();
+  return _isWojakcto0;
 }
 
 /**
@@ -61,7 +61,7 @@ async function getTokenOrder(): Promise<boolean> {
  * Returns reserves respecting token order.
  */
 async function getReserves(): Promise<{ wojakReserve: bigint; ethReserve: bigint }> {
-  const [isWojakToken0, result] = await Promise.all([
+  const [isWojakcto0, result] = await Promise.all([
     getTokenOrder(),
     // getReserves() selector: 0x0902f1ac
     ethCall(OG_UNISWAP_POOL, "0x0902f1ac"),
@@ -72,7 +72,7 @@ async function getReserves(): Promise<{ wojakReserve: bigint; ethReserve: bigint
   const reserve0 = BigInt("0x" + hex.slice(0, 64));
   const reserve1 = BigInt("0x" + hex.slice(64, 128));
 
-  if (isWojakToken0) {
+  if (isWojakcto0) {
     return { wojakReserve: reserve0, ethReserve: reserve1 };
   }
   return { wojakReserve: reserve1, ethReserve: reserve0 };
@@ -103,34 +103,52 @@ export interface OnChainData {
   wojakPriceUsd: number;
   ethPriceUsd: number;
   tvlUsd: number;
+  marketCapUsd: number;
 }
 
+const GECKO_TERMINAL_URL =
+  "https://api.geckoterminal.com/api/v2/networks/eth/pools/0xcaA3A16F8440F85303aFaab1992f2b97D12469B1";
+
 /**
- * Main export: fetch live on-chain data from Uniswap V2 reserves.
- * WOJAK price derived from WOJAK/WETH pair, ETH price from WETH/USDC pair.
+ * Main export: fetch live pool data from GeckoTerminal API.
  */
 export async function fetchOnChainData(): Promise<OnChainData> {
-  const [reserves, ethPriceUsd] = await Promise.all([
-    getReserves(),
-    getEthPrice(),
-  ]);
+  const res = await fetch(GECKO_TERMINAL_URL, {
+    headers: { Accept: "application/json" },
+    signal: AbortSignal.timeout(10000),
+    next: { revalidate: 30 },
+  });
 
-  // Both WOJAK and WETH have 18 decimals — ratio gives direct ETH price
-  const wojakReserveNum = Number(reserves.wojakReserve) / 1e18;
-  const ethReserveNum = Number(reserves.ethReserve) / 1e18;
+  if (!res.ok) {
+    throw new Error(`GeckoTerminal API error: ${res.status}`);
+  }
 
-  const wojakPriceEth = ethReserveNum / wojakReserveNum;
-  const wojakPriceUsd = wojakPriceEth * ethPriceUsd;
+  const json = await res.json();
+  const attrs = json.data.attributes;
 
-  // Uniswap V2 is 50/50 — TVL = 2 * ETH side value
-  const tvlUsd = ethReserveNum * ethPriceUsd * 2;
+  const wojakPriceUsd = parseFloat(attrs.base_token_price_usd) || 0;
+  const ethPriceUsd = parseFloat(attrs.quote_token_price_usd) || 0;
+
+  // Use reserve data if available, otherwise default to 0
+  const wojakReserve = parseFloat(attrs.reserve_in_usd) > 0
+    ? parseFloat(attrs.reserve_in_usd) / 2 / wojakPriceUsd
+    : 0;
+  const ethReserve = parseFloat(attrs.reserve_in_usd) > 0
+    ? parseFloat(attrs.reserve_in_usd) / 2 / ethPriceUsd
+    : 0;
+
+  const tvlUsd = ethReserve * ethPriceUsd * 2;
+
+  const wojakPriceEth = ethPriceUsd > 0 ? wojakPriceUsd / ethPriceUsd : 0;
+  const marketCapUsd = parseFloat(attrs.market_cap_usd) || 0;
 
   return {
-    wojakReserve: wojakReserveNum,
-    ethReserve: ethReserveNum,
+    wojakReserve,
+    ethReserve,
     wojakPriceEth,
     wojakPriceUsd,
     ethPriceUsd,
     tvlUsd,
+    marketCapUsd,
   };
 }

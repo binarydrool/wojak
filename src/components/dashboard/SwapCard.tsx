@@ -32,7 +32,7 @@ declare global {
 }
 
 /* ── Contract addresses (verified against pool & Etherscan) ── */
-const WOJAK = OG_WOJAK_CONTRACT; // 0x5026F006B85729a8b14553FAE6af249aD16c9aaB
+const WOJAK = OG_WOJAK_CONTRACT; // 0x8De39B057CC6522230AB19C0205080a8663331Ef
 const WETH = WETH_ADDRESS;       // 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
 const ROUTER = UNISWAP_V2_ROUTER; // 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D
 const MAINNET = 1;
@@ -595,7 +595,7 @@ export default function SwapCard() {
                   </svg>
                 </div>
               ) : (
-                <img src="/images/wojak.jpg" alt="WOJAK" loading="lazy" className="w-5 h-5 rounded-full object-cover" />
+                <img src="/images/whitewojakcoin.jpg" alt="WOJAK" loading="lazy" className="w-5 h-5 rounded-full object-cover" />
               )}
               <span className="text-sm font-semibold text-white">{sellToken}</span>
             </div>
@@ -634,7 +634,7 @@ export default function SwapCard() {
                   </svg>
                 </div>
               ) : (
-                <img src="/images/wojak.jpg" alt="WOJAK" loading="lazy" className="w-5 h-5 rounded-full object-cover" />
+                <img src="/images/whitewojakcoin.jpg" alt="WOJAK" loading="lazy" className="w-5 h-5 rounded-full object-cover" />
               )}
               <span className="text-sm font-semibold text-white">{buyToken}</span>
             </div>
