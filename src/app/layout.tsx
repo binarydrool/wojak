@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://wojakcto.com",
     siteName: "wojakcto.com",
-    images: [{ url: "/images/Wojak_black.png?v=2", width: 1200, height: 630, alt: "WOJAK Stats" }],
+    images: [{ url: "/images/Wojak_black.png?v=2", width: 400, height: 400, alt: "WOJAK Stats" }],
   },
   twitter: {
     card: "summary_large_image",
